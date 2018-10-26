@@ -46,6 +46,5 @@
     border-radius: 3px;
     border: 1px solid black;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-
   }
 </style>

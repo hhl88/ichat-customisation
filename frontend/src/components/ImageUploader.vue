@@ -24,5 +24,7 @@
 </script>
 
 <style scoped>
-
+  input {
+    border: none;
+  }
 </style>

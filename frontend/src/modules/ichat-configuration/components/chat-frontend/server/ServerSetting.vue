@@ -93,6 +93,5 @@
 <style scoped>
   .container-wrapper {
     margin: 1em 0.5em 1em 1.5em;
-
   }
 </style>

@@ -64,7 +64,6 @@
 <style scoped>
   input {
     width: 15em;
-
   }
 
   form {
