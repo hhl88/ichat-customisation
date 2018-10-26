@@ -1,0 +1,42 @@
+package com.novomind.ecom.ichat.customisation.persistents;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.novomind.ecom.ichat.customisation.constants.Constants;
+import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChooseLayoutDao;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+
+@Repository
+public class ChooseLayoutDaoImpl extends BaseDao implements ChooseLayoutDao {
+  
+  Logger log = LoggerFactory.getLogger(ChooseLayoutDao.class);
+  
+  @Override
+  public void insert(IChatUser user, ChatLayout layout) {
+    String query = "INSERT INTO " + Constants.CHOOSE_LAYOUT_TABLE + "(user_id, chat_layout_id) "
+        + " VALUES(?, ?)";
+    try {
+      getJdbcTemplate().update(query, user.getId(), layout.getId());
+    } catch (Exception e) {
+      log.error("user cannot insert new chat layout");
+    }
+    
+  }
+
+  @Override
+  public void changeToAnother(IChatUser user, ChatLayout layout) {
+    String query = "UPDATE " + Constants.CHOOSE_LAYOUT_TABLE
+        + " SET chat_layout_id = ?"
+        + " WHERE user_id = ?";
+    try {
+      getJdbcTemplate().update(query, layout.getId(), user.getId());
+    } catch (Exception e) {
+      log.error("Cannot choose another layout");
+    }    
+    
+  }
+
+}

@@ -1,0 +1,74 @@
+buildscript {
+    ext {
+        springBootVersion = project['spring-boot-version']
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:" + project['spring-boot-version'])
+    }
+}
+
+plugins {
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'java-library'
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+apply from: "$rootProject.projectDir/source.gradle"
+
+
+group = 'com.novomind.ecom'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = project['java-version']
+targetCompatibility  = project['java-version']
+
+project.ext {
+    configPath = "$rootProject.projectDir/src/main/resources/"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  compile 'org.springframework.boot:spring-boot-starter-actuator:' + project['spring-boot-version']
+  compile 'org.springframework.boot:spring-boot-starter-security:' + project['spring-boot-version']
+  compile 'org.springframework.boot:spring-boot-starter-web:' + project['spring-boot-version']
+  compile 'org.springframework.boot:spring-boot-starter-data-jpa:' + project['spring-boot-version']
+
+  compile 'io.springfox:springfox-swagger2:2.9.2'
+  compile 'io.springfox:springfox-swagger-ui:2.9.2'
+
+
+    compile 'org.springframework:spring-jdbc:' + project['spring-jdbc']
+  compile 'org.springframework.security.oauth:spring-security-oauth2:' + project['spring-security-oauth2']
+  compile 'org.springframework.security:spring-security-jwt:' + project['spring-security-jwt']
+    
+    compile 'com.google.code.gson:gson:' + project['gson']
+ 
+  compile 'mysql:mysql-connector-java:' + project['mysql']
+  compileOnly  'org.projectlombok:lombok:' + project['lombok']
+  
+  testCompile('org.springframework.boot:spring-boot-starter-test')
+  testCompile('org.springframework.security:spring-security-test')
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '4.10.2'
+}
+
+mainClassName = "com.novomind.ecom.ichat.customisation.IChatCustomApplication"
+

@@ -1,0 +1,26 @@
+server:
+  port: 8050
+  address: 0.0.0.0
+  
+debug: false
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USER:root}
+    password: ${DB_USER:test}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  redis:
+    host: localhost
+    port: 6379
+  security:
+    oauth2:
+      resource:
+        userInfoUri: http://0.0.0.0:8090/api/v1/auth/me
+        
