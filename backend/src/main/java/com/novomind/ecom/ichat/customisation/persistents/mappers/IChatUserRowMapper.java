@@ -18,6 +18,7 @@ public class IChatUserRowMapper implements RowMapper<IChatUser> {
             .builder()
             .id(String.valueOf(rs.getLong("id")))
             .email(rs.getString("email"))
+            .password(rs.getString("password"))
             .build();
   }
 

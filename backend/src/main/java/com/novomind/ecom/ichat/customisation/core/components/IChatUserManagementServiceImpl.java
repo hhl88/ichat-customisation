@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.novomind.ecom.ichat.customisation.core.common.StringGenerator;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IChatUserDao;
@@ -16,7 +15,6 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserM
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 
 @Service("userManagementService")
-@Transactional
 public class IChatUserManagementServiceImpl implements IChatUserManagementService {
   
   Logger log = LoggerFactory.getLogger(getClass());

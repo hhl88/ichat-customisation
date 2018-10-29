@@ -23,7 +23,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-apply from: "$rootProject.projectDir/source.gradle"
+//apply from: "$rootProject.projectDir/source.gradle"
 
 
 group = 'com.novomind.ecom'
@@ -70,5 +70,14 @@ task wrapper(type: Wrapper){
     gradleVersion = '4.10.2'
 }
 
-mainClassName = "com.novomind.ecom.ichat.customisation.IChatCustomApplication"
+mainClassName = "com.novomind.ecom.ichat.customisation.kernel.KernelApplication"
 
+task sourceJar(dependsOn: classes, type: Jar){
+    classifier = 'sources'
+    from sourceSets.main.java
+    from sourceSets.main.resources
+}
+
+artifacts {
+    archives sourceJar
+}

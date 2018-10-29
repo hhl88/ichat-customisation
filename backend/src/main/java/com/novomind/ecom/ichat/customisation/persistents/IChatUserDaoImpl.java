@@ -47,7 +47,7 @@ public class IChatUserDaoImpl extends BaseDao implements IChatUserDao {
     logger.info("in USERDAO findIChatUserByEmail after query" );
 
     IChatUser user = DataAccessUtils.singleResult(list);
-    logger.info("in USERDAO findIChatUserByEmail single result" );
+    logger.info("in USERDAO findIChatUserByEmail single result " + user );
 
     return Optional.ofNullable(user);
   }

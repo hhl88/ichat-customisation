@@ -6,15 +6,13 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserCreateDTO;
 
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.NoArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
-@SuppressWarnings("serial")
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class IChatUser implements Serializable {
   
   private String id;

@@ -23,6 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<IChatUser> user = userDAO.findIChatUserByEmail(s);
+        logger.info("load user " + user.get());
         if (!user.isPresent()){
             throw new UsernameNotFoundException("username_not_found");
         }

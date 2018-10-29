@@ -7,3 +7,7 @@
 */gradle
 */node_modules/
 */.gradle/
+*/.DS_Store
+.DS_Store
+*/.gradle
+

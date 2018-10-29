@@ -18,6 +18,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 // GET CURRENT LOGGED IN USER
                 .antMatchers(HttpMethod.GET,"/api/v1/auth/me").authenticated()
+                // ...
                 .anyRequest().permitAll();
     }
 }

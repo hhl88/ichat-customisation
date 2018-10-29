@@ -1,8 +1,12 @@
 allprojects {
-	group = 'com.novomind.ecom'
+    group = 'com.novomind.ecom'
     version = '1.0.0-SNAPSHOT'
 }
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+
+
 }
