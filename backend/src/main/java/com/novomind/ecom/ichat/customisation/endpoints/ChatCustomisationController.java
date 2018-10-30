@@ -66,7 +66,6 @@ public class ChatCustomisationController {
   public String createFrontEnd(@RequestBody FrontEndCreateDTO dto, Principal principal) {
     IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
         .orElseThrow(() -> new NotFoundException("user_not_found"));
-    
       return chatFrontEndManagementService.insertChatFrontEnd(user, dto);
   }
 
