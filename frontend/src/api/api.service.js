@@ -3,14 +3,14 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import JwtService from './jwt.service'
 
-import {API_URL} from '../config/enviroment'
+import {SERVER_URL} from '../config/enviroment'
 import {TIMEOUT} from '../constants/constants'
 
 const ApiService = {
 
   init () {
     Vue.use(VueAxios, axios)
-    Vue.axios.defaults.baseURL = API_URL
+    Vue.axios.defaults.baseURL = SERVER_URL
     Vue.axios.defaults.timeout = TIMEOUT
   },
 

@@ -18,7 +18,7 @@
     components: {Sidebar, IChatConfigurationContent},
     data() {
       return {
-        view: ''
+        view: 'frontend'
       }
     },
     mounted() {

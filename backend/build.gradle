@@ -70,7 +70,7 @@ task wrapper(type: Wrapper){
     gradleVersion = '4.10.2'
 }
 
-mainClassName = "com.novomind.ecom.ichat.customisation.kernel.KernelApplication"
+mainClassName = "com.novomind.ecom.ichat.customisation.IChatCustomApplication"
 
 task sourceJar(dependsOn: classes, type: Jar){
     classifier = 'sources'

@@ -1,14 +1,14 @@
 server:
-  port: 8050
+  port: 9990
   address: 0.0.0.0
   
 debug: false
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/testdb?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
+    url: ${DB_URL:jdbc:mysql://localhost:3306/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${DB_USER:root}
-    password: ${DB_USER:Example2018}
+    password: ${DB_USER:test}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
@@ -21,6 +21,8 @@ spring:
     port: 6379
   security:
     oauth2:
+      client:
+        access-token-uri: http://0.0.0.0:9990/api/v1/oauth/token
       resource:
-        userInfoUri: http://0.0.0.0:8090/api/v1/auth/me
+        userInfoUri: http://0.0.0.0:9990/api/v1/auth/me
         

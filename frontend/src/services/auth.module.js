@@ -43,7 +43,6 @@ const actions =  {
     context.commit(PURGE_AUTH)
   },
   [REGISTER] (context, {email}) {
-    console.log('authModule', email);
     return new Promise((resolve, reject) => {
       UserService
         .register(email)
