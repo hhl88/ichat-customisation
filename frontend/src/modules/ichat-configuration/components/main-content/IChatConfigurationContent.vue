@@ -1,6 +1,6 @@
 <template>
   <div class="container-wrapper">
-    <div v-if="view === 'frontend' ">
+    <div v-if="view === 'frontend' && selectedItem">
       <ChatFrontEnd/>
     </div>
     <div v-if="view === 'layout' ">
@@ -23,14 +23,21 @@
         default: 'frontend'
       }
     },
-    data () {
+    data() {
       return {
-       /* server: {},
-        step: 0,
-        urlPath: '',
-        demandInfoList: [],*/
+        selectedItem: null,
+        isFrontEnd: false
       }
     },
+
+    // data () {
+    //   return {
+    //    /* server: {},
+    //     step: 0,
+    //     urlPath: '',
+    //     demandInfoList: [],*/
+    //   }
+    // },
     methods: {
      /* getServer: function (server) {
         console.log('server', server)

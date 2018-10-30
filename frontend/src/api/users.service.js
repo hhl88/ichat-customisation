@@ -1,6 +1,6 @@
 import ApiService from './api.service'
 
-import {UPDATE_PASSWORD_PATH, USERS_PATH, USR_FRONTEND_PATH, USR_LAYOUT_PATH, TOKEN_PATH} from '../config/enviroment'
+import {UPDATE_PASSWORD_PATH, USERS_PATH, USR_FRONTEND_PATH, USR_LAYOUT_PATH, TOKEN_PATH, AUTH_PATH} from '../config/enviroment'
 
 export const UserService = {
 
@@ -26,8 +26,8 @@ export const UserService = {
     return ApiService.put(USERS_PATH, UPDATE_PASSWORD_PATH, user.id, data)
   },
 
-  getUser() {
-    return ApiService.get(TOKEN_PATH)
+  fetchUser() {
+    return ApiService.get(AUTH_PATH)
   },
 
   getAllChatFrontEndByUserId (userId) {

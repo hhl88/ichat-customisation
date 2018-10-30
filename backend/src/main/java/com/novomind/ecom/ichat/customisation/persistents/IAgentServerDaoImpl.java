@@ -27,12 +27,12 @@ public class IAgentServerDaoImpl extends BaseDao implements IAgentServerDao {
   }
 
   @Override
-  public void updateIAgentServer(IAgentServer server) {
+  public void updateIAgentServer(String id, IAgentServer server) {
     String query = "UPDATE iagent_server SET " + " address = ?, user_api = ?, password = ?, "
         + " client_id = ?, secret = ?" + " WHERE id = ?";
     try {
       getJdbcTemplate().update(query, server.getAddress(), server.getUserAPI(), server.getPassword(),
-          server.getClientId(), server.getSecret(), server.getId());
+          server.getClientId(), server.getSecret(), id);
     } catch (Exception e) {
       log.error("Cannot update agent server");
     }

@@ -1,10 +1,9 @@
-import { LOGIN, LOGOUT, REGISTER, CHECK_AUTH } from '../constants/action.type'
-import { SET_AUTH, SET_ERROR, PURGE_AUTH } from '../constants/mutation.type'
+import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH} from '../constants/action.type'
+import {SET_AUTH, SET_TOKEN, SET_ERROR, PURGE_AUTH} from '../constants/mutation.type'
 
 import JwtService from '../api/jwt.service'
 import ApiService from '../api/api.service'
 import {UserService} from '../api/users.service'
-
 
 const state = {
   errors: null,
@@ -21,21 +20,22 @@ const getters = {
   }
 }
 
-const actions =  {
+const actions = {
   [LOGIN] (context, {email, password}) {
-    console.log('authModule', email, password);
 
     return new Promise((resolve, reject) => {
       UserService
         .login({email, password})
         .then(({data}) => {
-          console.log('success', data);
-          context.commit(SET_AUTH, data.user)
+          context.commit(SET_TOKEN, data)
           resolve(data)
         })
         .catch(({response}) => {
-          console.log('error', response);
-          context.commit(SET_ERROR, response.data.errors)
+          context.commit(PURGE_AUTH)
+
+          // if (response === void(0)) {
+          //   context.commit(SET_ERROR, response.data.errors)
+          // }
         })
     })
   },
@@ -47,11 +47,11 @@ const actions =  {
       UserService
         .register(email)
         .then(({data}) => {
-          context.commit(SET_AUTH, data.user)
+          context.commit(SET_TOKEN, data)
           resolve(data)
         })
         .catch(({response}) => {
-          context.commit(SET_ERROR, response.data.errors)
+            context.commit(SET_ERROR, response.data.errors)
         })
     })
   },
@@ -59,9 +59,9 @@ const actions =  {
     if (JwtService.getToken()) {
       ApiService.setHeader()
       UserService
-        .getUser()
+        .fetchUser()
         .then(({data}) => {
-          context.commit(SET_AUTH, data.user)
+          context.commit(SET_AUTH, data)
         })
         .catch(({response}) => {
           context.commit(SET_ERROR, response.data.errors)
@@ -76,13 +76,20 @@ const mutations = {
   [SET_ERROR] (state, error) {
     state.errors = error
   },
+  [SET_TOKEN] (state, token) {
+    console.log('state set token')
+    state.errors = {}
+    JwtService.saveToken(token.access_token)
+  },
   [SET_AUTH] (state, user) {
+    console.log('state set auth')
+
     state.isAuthenticated = true
     state.user = user
     state.errors = {}
-    JwtService.saveToken(state.user.token)
   },
   [PURGE_AUTH] (state) {
+    console.log('remove token')
     state.isAuthenticated = false
     state.user = {}
     state.errors = {}

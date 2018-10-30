@@ -6,7 +6,7 @@ public interface IAgentServerDao {
   
   String insertIAgentServer(IAgentServer server);
   
-  void updateIAgentServer(IAgentServer server);
+  void updateIAgentServer(String id, IAgentServer server);
   
   IAgentServer findIAgentServerById(String id);
   

@@ -13,11 +13,11 @@ public class ChatFrontEndSettingRowMapper implements RowMapper<ChatFrontEndSetti
   @Nullable
   @Override
   public ChatFrontEndSetting mapRow(ResultSet rs, int rowNum) throws SQLException {
-    ChatFrontEndSetting setting = new ChatFrontEndSetting();
-    setting.setIAgentServerId(rs.getString("iagent_server_id"));
-    setting.setCloudId(rs.getString("cloud_id"));
-    setting.setUrlPath(rs.getString("url_path"));
-    return setting;
+    return ChatFrontEndSetting.builder()
+        .iAgentServerId(rs.getString("iagent_server_id"))
+        .cloudId(rs.getString("cloud_id"))
+        .urlPath(rs.getString("url_path"))
+        .build();
   }
 
 }

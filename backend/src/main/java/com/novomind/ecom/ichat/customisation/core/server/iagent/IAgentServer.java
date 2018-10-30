@@ -3,11 +3,19 @@ package com.novomind.ecom.ichat.customisation.core.server.iagent;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @SuppressWarnings("serial")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class IAgentServer implements Serializable{
   
   private String id;
@@ -19,6 +27,24 @@ public class IAgentServer implements Serializable{
   private String clientId;
   private String secret;
   
-  public IAgentServer () {}
+  public static IAgentServer of(IAgentServerCreateDTO dto) {
+    return IAgentServer.builder()
+        .address(dto.getAddress())
+        .userAPI(dto.getUserAPI())
+        .password(dto.getPassword())
+        .clientId(dto.getClientId())
+        .secret(dto.getSecret())
+        .build();
+  }
+  
+  public static IAgentServer of(IAgentServerUpdateDTO dto) {
+    return IAgentServer.builder()
+        .address(dto.getAddress())
+        .userAPI(dto.getUserAPI())
+        .password(dto.getPassword())
+        .clientId(dto.getClientId())
+        .secret(dto.getSecret())
+        .build();
+  }
   
 }

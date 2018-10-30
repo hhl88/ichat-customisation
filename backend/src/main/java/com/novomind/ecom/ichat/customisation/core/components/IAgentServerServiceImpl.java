@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IAgentServerDao;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IAgentServerService;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 
 @Service
 public class IAgentServerServiceImpl implements IAgentServerService {
@@ -17,17 +19,19 @@ public class IAgentServerServiceImpl implements IAgentServerService {
   PasswordEncoder passwordEncoder;
   
   @Override
-  public String addNewIAgentServer(IAgentServer server) {
-    String id = serverDao.findIdByInfo(server);
+  public String addNewIAgentServer(IAgentServerCreateDTO dto) {
+   IAgentServer iAgentServer = IAgentServer.of(dto);
+     iAgentServer.setPassword(passwordEncoder.encode(iAgentServer.getPassword()));
+    String id = serverDao.findIdByInfo(iAgentServer);
     if(id == null) {
-      return serverDao.insertIAgentServer(server);
+      return serverDao.insertIAgentServer(iAgentServer);
     }
     return id; 
   }
 
   @Override
-  public void updateInfo(IAgentServer server) {
-    serverDao.updateIAgentServer(server);
+  public void updateInfo(String id, IAgentServerUpdateDTO dto) {
+    serverDao.updateIAgentServer(id, IAgentServer.of(dto));
   }
 
   @Override

@@ -17,11 +17,11 @@ public class ChatFrontEndSettingDaoImpl extends BaseDao implements ChatFrontEndS
   Logger log = LoggerFactory.getLogger(ChatFrontEndSettingDao.class);
 
   @Override
-  public String insertNewSetting(ChatFrontEnd chatFrontEnd, ChatFrontEndSetting setting) {
+  public String insertNewSetting(String chatFrontEndId, ChatFrontEndSetting setting) {
     String query = "INSERT INTO ichat_ui_setting(ichat_ui_id, iagent_server_id, cloud_id, url_path, demand_info_id) "
         + " VALUES(?, ?, ?, ?, ?)";
     try {
-      long id = getJdbcTemplate().update(query, chatFrontEnd.getId(), setting.getIAgentServerId(), setting.getCloudId(),
+      long id = getJdbcTemplate().update(query, chatFrontEndId, setting.getIAgentServerId(), setting.getCloudId(),
           setting.getUrlPath(), setting.getDemandInfoId());
       return String.valueOf(id);
     } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,24 +9,29 @@ import org.springframework.stereotype.Service;
 import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.chat.setting.ChatFrontEndSetting;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndSettingDao;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.DemandInfoDao;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IAgentServerDao;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndManagementService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndSettingService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.DemandInfoService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.IAgentServerService;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndSettingCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndUpdateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 
 @Service
 public class ChatFrontEndSettingServiceImpl implements ChatFrontEndSettingService {
 
   @Autowired
-  IAgentServerDao serverDao;
+  IAgentServerService iAgentServerService;
 
   @Autowired
-  ChatFrontEndDao chatFrontEndDao;
-  
+  ChatFrontEndManagementService chatFrontEndService;
+
   @Autowired
-  DemandInfoDao demandInfoDao;
+  DemandInfoService demandInfoService;
 
   @Autowired
   ChatFrontEndSettingDao settingDao;
@@ -35,51 +41,53 @@ public class ChatFrontEndSettingServiceImpl implements ChatFrontEndSettingServic
     return settingDao.findSettingByInfoChatFrontEndId(chatFrontEndId);
   }
 
-//  @Override
-//  public String addNewSetting(IAgentServer server, ChatFrontEnd chatFrontEnd, String urlPath) {
-//    String serverId = serverDao.insertIAgentServer(server);
-//    String chatFrontEndId = chatFrontEndDao.insertChatFrontEnd(chatFrontEnd);
-//    ChatFrontEndSetting setting = new ChatFrontEndSetting();
-//    setting.setChatFrontEndId(chatFrontEndId);
-//    setting.setIAgentServerId(serverId);
-//    setting.setUrlPath(urlPath);
-//
-//    return settingDao.insertNewSetting(setting);
-//  }
-//
-//  @Override
-//  public String addNewSetting(String cloud, ChatFrontEnd chatFrontEnd, String urlPath) {
-//    // TODO Auto-generated method stub
-//    return null;
-//  }
-
   @Override
-  public void updateSetting(ChatFrontEndSetting setting, IAgentServer server, ChatFrontEnd chatFrontEnd,
-      String urlPath) {
-
-    String newServerId = serverDao.insertIAgentServer(server);
-
-    chatFrontEndDao.updateChatFrontEnd(chatFrontEnd);
-
-    String oldNewServerId = setting.getIAgentServerId();
-
-    if (newServerId.compareTo(oldNewServerId) != 0) {
+  public String addNewSetting(IChatUser user, FrontEndSettingCreateDTO dto) {
+    String chatFrontEndId = chatFrontEndService.insertChatFrontEnd(user, dto.getFrontEndCreateDTO());
+    List<DemandInfo> demandInfo = new ArrayList<>();
+    String iAgentServerId = null;
+    String cloudId = null;
+    String demandInfoId = null;
+    if (dto.getIAgentServerCreateDTO() != null)
+      iAgentServerId = iAgentServerService.addNewIAgentServer(dto.getIAgentServerCreateDTO());
+    if (dto.getDemandInfoCreateDTO() != null) {
+      dto.getDemandInfoCreateDTO().stream()
+          .forEach(demandInfoCreateDTO -> demandInfo.add(DemandInfo.of(demandInfoCreateDTO)));
+      demandInfoId = demandInfoService.addDemandInFo(demandInfo);
 
     }
+
+    ChatFrontEndSetting setting = ChatFrontEndSetting.builder().iAgentServerId(iAgentServerId).cloudId(cloudId)
+        .urlPath(dto.getUrlPath()).demandInfoId(demandInfoId).build();
+
+    return settingDao.insertNewSetting(chatFrontEndId, setting);
+  }
+
+  @Override
+  public void updateSetting(FrontEndUpdateDTO dto) {
+    // TODO Auto-generated method stub
 
   }
 
   @Override
-  public String addNewSetting(ChatFrontEnd chatFrontEnd, IAgentServer server, String urlPath,
-      List<DemandInfo> demandInfoList) {
-    String serverId = serverDao.insertIAgentServer(server);
-    ChatFrontEndSetting setting = new ChatFrontEndSetting();
-    setting.setIAgentServerId(serverId);
-    setting.setUrlPath(urlPath);
-    String demandInfoId = demandInfoDao.insertDemandInfoList(demandInfoList);
-    setting.setDemandInfoId(demandInfoId);
+  public void updateIAgentServer(IAgentServer server, IAgentServerUpdateDTO dto) {
+    iAgentServerService.updateInfo(server.getId(), dto);
+  }
 
-    return settingDao.insertNewSetting(chatFrontEnd, setting);
+  @Override
+  public void updateCloud(String id, CloudCreateDTO dto) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void updateFrontEnd(ChatFrontEnd chatFrontEnd, FrontEndUpdateDTO dto) {
+    chatFrontEndService.updateInfo(chatFrontEnd.getId(), dto);
+  }
+
+  @Override
+  public void updateDemandInfo(String id, List<DemandInfo> demandInfo) {
+    demandInfoService.updateDemandInfo(id, demandInfo);
   }
 
 }

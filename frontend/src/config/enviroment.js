@@ -4,8 +4,7 @@ export const SERVER_URL = serverUrl
 export const API_URL = serverUrl + '/api/v1'
 export const ICHAT_PATH = '/ichat'
 
-export const AUTH_PATH =  '/auth'
-export const LOGIN_PATH =  AUTH_PATH + '/me'
+export const AUTH_PATH =  API_URL + '/auth/me'
 export const TOKEN_PATH = '/oauth/token'
 
 export const USERS_PATH = API_URL + '/users'

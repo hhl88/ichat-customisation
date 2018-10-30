@@ -5,7 +5,7 @@ import com.novomind.ecom.ichat.customisation.core.chat.setting.ChatFrontEndSetti
 
 public interface ChatFrontEndSettingDao {
     
-  String insertNewSetting(ChatFrontEnd chatFrontEnd, ChatFrontEndSetting setting);
+  String insertNewSetting(String chatFrontEndid, ChatFrontEndSetting setting);
   
   void updateSetting(ChatFrontEnd chatFrontEnd, ChatFrontEndSetting setting);
   

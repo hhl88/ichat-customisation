@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChatLayoutCreateDTO {
 
-
   @ApiModelProperty(required = true)
   @NotNull
   private String userId;

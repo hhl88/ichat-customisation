@@ -6,10 +6,11 @@ import App from './App'
 import router from './router'
 
 import store from './services'
-import { CHECK_AUTH } from './constants/action.type'
 import AuthService from './api/api.service'
+import {CHECK_AUTH} from './constants/action.type'
+import interceptorsSetup from './helpers/httpInterceptor'
 
-Vue.use(BootstrapVue);
+Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -18,15 +19,43 @@ AuthService.init()
 
 router.beforeEach(
   (to, from, next) => {
-    return Promise
-      .all([store.dispatch(CHECK_AUTH)])
-      .then(next)
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      Promise
+        .all([
+          store.dispatch(CHECK_AUTH).finally(() => {
+            if (!store.getters.isAuthenticated) {
+              console.log('not authenticated', store)
+
+              next('/login')
+            } else {
+              console.log('authenticated', store)
+
+              return next()
+            }
+          })
+        ])
+        // .then(next)
+
+      // Promise.all()store.dispatch(CHECK_AUTH).finally(() => {
+      //   if (!store.getters.isAuthenticated) {
+      //     next('/login')
+      //   } else {
+      //     return next()
+      //   }
+      // })
+
+    } else {
+      return next()
+    }
   }
 )
+
+interceptorsSetup()
+
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app')
 
 

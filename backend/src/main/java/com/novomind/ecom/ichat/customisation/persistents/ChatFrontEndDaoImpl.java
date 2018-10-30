@@ -1,6 +1,7 @@
 package com.novomind.ecom.ichat.customisation.persistents;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +31,15 @@ public class ChatFrontEndDaoImpl extends BaseDao implements ChatFrontEndDao {
   }
 
   @Override
-  public void updateChatFrontEnd(ChatFrontEnd chatFrontEnd) {
+  public void updateChatFrontEnd(String id, ChatFrontEnd chatFrontEnd) {
     String query = "UPDATE ichat_ui " + " SET name = ?, connection_type = ? " + " WHERE id = ?";
-    getJdbcTemplate().update(query, chatFrontEnd.getName(), chatFrontEnd.getConnectionType(), chatFrontEnd.getId());
+    getJdbcTemplate().update(query, chatFrontEnd.getName(), chatFrontEnd.getConnectionType(), id);
   }
 
   @Override
-  public ChatFrontEnd findChatFrontEndById(String id) {
+  public Optional<ChatFrontEnd> findChatFrontEndById(String id) {
     String query = "SELECT * FROM ichat_ui WHERE id = ?";
-    return DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), id));
+    return Optional.ofNullable(DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), id)));
   }
 
   @Override

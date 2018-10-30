@@ -33,7 +33,7 @@
       <button class="">Abrechen</button>
       <button @click="changeStep(0)" v-if="step === 1">Zurück</button>
       <button @click="changeStep(1)" v-if="step === 0">Weiter</button>
-      <button>Speichern</button>
+      <button @click.prevent="saveSetting">Speichern</button>
     </div>
   </div>
 </template>
@@ -60,16 +60,20 @@
       }
     },
     methods: {
-      getServer: function (server) {
-        console.log('server', server)
+      getServer (server) {
         this.server = server
       },
-      getDemandInfo: function (demandInfoList) {
+      getDemandInfo (demandInfoList) {
         console.log('demand info', demandInfoList)
         this.demandInfoList = demandInfoList
       },
       changeStep (step) {
         this.step = step
+      },
+      saveSetting() {
+        console.log('save setting', this.server)
+        // this.$store
+        //   .dispatch(LOGIN, {email, password})      }
       }
 
     }

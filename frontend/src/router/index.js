@@ -11,14 +11,20 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/ichat/:view?', component: IChatConfiguration, alias: '/ichat/',
+      path: '/ichat/:view?', component: IChatConfiguration,
+      name: 'ichat',
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '',
+      name:'registration',
       component: Registration
     },
     {
       path: '/login',
+      name:'login',
       component: Login
     },
   ]

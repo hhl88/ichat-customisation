@@ -8,12 +8,12 @@ import {
 
 export const IChatService = {
 
-  createFrontEnd (params) {
-    return ApiService.post(ICHAT_FRONTEND_API, params)
+  createFrontEnd (chatFrontEnd) {
+    return ApiService.post(ICHAT_FRONTEND_API, chatFrontEnd, null)
   },
 
-  createLayout (params) {
-    return ApiService.post(ICHAT_LAYOUT_API, params)
+  createLayout (layout) {
+    return ApiService.post(ICHAT_LAYOUT_API, layout, null)
   },
 
   updateFrontEnd (id, params) {
