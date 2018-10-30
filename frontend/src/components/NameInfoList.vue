@@ -5,6 +5,7 @@
         v-for="(nameInfo, index) in nameInfoList"
         :nameInfo="nameInfo"
         :key="nameInfo.name + index"
+        :id ="nameDefault + index"
         @click.native="onSelect(nameInfo)"
       />
     </div>
@@ -24,6 +25,10 @@
       nameInfoList: {
         type: Array,
         default: () => []
+      },
+      nameDefault: {
+        type: String,
+        default: ''
       }
     },
     data () {
@@ -43,9 +48,5 @@
 </script>
 
 <style scoped>
-  .demand-preview:hover {
-    cursor: pointer;
-    background-color: darkorange;
-    color: white;
-  }
+
 </style>

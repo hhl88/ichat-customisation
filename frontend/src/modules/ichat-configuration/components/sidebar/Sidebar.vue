@@ -9,24 +9,24 @@
           Layout
         </div>
         <div class="col-2 px-0 text-center">
-          <button type="button" class="add-button" @click="addFrontEnd">
+          <button type="button" class="add-button" @click="addItem(0)">
             +
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatLayoutList"/>
+      <NameInfoList :name-info-list="chatLayoutList" :name-default="'layout'"/>
 
       <div class="chat-frontend list-header row mx-0 vertical-align">
         <div class="header col-10" @click="onSelectFrontend">
           Chat-Frontends
         </div>
         <div class="col-2 px-0 text-center">
-          <button class="add-button" @click="addFrontEnd">
+          <button class="add-button" @click="addItem(1)">
             +
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatFrontEndList"/>
+      <NameInfoList :name-info-list="chatFrontEndList" :name-default="'frontEnd'"/>
 
 
       <div class="chat-layout list-header">
@@ -64,14 +64,18 @@
         console.log('changeview')
         this.$emit('changeView', 'frontend')
       },
-      addFrontEnd () {
-        console.log('chatFrontend', this.chatFrontEndList, this.chatFrontEndList == null, typeof this.chatFrontEndList === 'undefined');
-        console.log('chatFrontend', this.chatFrontEndList);
-
-        if (this.chatFrontEndList == null) {
-          this.chatFrontEndList = []
+      addItem (choose) {
+        if(choose === 0){
+          if (this.chatLayoutList == null) {
+            this.chatLayoutList = []
+          }
+          this.chatLayoutList.push({id: null, name: 'Layout'})
+        } else if (choose === 1) {
+          if (this.chatFrontEndList == null) {
+            this.chatFrontEndList = []
+          }
+          this.chatFrontEndList.push({id: null, name: 'FrontEnd'})
         }
-        this.chatFrontEndList.push({id: null, name: 'FrontEnd'})
       },
       onChangeView (type, index) {
       }
