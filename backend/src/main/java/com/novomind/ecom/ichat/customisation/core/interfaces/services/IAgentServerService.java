@@ -4,14 +4,14 @@ import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 
+import java.util.Optional;
+
 public interface IAgentServerService {
+
+  String addNewIAgentServer(IAgentServer iAgentServer);
   
-  String addNewIAgentServer(IAgentServerCreateDTO dto);
+  void updateInfo(IAgentServer server);
   
-  void updateInfo(String id, IAgentServerUpdateDTO server);
-  
-  IAgentServer findIAgentServerById(String id);
-  
-  String findServerIdByInfo(IAgentServer server);
-  
+  Optional<IAgentServer> findIAgentServerById(String id);
+
 }

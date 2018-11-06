@@ -6,7 +6,7 @@ debug: false
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
+    url: ${DB_URL:jdbc:mysql://localhost:3308/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${DB_USER:user}
     password: ${DB_USER:example}
     driver-class-name: com.mysql.cj.jdbc.Driver

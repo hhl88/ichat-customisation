@@ -1,5 +1,6 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.font;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -7,11 +8,12 @@ import javax.validation.constraints.NotNull;
 import  com.novomind.ecom.ichat.customisation.domain.datatypes.FontStyle;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FontCreateDTO {
   
   @ApiModelProperty(required = true)
@@ -22,5 +24,5 @@ public class FontCreateDTO {
   @NotNull
   private int fontSize;
   
-  private Set<FontStyle> fontStyles;
+  private List<FontStyle> fontStyles;
 }

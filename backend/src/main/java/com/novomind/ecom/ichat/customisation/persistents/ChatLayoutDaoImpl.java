@@ -1,7 +1,9 @@
 package com.novomind.ecom.ichat.customisation.persistents;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Font;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -13,58 +15,61 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatLayoutDao;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatLayoutRowMapper;
 
+import static com.novomind.ecom.ichat.customisation.constants.Constants.CHAT_LAYOUT_TABLE;
+import static com.novomind.ecom.ichat.customisation.constants.Constants.DEMAND_INFO_TABLE;
+
 @Repository
-public class ChatLayoutDaoImpl extends BaseDao implements ChatLayoutDao{
-  
-  Logger log = LoggerFactory.getLogger(ChatLayoutDao.class);
-  
-  @Override
-  public String insertChatLayout(IChatUser user, ChatLayout chatLayout) {
-    String query = "INSERT INTO chat_layout ( "
-        + " user_id, name, display_type, text_input_type, "
-        + " buton_type, logo, background_img, background_type, "
-        + " font_family, font_size, font_styles) "
-        + " VALUES ( "
-        + " ?, ?, ?, ?, "
-        + " ?, ?, ?, ?, "
-        + " ?, ?, ?)";
-    try {
-      long id = getJdbcTemplate()
-          .update(query, 
-                      user.getId(), chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(), 
-                      chatLayout.getButtonType(), chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
-                      chatLayout.getFontFamily(), chatLayout.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(chatLayout.getFontStyles())));
-      return String.valueOf(id);
-    } catch (Exception e) {
-      logger.error("Cannot add new Chat Layout");
+public class ChatLayoutDaoImpl extends BaseDao implements ChatLayoutDao {
+
+    @Override
+    public String insertChatLayout(ChatLayout chatLayout) {
+        String generatedId = generateStringIdForTable(CHAT_LAYOUT_TABLE, 10);
+        Font font = chatLayout.getFont();
+        String query = "INSERT INTO " + CHAT_LAYOUT_TABLE + " ( "
+                + " id, user_id, name, display_type, text_input_type, "
+                + " button_type, logo, background_img, background_type, "
+                + " font_family, font_size, font_styles) "
+                + " VALUES ( "
+                + " ?, ?, ?, ?, ?, "
+                + " ?, ?, ?, ?, "
+                + " ?, ?, ?)";
+        getJdbcTemplate()
+                .update(query,
+                        generatedId, chatLayout.getUserId(), chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(),
+                        chatLayout.getButtonType(), chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
+                        font.getFontFamily(), font.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(font.getFontStyles())));
+        return generatedId;
+
     }
-    return null;
-  }
 
-  @Override
-  public void updateChatLayout(ChatLayout chatLayout) {
-    String query = "UPDATE chat_layout SET "
-        + " name = ?,  display_type = ?, text_input_type = ?, buton_type = ?, " 
-        + " logo = ?, background_img = ?, background_type = ?, " 
-        + " font_family = ?, font_size = ?, font_styles = ? "
-        + " WHERE id = ?";
-    getJdbcTemplate() .update(query,
-        chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(), chatLayout.getButtonType(),
-        chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
-        chatLayout.getFontFamily(), chatLayout.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(chatLayout.getFontStyles())),
-        chatLayout.getId());
-  }
+    @Override
+    public void updateChatLayout(ChatLayout chatLayout) {
 
-  @Override
-  public ChatLayout findChatLayoutById(String id) {
-    String query = "Select * FROM chat_layout WHERE id = ?";
-    return DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatLayoutRowMapper(), id));
-  }
+        String query = "UPDATE " + CHAT_LAYOUT_TABLE + " SET "
+                + " name = ?,  display_type = ?, text_input_type = ?, button_type = ?, "
+                + " logo = ?, background_img = ?, background_type = ?, "
+                + " font_family = ?, font_size = ?, font_styles = ? "
+                + " WHERE id = ?";
+        Font font = chatLayout.getFont();
 
-  @Override
-  public List<ChatLayout> findChatLayoutByUserId(String userId) {
-    String query = "Select * FROM chat_layout WHERE user_id = ?";
-    return getJdbcTemplate().query(query, new ChatLayoutRowMapper(), userId);
-  }
+        getJdbcTemplate().update(query,
+                chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(), chatLayout.getButtonType(),
+                chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
+                font.getFontFamily(), font.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(font.getFontStyles())),
+                chatLayout.getId());
+    }
+
+    @Override
+    public Optional<ChatLayout> findChatLayoutById(String id) {
+        String query = "Select * FROM " + CHAT_LAYOUT_TABLE + " WHERE id = ?";
+        return Optional.ofNullable(DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatLayoutRowMapper(), id)));
+    }
+
+    @Override
+    public List<ChatLayout> findChatLayoutByUserId(String userId) {
+        String query = "Select * FROM " + CHAT_LAYOUT_TABLE + " WHERE user_id = ?";
+        return getJdbcTemplate().query(query, new ChatLayoutRowMapper(), userId);
+    }
+
 
 }

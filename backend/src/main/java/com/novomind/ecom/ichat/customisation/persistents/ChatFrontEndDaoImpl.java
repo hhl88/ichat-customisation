@@ -3,6 +3,7 @@ package com.novomind.ecom.ichat.customisation.persistents;
 import java.util.List;
 import java.util.Optional;
 
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
@@ -13,38 +14,61 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatFrontEndRowMapper;
 
+import static com.novomind.ecom.ichat.customisation.constants.Constants.CHAT_LAYOUT_TABLE;
+import static com.novomind.ecom.ichat.customisation.constants.Constants.CHOOSE_CHAT_UI_TABLE;
+import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_UI_TABLE;
+
 @Repository
 public class ChatFrontEndDaoImpl extends BaseDao implements ChatFrontEndDao {
+    Logger log = LoggerFactory.getLogger(getClass());
 
-  Logger log = LoggerFactory.getLogger(ChatFrontEndDao.class);
+    @Override
+    public String insertChatFrontEnd(ChatFrontEnd chatFrontEnd) {
+        String generatedId = generateStringIdForTable(ICHAT_UI_TABLE, 10);
 
-  @Override
-  public String insertChatFrontEnd(IChatUser user, ChatFrontEnd chatFrontEnd) {
-    String query = "INSERT INTO ichat_ui(user_id, name, connection_type) VALUES(?, ?, ?)";
-    try {
-      long id = getJdbcTemplate().update(query, user.getId(), chatFrontEnd.getName(), chatFrontEnd.getConnectionType());
-      return String.valueOf(id);
-    } catch (Exception e) {
-      log.error("Cannot add new chat_font_end");
+        String query = "INSERT INTO " +
+                ICHAT_UI_TABLE +
+                "           (id, user_id, name, iagent_server_id, " +
+                "           cloud_id, url_path, demand_info_id,connection_type " +
+                "           ) " +
+                " VALUES " +
+                "       (" +
+                "         ?, ?, ?, ?," +
+                "         ?, ?, ?, ?" +
+                "       )";
+        logger.info(chatFrontEnd);
+        getJdbcTemplate().update(query,
+                generatedId, chatFrontEnd.getUserId(), chatFrontEnd.getName(), chatFrontEnd.getIAgentServerId(),
+                chatFrontEnd.getCloudId(), chatFrontEnd.getUrlPath(), chatFrontEnd.getDemandInfoId(),
+                chatFrontEnd.getConnectionType().toString());
+        return generatedId;
+
     }
-    return null;
-  }
 
-  @Override
-  public void updateChatFrontEnd(String id, ChatFrontEnd chatFrontEnd) {
-    String query = "UPDATE ichat_ui " + " SET name = ?, connection_type = ? " + " WHERE id = ?";
-    getJdbcTemplate().update(query, chatFrontEnd.getName(), chatFrontEnd.getConnectionType(), id);
-  }
+    @Override
+    public void updateChatFrontEnd(ChatFrontEnd chatFrontEnd) {
+        log.info("update " + chatFrontEnd);
+        String query = "UPDATE " + ICHAT_UI_TABLE +
+                "       SET name = ?, url_path = ?,  connection_type = ?, " +
+                "           cloud_id = ?, iagent_server_id = ?, demand_info_id = ?" +
+                "       WHERE id = ?";
+        getJdbcTemplate().update(query,
+                chatFrontEnd.getName(), chatFrontEnd.getUrlPath(), chatFrontEnd.getConnectionType().toString(),
+                chatFrontEnd.getCloudId(), chatFrontEnd.getIAgentServerId(), chatFrontEnd.getDemandInfoId(),
+                chatFrontEnd.getId());
+    }
 
-  @Override
-  public Optional<ChatFrontEnd> findChatFrontEndById(String id) {
-    String query = "SELECT * FROM ichat_ui WHERE id = ?";
-    return Optional.ofNullable(DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), id)));
-  }
+    @Override
+    public Optional<ChatFrontEnd> findChatFrontEndById(String id) {
+        String query = "SELECT * FROM " + ICHAT_UI_TABLE + " WHERE id = ?";
+        return Optional.ofNullable(DataAccessUtils.singleResult(getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), id)));
+    }
 
-  @Override
-  public List<ChatFrontEnd> findChatFrontEndByUserId(String userId) {
-    String query = "SELECT * FROM ichat_ui WHERE user_id = ?";
-    return getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), userId);  }
+    @Override
+    public List<ChatFrontEnd> findChatFrontEndByUserId(String userId) {
+        String query = "SELECT * FROM " + ICHAT_UI_TABLE + " WHERE user_id = ?";
+        return getJdbcTemplate().query(query, new ChatFrontEndRowMapper(), userId);
+    }
+
 
 }

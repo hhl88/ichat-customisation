@@ -9,48 +9,41 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IAgentServerDao
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
 import com.novomind.ecom.ichat.customisation.persistents.mappers.IAgentServerRowMapper;
 
+import java.sql.SQLException;
+import java.util.Optional;
+
+import static com.novomind.ecom.ichat.customisation.constants.Constants.IAGENT_SERVER_TABLE;
+import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_USER_TABLE;
+
 @Repository
 public class IAgentServerDaoImpl extends BaseDao implements IAgentServerDao {
-  Logger log = LoggerFactory.getLogger(IAgentServerDao.class);
 
-  @Override
-  public String insertIAgentServer(IAgentServer server) {
-    String query = "INSERT INTO " + " iagent_server(address, user_api, password, client_id, secret) "
-        + " VALUES(?, ?, ?, ?, ?)";
-    try {
-      return String.valueOf(getJdbcTemplate().update(query, server.getAddress(), server.getUserAPI(),
-          server.getPassword(), server.getClientId(), server.getSecret()));
-    } catch (Exception e) {
-      log.error("Cannot insert new agent server");
+    @Override
+    public String insertIAgentServer(IAgentServer server) {
+        String generatedId = generateStringIdForTable(IAGENT_SERVER_TABLE, 10);
+
+        String query = "INSERT INTO " + IAGENT_SERVER_TABLE +
+                " (id, address, user_api, password, client_id, secret) " +
+                " VALUES(?, ?, ?, ?, ?, ?)";
+        getJdbcTemplate().update(query, generatedId, server.getAddress(), server.getUserAPI(),
+                server.getPassword(), server.getClientId(), server.getSecret());
+        return generatedId;
     }
-    return null;
-  }
 
-  @Override
-  public void updateIAgentServer(String id, IAgentServer server) {
-    String query = "UPDATE iagent_server SET " + " address = ?, user_api = ?, password = ?, "
-        + " client_id = ?, secret = ?" + " WHERE id = ?";
-    try {
-      getJdbcTemplate().update(query, server.getAddress(), server.getUserAPI(), server.getPassword(),
-          server.getClientId(), server.getSecret(), id);
-    } catch (Exception e) {
-      log.error("Cannot update agent server");
+    @Override
+    public void updateIAgentServer(IAgentServer server) {
+        String query = "UPDATE " + IAGENT_SERVER_TABLE + " SET " +
+                " address = ?, user_api = ?, password = ?, " +
+                " client_id = ?, secret = ?" + " WHERE id = ?";
+        getJdbcTemplate().update(query, server.getAddress(), server.getUserAPI(), server.getPassword(),
+                server.getClientId(), server.getSecret(), server.getId());
+
     }
-  }
 
-  @Override
-  public IAgentServer findIAgentServerById(String id) {
-    String query = "Select * FROM iagent_server WHERE id = ?";
-    return DataAccessUtils.singleResult(getJdbcTemplate().query(query, new IAgentServerRowMapper(), id));
-  }
-
-  @Override
-  public String findIdByInfo(IAgentServer server) {
-    String query = "Select id FROM iagent_server " + " WHERE " + "       address LIKE ? AND "
-        + "       user_api LIKE ? AND " + "       client_id LIKE ? AND " + "       secret LIKE ?";
-    return getJdbcTemplate().queryForObject(query,
-        new Object[] { server.getAddress(), server.getUserAPI(), server.getClientId(), server.getSecret() },
-        String.class);
-  }
+    @Override
+    public Optional<IAgentServer> findIAgentServerById(String id) {
+        String query = "Select * FROM iagent_server WHERE id = ?";
+        return Optional.ofNullable(DataAccessUtils.singleResult(getJdbcTemplate().query(query, new IAgentServerRowMapper(), id)));
+    }
 
 }

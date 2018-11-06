@@ -1,10 +1,12 @@
 package com.novomind.ecom.ichat.customisation.exceptions;
 
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@Value
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED, code = HttpStatus.UNAUTHORIZED)
-public class NoPermissionException extends RuntimeException {
+public class NoPermissionException extends Exception {
   
     public NoPermissionException() {
         super();

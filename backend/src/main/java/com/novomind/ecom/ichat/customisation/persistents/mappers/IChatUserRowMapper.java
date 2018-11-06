@@ -16,7 +16,7 @@ public class IChatUserRowMapper implements RowMapper<IChatUser> {
   public IChatUser mapRow(ResultSet rs, int rowNum) throws SQLException {
     return IChatUser
             .builder()
-            .id(String.valueOf(rs.getLong("id")))
+            .id(rs.getString("id"))
             .email(rs.getString("email"))
             .password(rs.getString("password"))
             .build();

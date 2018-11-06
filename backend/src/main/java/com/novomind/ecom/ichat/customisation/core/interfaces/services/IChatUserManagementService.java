@@ -3,6 +3,7 @@ package com.novomind.ecom.ichat.customisation.core.interfaces.services;
 import java.util.Optional;
 
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
 
 public interface IChatUserManagementService {
 
@@ -14,7 +15,7 @@ public interface IChatUserManagementService {
   
   Optional<IChatUser> findIChatUserByEmail(String email);
 
-  String findIdByEmail(String email);
+  String findIdByEmail(String email) throws UserNotFoundException;
 
   boolean isEmailAvailable(String email);
   

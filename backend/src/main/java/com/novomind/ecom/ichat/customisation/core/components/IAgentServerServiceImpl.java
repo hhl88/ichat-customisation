@@ -10,38 +10,33 @@ import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 
+import java.util.Optional;
+
 @Service
 public class IAgentServerServiceImpl implements IAgentServerService {
-  @Autowired
-  IAgentServerDao serverDao;
-  
-  @Autowired
-  PasswordEncoder passwordEncoder;
-  
-  @Override
-  public String addNewIAgentServer(IAgentServerCreateDTO dto) {
-   IAgentServer iAgentServer = IAgentServer.of(dto);
-     iAgentServer.setPassword(passwordEncoder.encode(iAgentServer.getPassword()));
-    String id = serverDao.findIdByInfo(iAgentServer);
-    if(id == null) {
-      return serverDao.insertIAgentServer(iAgentServer);
+    @Autowired
+    IAgentServerDao serverDao;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Override
+    public String addNewIAgentServer(IAgentServer iAgentServer) {
+        iAgentServer.setPassword(passwordEncoder.encode(iAgentServer.getPassword()));
+        return serverDao.insertIAgentServer(iAgentServer);
     }
-    return id; 
-  }
 
-  @Override
-  public void updateInfo(String id, IAgentServerUpdateDTO dto) {
-    serverDao.updateIAgentServer(id, IAgentServer.of(dto));
-  }
+    @Override
+    public void updateInfo(IAgentServer iAgentServer) {
+        if(iAgentServer.getPassword() != null)
+            iAgentServer.setPassword(passwordEncoder.encode(iAgentServer.getPassword()));
+        serverDao.updateIAgentServer(iAgentServer);
+    }
 
-  @Override
-  public IAgentServer findIAgentServerById(String id) {
-    return serverDao.findIAgentServerById(id);
-  }
+    @Override
+    public Optional<IAgentServer> findIAgentServerById(String id) {
+        return serverDao.findIAgentServerById(id);
+    }
 
-  @Override
-  public String findServerIdByInfo(IAgentServer server) {
-    return serverDao.findIdByInfo(server);
-  }
 
 }

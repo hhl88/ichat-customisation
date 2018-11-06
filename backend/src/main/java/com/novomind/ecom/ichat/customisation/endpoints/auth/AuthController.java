@@ -1,7 +1,8 @@
-package com.novomind.ecom.ichat.customisation.endpoints;
+package com.novomind.ecom.ichat.customisation.endpoints.auth;
 
 import java.util.Map;
 
+import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
-import com.novomind.ecom.ichat.customisation.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,7 +25,7 @@ public class AuthController {
   IChatUserManagementService userManagementService;
   
   @GetMapping("/me")
-  public Map<String, Object> getCurrentUser( @AuthenticationPrincipal Authentication authentication) throws NotFoundException {
+  public Map<String, Object> getCurrentUser( @AuthenticationPrincipal Authentication authentication) throws UserNotFoundException {
     log.info("getCurrentUser  "+ authentication);
     OAuth2AuthenticationDetails oAuth2AuthenticationDetails  = (OAuth2AuthenticationDetails ) authentication.getDetails();
     Map<String, Object> o = (Map<String, Object>) oAuth2AuthenticationDetails.getDecodedDetails();

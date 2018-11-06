@@ -11,15 +11,15 @@ import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 @Service
 public class ChooseChatFrontEndServiceImpl implements ChooseChatFrontEndService {
 
-  @Autowired
-  ChooseChatFrontEndDao chooseChatFrontEndDao;
+    @Autowired
+    ChooseChatFrontEndDao chooseChatFrontEndDao;
 
-  @Override
-  public void choose(IChatUser user, ChatFrontEnd chatFrontEnd) {
-    if (chatFrontEnd.getId() == null)
-      chooseChatFrontEndDao.insert(user, chatFrontEnd);
-    else
-      chooseChatFrontEndDao.changeToAnother(user, chatFrontEnd);
-  }
+    @Override
+    public void choose(IChatUser user, ChatFrontEnd chatFrontEnd) {
+        if (chatFrontEnd.getId() == null)
+            chooseChatFrontEndDao.insert(user, chatFrontEnd);
+        else
+            chooseChatFrontEndDao.changeToAnother(user, chatFrontEnd);
+    }
 
 }

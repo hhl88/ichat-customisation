@@ -4,26 +4,44 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.FontStyle;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
 
-import lombok.Data;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontDTO;
+import lombok.*;
 
 @Data
+@Builder
 @SuppressWarnings("serial")
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChatLayout implements Serializable {
 
-  private String          id;
-  private String          name;
-  private String          displayType;
-  private String          textInputType;
-  private String          buttonType;
-  private String          logo;
-  private String          backgroundImg;
-  private String          backgroundType;
-  private String          fontFamily;
-  private int             fontSize;
-  private List<FontStyle> fontStyles;
-  
-  public ChatLayout() {}
+    private String id;
+    @JsonIgnore
+    private String userId;
+    private String name;
+    private LayoutDisplay displayType;
+    private TextAreaDisplay textInputType;
+    private ButtonDisplay buttonType;
+    private String logo;
+    private String backgroundImg;
+    private BackgroundDisplay backgroundType;
+    private Font font;
+
+
+    public static ChatLayout of(ChatLayoutCreateDTO dto) {
+        return ChatLayout.builder()
+                .name(dto.getName())
+                .displayType(dto.getLayoutDisplay())
+                .textInputType(dto.getTextAreaDisplay())
+                .buttonType(dto.getButtonDisplay())
+                .logo(dto.getLogoImage())
+                .backgroundImg(dto.getBackgroundImage())
+                .backgroundType(dto.getBackgroundDisplay())
+                .font(dto.getFont())
+                .build();
+    }
 
 }

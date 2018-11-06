@@ -7,13 +7,13 @@ import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 
 public interface ChatFrontEndDao {
+
+  String insertChatFrontEnd(ChatFrontEnd chatFrontEnd);
   
-  String insertChatFrontEnd(IChatUser user, ChatFrontEnd chatFrontEnd);
-  
-  void updateChatFrontEnd(String id, ChatFrontEnd chatFrontEnd);
+  void updateChatFrontEnd(ChatFrontEnd chatFrontEnd);
   
   Optional <ChatFrontEnd> findChatFrontEndById(String id);
-  
+
   List<ChatFrontEnd> findChatFrontEndByUserId(String userId);
-  
+
 }

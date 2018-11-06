@@ -19,18 +19,37 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 public class ChatFrontEnd implements Serializable {
 
-  private String id;
-  @JsonIgnore
-  private String userId;
-  private String name;
-  private Connection connectionType;
+    private String id;
+    @JsonIgnore
+    private String userId;
+    private String name;
 
-  public static ChatFrontEnd of(FrontEndCreateDTO dto) {
-    return ChatFrontEnd.builder().name(dto.getName()).connectionType(dto.getConnectionType()).build();
-  }
+    private String iAgentServerId;
 
-  public static ChatFrontEnd of(FrontEndUpdateDTO dto) {
-    return ChatFrontEnd.builder().name(dto.getName()).connectionType(dto.getConnectionType()).build();
-  }
+    private String cloudId;
+
+    private String urlPath;
+
+    private String demandInfoId;
+
+    private Connection connectionType;
+
+    public static ChatFrontEnd of(FrontEndCreateDTO dto) {
+
+        return ChatFrontEnd.builder()
+                .name(dto.getName())
+                .connectionType(dto.getConnectionType())
+                .urlPath(dto.getUrlPath())
+                .build();
+    }
+
+    public static ChatFrontEnd of(FrontEndUpdateDTO dto) {
+
+        return ChatFrontEnd.builder()
+                .name(dto.getName())
+                .connectionType(dto.getConnectionType())
+                .urlPath(dto.getUrlPath())
+                .build();
+    }
 
 }
