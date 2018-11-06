@@ -7,8 +7,8 @@ debug: false
 spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}
-    username: ${DB_USER:root}
-    password: ${DB_USER:test}
+    username: ${DB_USER:user}
+    password: ${DB_USER:example}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
@@ -16,9 +16,6 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  redis:
-    host: localhost
-    port: 6379
   security:
     oauth2:
       client:
