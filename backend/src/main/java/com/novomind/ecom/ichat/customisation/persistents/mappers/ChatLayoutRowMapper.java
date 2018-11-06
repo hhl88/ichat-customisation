@@ -3,10 +3,8 @@ package com.novomind.ecom.ichat.customisation.persistents.mappers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.novomind.ecom.ichat.customisation.domain.datatypes.ButtonDisplay;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.Font;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.LayoutDisplay;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.TextAreaDisplay;
+import com.novomind.ecom.ichat.customisation.core.common.TypeConverter;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
@@ -23,11 +21,12 @@ public class ChatLayoutRowMapper implements RowMapper<ChatLayout> {
         return ChatLayout.builder()
                 .id(rs.getString("id"))
                 .name(rs.getString("name"))
-                .displayType(LayoutDisplay.valueOf(rs.getString("display_type")))
-                .textInputType(TextAreaDisplay.valueOf(rs.getString("text_input_type")))
-                .buttonType(ButtonDisplay.valueOf(rs.getString("button_type")))
+                .displayType(LayoutDisplay.values()[TypeConverter.bitToStyleIndex(rs.getInt("display_type"))])
+                .textInputType(TextAreaDisplay.values()[TypeConverter.bitToStyleIndex(rs.getInt("text_input_type"))])
+                .buttonType(ButtonDisplay.values()[TypeConverter.bitToStyleIndex(rs.getInt("button_type"))])
                 .logo(rs.getBlob("logo").toString())
                 .backgroundImg(rs.getBlob("background_img").toString())
+                .backgroundType(BackgroundDisplay.values()[TypeConverter.bitToStyleIndex(rs.getInt("background_type"))])
                 .font(new Font(rs.getString("font_family"), rs.getInt("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)))
                 .build();
 
