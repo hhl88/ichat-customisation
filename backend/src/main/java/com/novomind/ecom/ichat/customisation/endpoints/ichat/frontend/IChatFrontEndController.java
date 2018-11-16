@@ -1,35 +1,38 @@
 package com.novomind.ecom.ichat.customisation.endpoints.ichat.frontend;
 
-import java.security.Principal;
-
+import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndManagementService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.DemandInfoService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IAgentServerService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.domain.dtos.IdDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndSettingDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndUpdateDTO;
 import com.novomind.ecom.ichat.customisation.exceptions.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndManagementService;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/ichats/frontends")
+@Api(value = "/api/v1/ichats/frontends", tags = "IChat Frontend")
 public class IChatFrontEndController {
 
     Logger log = LoggerFactory.getLogger(getClass());
@@ -60,20 +63,24 @@ public class IChatFrontEndController {
     }
 
 
-    @ApiOperation(value = "Get a frontend setting by Id", response = FrontEndSettingDTO.class)
+    @ApiOperation(value = "Get frontends", response = FrontEndDTO.class, responseContainer = "List")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved frontend setting"),
-            @ApiResponse(code = 404, message = "Frontend is not found"),
-            @ApiResponse(code = 401, message = "No Permission")
+            @ApiResponse(code = 200, message = "Successfully retrieved frontends"),
     })
-    @GetMapping("/{id}/settings")
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public FrontEndSettingDTO getFrontEndSetting(@PathVariable String id, Principal principal) throws UserNotFoundException, ChatFrontEndNotFoundException, IAgentServerNotFoundException, DemandInfoNotFoundException, NoPermissionException {
-        ChatFrontEnd chatFrontEnd = findChatFrontEnd(principal.getName(), id);
-        IAgentServer iAgentServer = iAgentServerService.findIAgentServerById(chatFrontEnd.getIAgentServerId()).orElseThrow(() -> new IAgentServerNotFoundException(chatFrontEnd.getIAgentServerId()));
-        DemandInfo demandInfo = demandInfoService.findDemandInfoById(chatFrontEnd.getDemandInfoId()).orElseThrow(() -> new DemandInfoNotFoundException(chatFrontEnd.getDemandInfoId()));
-
-        return convertToFrontEndSettingDTO(chatFrontEnd, iAgentServer, demandInfo);
+    public List<FrontEndDTO> getFrontEnds(Principal principal) throws UserNotFoundException {
+        IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException(principal.getName()));
+        List<ChatFrontEnd> chatFrontEnds = chatFrontEndManagementService.findChatFrontEndByUserId(user.getId());
+        List<FrontEndDTO> frontEndDTOS = new ArrayList<>();
+        chatFrontEnds
+                .forEach(chatFrontEnd -> {
+                    FrontEndDTO dto = convertToFrontEndDTO(chatFrontEnd);
+                    log.info("dto " +  dto);
+                    frontEndDTOS.add(convertToFrontEndDTO(chatFrontEnd));
+                });
+        return frontEndDTOS;
     }
 
 
@@ -84,23 +91,28 @@ public class IChatFrontEndController {
             @ApiResponse(code = 404, message = "Frontend is not found")
     })
     @PutMapping("/{id}")
-    public void updateChatFrontEnd(@PathVariable(value = "id") String id,
-                                   @RequestBody FrontEndUpdateDTO dto,
-                                   Principal principal) throws UserNotFoundException, ChatFrontEndNotFoundException,  NoPermissionException{
+    public ResponseEntity<?> updateChatFrontEnd(@PathVariable(value = "id") String id,
+                                                @Valid @NotNull @RequestBody FrontEndUpdateDTO dto,
+                                                Principal principal) throws UserNotFoundException, ChatFrontEndNotFoundException, NoPermissionException {
+        log.info("update " + dto);
         ChatFrontEnd chatFrontEnd = findChatFrontEnd(principal.getName(), id);
         chatFrontEndManagementService.update(chatFrontEnd, dto);
+        return ResponseEntity.status(HttpStatus.OK).body("Frontend successfully updated");
     }
 
-    @ApiOperation(value = "Create a frontend", response = IdDTO.class)
+    @ApiOperation(value = "Create a frontend")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved frontend"),
             @ApiResponse(code = 400, message = "Invalid arguments"),
     })
     @PostMapping("")
-    public IdDTO createFrontEnd(@RequestBody FrontEndCreateDTO dto, Principal principal) throws UserNotFoundException {
+    public ResponseEntity<IdDTO> createFrontEnd(@Valid @NotNull @RequestBody FrontEndCreateDTO dto, Principal principal) throws UserNotFoundException {
+        log.info("createrFrontEnd " + dto);
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("user_not_found"));
-        return new IdDTO(chatFrontEndManagementService.insertChatFrontEnd(user, dto));
+        String id = chatFrontEndManagementService.insertChatFrontEnd(user, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(new IdDTO(id));
+
     }
 
     private ChatFrontEnd findChatFrontEnd(String userEmail, String frontEndId) throws UserNotFoundException, ChatFrontEndNotFoundException, NoPermissionException {
@@ -114,18 +126,18 @@ public class IChatFrontEndController {
     }
 
     private FrontEndDTO convertToFrontEndDTO(ChatFrontEnd chatFrontEnd) {
-        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName());
+        IAgentServer iAgentServer = null;
+        DemandInfo demandInfo = null;
+        if (chatFrontEnd.getIAgentServerId() != null)
+            iAgentServer = iAgentServerService
+                    .findIAgentServerById(chatFrontEnd.getIAgentServerId())
+                    .get();
+        if (chatFrontEnd.getDemandInfoId() != null)
+            demandInfo = demandInfoService.findDemandInfoById(chatFrontEnd.getDemandInfoId()).get();
+
+        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName(), iAgentServer, chatFrontEnd.getUrlPath(), demandInfo, String.valueOf(chatFrontEnd.getConnectionType().ordinal()));
 
     }
 
-    private FrontEndSettingDTO convertToFrontEndSettingDTO(ChatFrontEnd chatFrontend, IAgentServer iAgentServer, DemandInfo demandInfo) {
-        return FrontEndSettingDTO.builder()
-                .id(chatFrontend.getId())
-                .urlPath(chatFrontend.getUrlPath())
-                .iAgentServer(iAgentServer)
-                .connectionType(chatFrontend.getConnectionType())
-                .demandInfo(demandInfo)
-                .build();
-    }
 
 }

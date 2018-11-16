@@ -1,12 +1,6 @@
 package com.novomind.ecom.ichat.customisation.core.demandInfo;
 
-import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoCreateDTO;
-
-import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoUpdateDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class DemandInfo {
 
   private String id;

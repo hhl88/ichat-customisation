@@ -1,19 +1,18 @@
-package com.novomind.ecom.ichat.customisation.persistents;
+package com.novomind.ecom.ichat.customisation.persistents.demandinfo;
+
+import com.google.gson.Gson;
+import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
+import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfoItem;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.DemandInfoDao;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
+import com.novomind.ecom.ichat.customisation.persistents.mappers.DemandInfoRowMapper;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfoItem;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.stereotype.Repository;
-
-import com.google.gson.Gson;
-import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.DemandInfoDao;
-import com.novomind.ecom.ichat.customisation.persistents.mappers.DemandInfoRowMapper;
-
 import static com.novomind.ecom.ichat.customisation.constants.Constants.DEMAND_INFO_TABLE;
-import static com.novomind.ecom.ichat.customisation.constants.Constants.IAGENT_SERVER_TABLE;
 
 @Repository
 public class DemandInfoDaoImpl extends BaseDao implements DemandInfoDao {

@@ -1,14 +1,14 @@
-package com.novomind.ecom.ichat.customisation.persistents;
+package com.novomind.ecom.ichat.customisation.persistents.ichat.frontend;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import com.novomind.ecom.ichat.customisation.constants.Constants;
 import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChooseChatFrontEndDao;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ChooseChatFrontEndDaoImpl extends BaseDao implements ChooseChatFrontEndDao {

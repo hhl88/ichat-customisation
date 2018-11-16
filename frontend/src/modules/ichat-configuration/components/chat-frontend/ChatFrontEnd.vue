@@ -3,7 +3,7 @@
     <div v-if="step === 0">
       <label class="server-label header-label">iAgent System</label>
       <div class="server-setting settings">
-        <server-setting :server="server" @getServer="getServer"/>
+        <server-setting @getServerSetting="getServerSetting"/>
       </div>
     </div>
 
@@ -25,7 +25,7 @@
     <div v-if="step === 1">
       <label class="demand-info-list header-label">Eröffnungsdialog</label>
       <div class="demand-info-form settings">
-        <demand-info-form :demand-list="demandInfoList" @getDemandInfo="getDemandInfo"/>
+        <demand-info-form @getDemandInfo="getDemandInfo"/>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
       <button class="">Abrechen</button>
       <button @click="changeStep(0)" v-if="step === 1">Zurück</button>
       <button @click="changeStep(1)" v-if="step === 0">Weiter</button>
-      <button @click.prevent="saveSetting">Speichern</button>
+      <button @click.prevent="saveSetting()">Speichern</button>
     </div>
   </div>
 </template>
@@ -41,41 +41,84 @@
 <script>
   import ServerSetting from './server/ServerSetting'
   import DemandInfoForm from './deman-info/DemandInfoForm'
+  import {CHAT_FRONTEND_CREATE, CHAT_FRONTEND_UPDATE} from "../../../../constants/action.type";
+  import {
+    ADD_ITEM_TO_FRONT_END_LIST,
+    SET_CURRENT_FRONT_END,
+    UPDATE_ITEM_FRONT_END_LIST
+  } from "../../../../constants/mutation.type";
 
   export default {
     name: 'ChatFrontEnd',
     components: {DemandInfoForm, ServerSetting},
-    props: {
-      view: {
-        type: String,
-        default: 'frontend'
-      }
-    },
-    data () {
+    data() {
       return {
         server: {},
+        connectionType: '0',
         step: 0,
         urlPath: '',
         demandInfoList: [],
+        frontEndSetting: null
       }
     },
+    mounted() {
+      this.getCurrentChatFrontEnd();
+    },
+    created() {
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === SET_CURRENT_FRONT_END) {
+          console.log('linsterForend');
+          this.urlPath = '';
+          this.getCurrentChatFrontEnd();
+        }
+      })
+    },
     methods: {
-      getServer (server) {
-        this.server = server
+      getCurrentChatFrontEnd() {
+        this.frontEndSetting = this.$store.getters.currentChatFrontEnd;
+        if(this.frontEndSetting){
+          this.urlPath = this.frontEndSetting.urlPath;
+          this.step = 0;
+        }
       },
-      getDemandInfo (demandInfoList) {
-        console.log('demand info', demandInfoList)
-        this.demandInfoList = demandInfoList
-      },
-      changeStep (step) {
-        this.step = step
-      },
-      saveSetting() {
-        console.log('save setting', this.server)
-        // this.$store
-        //   .dispatch(LOGIN, {email, password})      }
+      getServerSetting(data) {
+        // console.log('data', data);
+        this.connectionType = data.type;
+        this.server = data.server;
       }
+      ,
+      getDemandInfo(demandInfoList) {
+        this.demandInfoList = demandInfoList;
+      }
+      ,
+      changeStep(step) {
+        this.step = step
+      }
+      ,
+      saveSetting() {
+        const item = this.$store.getters.currentChatFrontEnd;
 
+        item.iAgentServer = this.server;
+        item.connectionType = this.connectionType;
+        item.urlPath = this.urlPath;
+        item.demandInfo = {
+          demandInfoItems: this.demandInfoList
+        };
+        if (item.id) {
+          this.$store
+            .dispatch(CHAT_FRONTEND_UPDATE, item)
+            .then(res => {
+            })
+        }
+        else {
+          this.$store
+            .dispatch(CHAT_FRONTEND_CREATE, item)
+            .then(res => {
+              item.id = res.id;
+              this.$store.commit(ADD_ITEM_TO_FRONT_END_LIST, item);
+            })
+        }
+      }
     }
   }
 </script>
@@ -96,7 +139,7 @@
   }
 
   .button-group {
-    position: absolute;
+    position: relative;
     bottom: 0;
   }
 

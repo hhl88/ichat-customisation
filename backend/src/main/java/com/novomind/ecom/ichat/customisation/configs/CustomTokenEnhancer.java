@@ -1,12 +1,11 @@
 package com.novomind.ecom.ichat.customisation.configs;
 
+import com.novomind.ecom.ichat.customisation.auth.CustomUserDetails;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-
-import com.novomind.ecom.ichat.customisation.auth.CustomUserDetails;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 
 import java.util.HashMap;
 import java.util.Map;

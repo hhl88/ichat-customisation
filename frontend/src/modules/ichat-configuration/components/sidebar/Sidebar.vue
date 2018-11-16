@@ -14,7 +14,7 @@
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatLayoutList" :name-default="'layout'"/>
+      <NameInfoList :name-info-list="chatLayoutList" :name-default="'layout'" @changeItem="onSelectItemLayout"/>
 
       <div class="chat-frontend list-header row mx-0 vertical-align">
         <div class="header col-10" @click="onSelectFrontend">
@@ -26,7 +26,7 @@
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatFrontEndList" :name-default="'frontEnd'"/>
+      <NameInfoList :name-info-list="chatFrontEndList" :name-default="'frontEnd'" @changeItem="onSelectItemFrontend"/>
 
 
       <div class="chat-layout list-header">
@@ -40,6 +40,11 @@
 
 <script>
   import NameInfoList from '../../../../components/NameInfoList'
+  import {
+    SET_CURRENT_FRONT_END,
+    SET_CURRENT_LAYOUT, UNSELECT_CURRENT_FRONT_END,
+    UNSELECT_CURRENT_LAYOUT, UPDATE_ITEM_FRONT_END_LIST, UPDATE_ITEM_LAYOUT_LIST
+  } from "../../../../constants/mutation.type";
 
   export default {
     name: 'Sidebar',
@@ -57,15 +62,15 @@
       }
     },
     methods: {
-      onSelectLayout () {
-        this.$emit('changeView', 'layout')
+      onSelectLayout() {
+        // this.$emit('changeView', 'layout')
       },
-      onSelectFrontend () {
-        console.log('changeview')
-        this.$emit('changeView', 'frontend')
+      onSelectFrontend() {
+        // console.log('changeview')
+        // this.$emit('changeView', 'frontend')
       },
-      addItem (choose) {
-        if(choose === 0){
+      addItem(choose) {
+        if (choose === 0) {
           if (this.chatLayoutList == null) {
             this.chatLayoutList = []
           }
@@ -77,7 +82,18 @@
           this.chatFrontEndList.push({id: null, name: 'FrontEnd'})
         }
       },
-      onChangeView (type, index) {
+      onSelectItemLayout(item) {
+        console.log('itemLayout', item);
+        this.$emit('changeItem', {'view': 'layout'})
+        this.$store.commit(UNSELECT_CURRENT_FRONT_END);
+        this.$store.commit(SET_CURRENT_LAYOUT, item);
+      },
+      onSelectItemFrontend(item) {
+        console.log('select item', item, this.$store.getters.frontEndList);
+        this.$store.commit(UNSELECT_CURRENT_LAYOUT);
+        this.$store.commit(SET_CURRENT_FRONT_END, item);
+        this.$emit('changeItem', {'view': 'frontend'})
+
       }
     }
   }

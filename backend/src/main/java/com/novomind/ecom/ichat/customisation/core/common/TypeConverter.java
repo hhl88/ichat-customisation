@@ -1,7 +1,5 @@
 package com.novomind.ecom.ichat.customisation.core.common;
 
-import com.novomind.ecom.ichat.customisation.domain.datatypes.FontStyle;
-
 public final class TypeConverter {
 
     private TypeConverter() {}

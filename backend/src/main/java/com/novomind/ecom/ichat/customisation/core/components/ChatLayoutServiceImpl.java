@@ -1,17 +1,16 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatLayoutDao;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatLayoutDao;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ChatLayoutServiceImpl implements ChatLayoutService {
@@ -28,7 +27,9 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
 
     @Override
     public void updateInfo(ChatLayout chatLayout, ChatLayoutUpdateDTO dto) {
-
+        ChatLayout newChatLayout = chatLayout.of(dto);
+        newChatLayout.setId(chatLayout.getId());
+        chatLayoutDao.updateChatLayout(newChatLayout);
     }
 
     @Override

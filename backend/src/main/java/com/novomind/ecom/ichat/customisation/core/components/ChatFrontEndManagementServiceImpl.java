@@ -1,32 +1,24 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfoItem;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndManagementService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.DemandInfoService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IAgentServerService;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndSettingDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudCreateDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
-import com.novomind.ecom.ichat.customisation.exceptions.ChatFrontEndNotFoundException;
-import com.novomind.ecom.ichat.customisation.exceptions.IAgentServerNotFoundException;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatFrontEndManagementService;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndUpdateDTO;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service("chatFrontEndManagementService")
@@ -48,10 +40,11 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
         String iAgentServerId = null;
         String cloudId = null;
         String demandInfoId = null;
-        if (dto.getIAgentServerCreateDTO() != null)
-            iAgentServerId = iAgentServerService.addNewIAgentServer(IAgentServer.of(dto.getIAgentServerCreateDTO()));
-        if (dto.getDemandInfoCreateDTO() != null) {
-            dto.getDemandInfoCreateDTO().getDemandInfoItemsCreateDTO()
+        if (dto.getIAgentServer() != null)
+            iAgentServerId = iAgentServerService.addNewIAgentServer(IAgentServer.of(dto.getIAgentServer()));
+        if (dto.getDemandInfo() != null) {
+            dto.getDemandInfo()
+                    .getDemandInfoItems()
                     .forEach(demandInfoItemDTO -> demandInfo.add(DemandInfoItem.of(demandInfoItemDTO)));
             demandInfoId = demandInfoService.addDemandInFo(demandInfo);
         }
@@ -68,10 +61,13 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
         String iAgentServerId = chatFrontEnd.getIAgentServerId();
         String cloudId = chatFrontEnd.getCloudId();
         String demandInfoId = chatFrontEnd.getDemandInfoId();
-        IAgentServer iAgentServer = IAgentServer.of(dto.getIAgentServerUpdateDTO());
+        IAgentServer iAgentServer = IAgentServer.of(dto.getIAgentServer());
 
         List<DemandInfoItem> demandInfos = new ArrayList<>();
-        dto.getDemandInfoUpdateDTO().getDemandInfoItemsDTO().stream().forEach(item -> demandInfos.add(DemandInfoItem.of(item)));
+        if (dto.getDemandInfo() != null)
+            dto.getDemandInfo()
+                    .getDemandInfoItems()
+                    .forEach(item -> demandInfos.add(DemandInfoItem.of(item)));
 
         if (iAgentServerId != null) {
             iAgentServer.setId(iAgentServerId);
@@ -103,11 +99,8 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
     }
 
     @Override
-    public List<FrontEndDTO> findChatFrontEndByUserId(String userId) {
-        List<ChatFrontEnd> chatFrontEnds = chatFrontEndDao.findChatFrontEndByUserId(userId);
-        List<FrontEndDTO> frontEndDTOS = new ArrayList<>();
-        chatFrontEnds.stream().forEach(chatFrontEnd -> frontEndDTOS.add(new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName())));
-        return frontEndDTOS;
+    public List<ChatFrontEnd> findChatFrontEndByUserId(String userId) {
+        return chatFrontEndDao.findChatFrontEndByUserId(userId);
     }
 
 

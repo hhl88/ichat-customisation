@@ -1,5 +1,6 @@
 package com.novomind.ecom.ichat.customisation.configs;
 
+import com.novomind.ecom.ichat.customisation.auth.CustomTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-
-import com.novomind.ecom.ichat.customisation.auth.CustomTokenServices;
 
 @Configuration
 @EnableAuthorizationServer

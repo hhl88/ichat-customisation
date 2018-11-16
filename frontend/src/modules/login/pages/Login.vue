@@ -46,7 +46,7 @@
       },
       onSubmit (email, password) {
         if (this.validateEmail(email)) {
-          console.log('valid email')
+          console.log('valid email', email)
           this.$store
             .dispatch(LOGIN, {email, password})
             .then(() => {

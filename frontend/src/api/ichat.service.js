@@ -9,6 +9,7 @@ import {
 export const IChatService = {
 
   createFrontEnd (chatFrontEnd) {
+    console.log('chatfrontend', chatFrontEnd);
     return ApiService.post(ICHAT_FRONTEND_API, chatFrontEnd, null)
   },
 
@@ -17,20 +18,21 @@ export const IChatService = {
   },
 
   updateFrontEnd (id, params) {
-    return ApiService.put(ICHAT_FRONTEND_API, ICHAT_FRONTEND_UPDATE_PATH, id, params)
+    return ApiService.put(ICHAT_FRONTEND_API, id, params)
   },
 
   updateLayout (id, params) {
-    return ApiService.put(ICHAT_LAYOUT_API, ICHAT_LAYOUT_UPDATE_PATH, id, params)
+    return ApiService.put(ICHAT_LAYOUT_API, id, params)
   },
 
-  getChatFrontEndById(id) {
-    return ApiService.get(ICHAT_FRONTEND_API, id)
+  getChatFrontends() {
+    return ApiService.get(ICHAT_FRONTEND_API)
   },
 
-  getChatLayoutById(id) {
-    return ApiService.get(ICHAT_FRONTEND_API, id)
-  },
+  getChatLayouts() {
+    return ApiService.get(ICHAT_LAYOUT_API)
 
-}
+  }
+
+};
 

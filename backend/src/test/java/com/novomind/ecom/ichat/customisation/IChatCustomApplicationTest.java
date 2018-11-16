@@ -1,13 +1,8 @@
 package com.novomind.ecom.ichat.customisation;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Optional;
-
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
+import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.endpoints.user.IChatUserController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +13,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
-import com.novomind.ecom.ichat.customisation.endpoints.user.IChatUserController;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebMvcTest(IChatUserController.class)

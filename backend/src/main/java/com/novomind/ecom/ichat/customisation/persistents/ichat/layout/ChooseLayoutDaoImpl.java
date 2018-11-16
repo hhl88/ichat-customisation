@@ -1,13 +1,12 @@
-package com.novomind.ecom.ichat.customisation.persistents;
+package com.novomind.ecom.ichat.customisation.persistents.ichat.layout;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-
-import com.novomind.ecom.ichat.customisation.constants.Constants;
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChooseLayoutDao;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import static com.novomind.ecom.ichat.customisation.constants.Constants.CHOOSE_LAYOUT_TABLE;
 

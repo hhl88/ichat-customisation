@@ -1,8 +1,8 @@
 package com.novomind.ecom.ichat.customisation.endpoints.auth;
 
-import java.util.Map;
-
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@Api(value = "/api/v1/auth", tags = "Auth Controller")
 public class AuthController {
   
   Logger log = LoggerFactory.getLogger(getClass());

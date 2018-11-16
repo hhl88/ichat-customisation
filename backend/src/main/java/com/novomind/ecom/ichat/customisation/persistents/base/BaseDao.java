@@ -1,14 +1,12 @@
-package com.novomind.ecom.ichat.customisation.persistents;
-
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
-import com.google.gson.Gson;
+package com.novomind.ecom.ichat.customisation.persistents.base;
 
 import com.novomind.ecom.ichat.customisation.core.common.StringIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 public class BaseDao extends JdbcDaoSupport {
     @Qualifier("dataSource")

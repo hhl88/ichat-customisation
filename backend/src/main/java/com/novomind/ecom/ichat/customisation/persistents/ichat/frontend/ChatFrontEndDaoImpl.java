@@ -1,21 +1,17 @@
-package com.novomind.ecom.ichat.customisation.persistents;
+package com.novomind.ecom.ichat.customisation.persistents.ichat.frontend;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
+import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
+import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatFrontEndRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 
-import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatFrontEndDao;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
-import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatFrontEndRowMapper;
+import java.util.List;
+import java.util.Optional;
 
-import static com.novomind.ecom.ichat.customisation.constants.Constants.CHAT_LAYOUT_TABLE;
-import static com.novomind.ecom.ichat.customisation.constants.Constants.CHOOSE_CHAT_UI_TABLE;
 import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_UI_TABLE;
 
 @Repository
@@ -25,6 +21,7 @@ public class ChatFrontEndDaoImpl extends BaseDao implements ChatFrontEndDao {
     @Override
     public String insertChatFrontEnd(ChatFrontEnd chatFrontEnd) {
         String generatedId = generateStringIdForTable(ICHAT_UI_TABLE, 10);
+        log.info("chat frontend " + chatFrontEnd);
 
         String query = "INSERT INTO " +
                 ICHAT_UI_TABLE +

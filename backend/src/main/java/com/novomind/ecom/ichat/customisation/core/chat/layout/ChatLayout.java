@@ -1,15 +1,12 @@
 package com.novomind.ecom.ichat.customisation.core.chat.layout;
 
-import java.io.Serializable;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
-
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontCreateDTO;
-import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontDTO;
+import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
 import lombok.*;
+
+import java.io.Serializable;
 
 @Data
 @Builder
@@ -34,12 +31,25 @@ public class ChatLayout implements Serializable {
     public static ChatLayout of(ChatLayoutCreateDTO dto) {
         return ChatLayout.builder()
                 .name(dto.getName())
-                .displayType(dto.getLayoutDisplay())
-                .textInputType(dto.getTextAreaDisplay())
-                .buttonType(dto.getButtonDisplay())
-                .logo(dto.getLogoImage())
-                .backgroundImg(dto.getBackgroundImage())
-                .backgroundType(dto.getBackgroundDisplay())
+                .displayType(dto.getDisplayType())
+                .textInputType(dto.getTextInputType())
+                .buttonType(dto.getButtonType())
+                .logo(dto.getLogo())
+                .backgroundImg(dto.getBackgroundImg())
+                .backgroundType(dto.getBackgroundType())
+                .font(dto.getFont())
+                .build();
+    }
+
+    public static ChatLayout of(ChatLayoutUpdateDTO dto) {
+        return ChatLayout.builder()
+                .name(dto.getName())
+                .displayType(dto.getDisplayType())
+                .textInputType(dto.getTextInputType())
+                .buttonType(dto.getButtonType())
+                .logo(dto.getLogo())
+                .backgroundImg(dto.getBackgroundImg())
+                .backgroundType(dto.getBackgroundType())
                 .font(dto.getFont())
                 .build();
     }

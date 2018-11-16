@@ -4,7 +4,8 @@
       <DemandInfo
         v-for="(demandInfo, index) in demandInfoList"
         :demandInfo="demandInfo"
-        :key="demandInfo.field + index"
+        :key="index"
+        @onDemandInfoChanged="onDemandInfoChanged(demandInfo,index)"
       />
     </div>
   </div>
@@ -41,9 +42,10 @@
         this.listConfig.offset = 0;
         this.currentPage = 1;
       },
-      onDemandInfoListChanged(demandInfoList) {
-        this.demandInfoList = demandInfoList
-        this.$emit('onDemandInfoListChanged', demandInfoList)
+      onDemandInfoChanged(demandInfo, index) {
+        this.demandInfoList[index] = demandInfo;
+        // this.demandInfoList = demandInfoList
+        this.$emit('onDemandInfoListChanged', this.demandInfoList)
       }
     }
   }

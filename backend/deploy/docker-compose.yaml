@@ -1,8 +1,5 @@
 version: '3.7'
 
-networks:
-  my_docker_network:
-
 
 services:
   mysql:
@@ -18,5 +15,3 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=example
       - MYSQL_ROOT_PASSWORD=root
-    networks:
-    - my_docker_network

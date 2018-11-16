@@ -1,11 +1,10 @@
 package com.novomind.ecom.ichat.customisation.core.demandInfo;
 
 
-import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoCreateDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoItemDTO;
 import lombok.*;
 
-@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +19,18 @@ public class DemandInfoItem {
                 .example(dto.getExample())
                 .isRequired(dto.isRequired())
                 .build();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getExample() {
+        return example;
+    }
+
+    @JsonProperty("isRequired")
+    public boolean isRequired() {
+        return isRequired;
     }
 }

@@ -54,6 +54,9 @@ module.exports = {
     'max-line-length': 'off',
     'vue/require-prop-types': 'off',
     'vue/no-dupe-keys': 'off',
-    'vue/attribute-hyphenation' : 'off'
+    'vue/attribute-hyphenation' : 'off',
+    'no-unused-vars': 0,
+    'curly': 0
+
   }
 }

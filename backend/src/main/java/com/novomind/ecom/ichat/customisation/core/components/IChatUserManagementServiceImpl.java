@@ -1,20 +1,18 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
-import java.util.Optional;
-
-import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.novomind.ecom.ichat.customisation.core.common.StringGenerator;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IChatUserDao;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service("userManagementService")

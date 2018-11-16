@@ -1,19 +1,15 @@
-package com.novomind.ecom.ichat.customisation.persistents;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.stereotype.Repository;
+package com.novomind.ecom.ichat.customisation.persistents.server.iagent;
 
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IAgentServerDao;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
 import com.novomind.ecom.ichat.customisation.persistents.mappers.IAgentServerRowMapper;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 import static com.novomind.ecom.ichat.customisation.constants.Constants.IAGENT_SERVER_TABLE;
-import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_USER_TABLE;
 
 @Repository
 public class IAgentServerDaoImpl extends BaseDao implements IAgentServerDao {

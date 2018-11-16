@@ -1,12 +1,11 @@
 package com.novomind.ecom.ichat.customisation.core.users;
 
-import java.io.Serializable;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserCreateDTO;
-
 import lombok.*;
+
+import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @Builder

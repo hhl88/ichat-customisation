@@ -1,14 +1,16 @@
 package com.novomind.ecom.ichat.customisation.domain.datatypes;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Embeddable;
 import java.util.List;
 
-@Getter
+@Data
 @NoArgsConstructor
-@Embeddable
+@ToString
 public class Font {
 
     private String fontFamily;

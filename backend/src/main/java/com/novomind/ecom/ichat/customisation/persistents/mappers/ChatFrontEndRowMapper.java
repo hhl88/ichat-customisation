@@ -1,15 +1,12 @@
 package com.novomind.ecom.ichat.customisation.persistents.mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 
-import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class ChatFrontEndRowMapper implements RowMapper<ChatFrontEnd> {
     @Nullable

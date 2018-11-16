@@ -1,8 +1,8 @@
 package com.novomind.ecom.ichat.customisation.core.interfaces.dao;
 
-import java.util.Optional;
-
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+
+import java.util.Optional;
 
 public interface IChatUserDao {
 

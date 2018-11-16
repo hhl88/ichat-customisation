@@ -1,7 +1,6 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout;
 
 import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
-import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontCreateDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,23 +20,25 @@ public class ChatLayoutUpdateDTO {
   
   @ApiModelProperty(required = true)
   @NotNull
-  private LayoutDisplay layoutDisplay;
+  private LayoutDisplay displayType;
   
   @ApiModelProperty(required = true)
   @NotNull
-  private TextAreaDisplay textAreaDisplay;
+  private TextAreaDisplay textInputType;
 
   @ApiModelProperty(required = true)
   @NotNull
-  private ButtonDisplay buttonDisplay;
+  private ButtonDisplay buttonType;
 
-  private String logoImage;
+  @ApiModelProperty
+  private String logo;
 
   @ApiModelProperty(required = true)
   @NotNull
-  private BackgroundDisplay backgroundDisplay;
+  private BackgroundDisplay backgroundType;
 
-  private String backgroundImage;
+  @ApiModelProperty
+  private String backgroundImg;
 
   @ApiModelProperty(required = true)
   @NotNull

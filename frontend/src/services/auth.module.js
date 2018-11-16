@@ -2,7 +2,6 @@ import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH} from '../constants/action.type'
 import {SET_AUTH, SET_TOKEN, SET_ERROR, PURGE_AUTH} from '../constants/mutation.type'
 
 import JwtService from '../api/jwt.service'
-import ApiService from '../api/api.service'
 import {UserService} from '../api/users.service'
 
 const state = {
@@ -22,7 +21,6 @@ const getters = {
 
 const actions = {
   [LOGIN] (context, {email, password}) {
-
     return new Promise((resolve, reject) => {
       UserService
         .login({email, password})
@@ -32,10 +30,6 @@ const actions = {
         })
         .catch(({response}) => {
           context.commit(PURGE_AUTH)
-
-          // if (response === void(0)) {
-          //   context.commit(SET_ERROR, response.data.errors)
-          // }
         })
     })
   },
@@ -43,6 +37,7 @@ const actions = {
     context.commit(PURGE_AUTH)
   },
   [REGISTER] (context, {email}) {
+    context.commit(PURGE_AUTH)
     return new Promise((resolve, reject) => {
       UserService
         .register(email)
@@ -57,7 +52,7 @@ const actions = {
   },
   [CHECK_AUTH] (context) {
     if (JwtService.getToken()) {
-      ApiService.setHeader()
+      // ApiService.setHeader()
       UserService
         .fetchUser()
         .then(({data}) => {
@@ -77,19 +72,15 @@ const mutations = {
     state.errors = error
   },
   [SET_TOKEN] (state, token) {
-    console.log('state set token')
     state.errors = {}
     JwtService.saveToken(token.access_token)
   },
   [SET_AUTH] (state, user) {
-    console.log('state set auth')
-
     state.isAuthenticated = true
     state.user = user
     state.errors = {}
   },
   [PURGE_AUTH] (state) {
-    console.log('remove token')
     state.isAuthenticated = false
     state.user = {}
     state.errors = {}

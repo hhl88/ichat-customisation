@@ -1,15 +1,14 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfoItem;
+import com.novomind.ecom.ichat.customisation.core.interfaces.dao.DemandInfoDao;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.DemandInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
-import com.novomind.ecom.ichat.customisation.core.interfaces.dao.DemandInfoDao;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.DemandInfoService;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DemandInfoServiceImpl implements DemandInfoService {

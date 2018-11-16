@@ -1,10 +1,10 @@
 package com.novomind.ecom.ichat.customisation.core.interfaces.services;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfoItem;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface DemandInfoService {
 

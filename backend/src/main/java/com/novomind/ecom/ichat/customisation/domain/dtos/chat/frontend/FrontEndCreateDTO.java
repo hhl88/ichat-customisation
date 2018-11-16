@@ -1,9 +1,7 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend;
 
-import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
-
 import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
@@ -13,35 +11,38 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor
 public class FrontEndCreateDTO {
- 
-  
-  @ApiModelProperty(required = true)
-  @NotNull
-  private String name;
-  
-  @ApiModelProperty(required = true)
-  @NotNull
-  private Connection connectionType;
 
 
-  @ApiModelProperty(required = false)
-  private IAgentServerCreateDTO iAgentServerCreateDTO;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private String name;
 
-  @ApiModelProperty(required = false)
-  private CloudCreateDTO cloudCreateDTO;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private Connection connectionType;
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  private String urlPath;
 
-  @ApiModelProperty(required = false)
-  DemandInfoCreateDTO demandInfoCreateDTO;
+    @ApiModelProperty
+    @JsonProperty(value="iAgentServer")
+    private IAgentServerCreateDTO iAgentServer;
+
+    @ApiModelProperty
+    @JsonProperty(value="cloud")
+    private CloudCreateDTO cloud;
+
+    @ApiModelProperty(required = true)
+    @NotNull
+    private String urlPath;
+
+    @ApiModelProperty
+    @JsonProperty(value="demandInfo")
+    DemandInfoCreateDTO demandInfo;
 
 
 }

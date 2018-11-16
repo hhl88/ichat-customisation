@@ -1,8 +1,8 @@
 package com.novomind.ecom.ichat.customisation.core.common;
 
-import java.util.Random;
-
 import com.novomind.ecom.ichat.customisation.constants.Constants;
+
+import java.util.Random;
 
 public final class StringGenerator {
 

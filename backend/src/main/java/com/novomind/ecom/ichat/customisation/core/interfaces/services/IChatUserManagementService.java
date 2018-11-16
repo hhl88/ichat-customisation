@@ -1,9 +1,9 @@
 package com.novomind.ecom.ichat.customisation.core.interfaces.services;
 
-import java.util.Optional;
-
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
+
+import java.util.Optional;
 
 public interface IChatUserManagementService {
 

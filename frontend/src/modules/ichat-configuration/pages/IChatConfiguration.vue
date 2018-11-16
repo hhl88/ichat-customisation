@@ -1,7 +1,7 @@
 <template>
   <div class="container-wrapper row mt-5 mx-auto">
     <div class="col-2 sidebar">
-      <Sidebar @changeView="changeView"/>
+      <Sidebar @changeItem="changeItem" :chat-front-end-list="chatFrontEndList" :chat-layout-list="chatLayoutList"/>
     </div>
     <div class="col-9 main-content text-left">
       <IChatConfigurationContent :view="view"/>
@@ -12,23 +12,63 @@
 <script>
   import Sidebar from '../components/sidebar/Sidebar'
   import IChatConfigurationContent from '../components/main-content/IChatConfigurationContent'
+  import {FETCH_CHAT_FRONTEND, FETCH_CHAT_LAYOUT} from '../../../constants/action.type'
+  import {
+    ADD_ITEM_TO_FRONT_END_LIST, ADD_ITEM_TO_LAYOUT_LIST,
+    SET_FRONT_END_LIST, SET_LAYOUT_LIST,
+    UPDATE_ITEM_FRONT_END_LIST, UPDATE_ITEM_LAYOUT_LIST
+  } from "../../../constants/mutation.type";
+
 
   export default {
     name: 'Home',
     components: {Sidebar, IChatConfigurationContent},
     data() {
       return {
-        view: 'frontend'
+        view: 'frontend',
+        selectedItem: null,
+        chatFrontEndList: [],
+        chatLayoutList: []
       }
     },
     mounted() {
-      console.log(this.$parent.view)
+      this.fetchIchatFromServer();
     },
+    created() {
+      this.fetchIchatFromStore();
+    },
+
     methods: {
       changeView(params) {
-        console.log(params)
-        this.view = params
-        history.pushState(null, '', '/ichat/'+params);
+        this.view = params;
+        history.pushState(null, '', '/ichat/' + params);
+      },
+      changeItem(data) {
+        this.changeView(data.view);
+      },
+      fetchIchatFromServer() {
+        this.$store
+          .dispatch(FETCH_CHAT_FRONTEND)
+          .then((res) => {
+            this.chatFrontEndList = res;
+          });
+
+        this.$store
+          .dispatch(FETCH_CHAT_LAYOUT)
+          .then((res) => {
+            this.chatLayoutList = res;
+          });
+      },
+      fetchIchatFromStore() {
+        this.$store.subscribe(((mutation, state) => {
+          if (mutation.type === SET_FRONT_END_LIST || mutation.type === ADD_ITEM_TO_FRONT_END_LIST || mutation.type === UPDATE_ITEM_FRONT_END_LIST) {
+            this.chatFrontEndList = this.$store.getters.frontEndList;
+          } else if (mutation.type === SET_LAYOUT_LIST || mutation.type === ADD_ITEM_TO_LAYOUT_LIST || mutation.type === UPDATE_ITEM_LAYOUT_LIST) {
+            console.log('23');
+            this.chatLayoutList = this.$store.getters.chatLayoutList;
+          }
+
+        }));
       }
     }
   }

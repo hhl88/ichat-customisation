@@ -1,36 +1,28 @@
 package com.novomind.ecom.ichat.customisation.endpoints.user;
 
-import java.security.Principal;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserPasswordUpdateDTO;
+import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Api(value = "/api/v1/users", tags = "Users")
 public class IChatUserController {
 
     Logger log = LoggerFactory.getLogger(getClass());
@@ -58,7 +50,7 @@ public class IChatUserController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         Optional<IChatUser> user = userManagementService.findIChatUserByEmail(userCreateDTO.getEmail());
         if (!user.isPresent()) {
             userManagementService.register(IChatUser.of(userCreateDTO));
@@ -74,7 +66,7 @@ public class IChatUserController {
             @ApiResponse(code = 404, message = "User is not found")})
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
+    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
             throws UserNotFoundException {
         IChatUser user = getUserIfAccessAllowed(principal);
 
@@ -87,7 +79,6 @@ public class IChatUserController {
     private IChatUser getUserIfAccessAllowed(Principal principal) throws UserNotFoundException {
         return userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("User is not found"));
-
     }
 
 }

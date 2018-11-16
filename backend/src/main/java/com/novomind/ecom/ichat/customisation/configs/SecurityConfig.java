@@ -1,5 +1,6 @@
 package com.novomind.ecom.ichat.customisation.configs;
 
+import com.novomind.ecom.ichat.customisation.auth.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.SessionManagementFilter;
-
-import com.novomind.ecom.ichat.customisation.auth.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

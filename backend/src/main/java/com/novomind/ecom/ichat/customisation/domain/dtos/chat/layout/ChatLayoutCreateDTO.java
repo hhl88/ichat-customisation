@@ -1,19 +1,16 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout;
 
-import javax.validation.constraints.NotNull;
-
 import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
-import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontCreateDTO;
-
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.codehaus.jackson.annotate.JsonProperty;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@ToString
 public class ChatLayoutCreateDTO {
 
   @ApiModelProperty(required = true)
@@ -22,26 +19,29 @@ public class ChatLayoutCreateDTO {
   
   @ApiModelProperty(required = true)
   @NotNull
-  private LayoutDisplay layoutDisplay;
+  private LayoutDisplay displayType;
   
   @ApiModelProperty(required = true)
   @NotNull
-  private TextAreaDisplay textAreaDisplay;
+  private TextAreaDisplay textInputType;
 
   @ApiModelProperty(required = true)
   @NotNull
-  private ButtonDisplay buttonDisplay;
+  private ButtonDisplay buttonType;
 
-  private String logoImage;
-
-  @ApiModelProperty(required = true)
-  @NotNull
-  private BackgroundDisplay backgroundDisplay;
-
-  private String backgroundImage;
+  @ApiModelProperty
+  private String logo;
 
   @ApiModelProperty(required = true)
   @NotNull
+  private BackgroundDisplay backgroundType;
+
+  @ApiModelProperty
+  private String backgroundImg;
+
+  @ApiModelProperty(required = true)
+  @NotNull
+  @JsonProperty("font")
   private Font font;
 
 }

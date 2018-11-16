@@ -1,10 +1,9 @@
 package com.novomind.ecom.ichat.customisation.core.interfaces.dao;
 
+import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
+
 import java.util.List;
 import java.util.Optional;
-
-import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 
 public interface ChatLayoutDao {
 

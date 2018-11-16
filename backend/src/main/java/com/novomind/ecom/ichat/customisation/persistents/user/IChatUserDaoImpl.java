@@ -1,17 +1,14 @@
-package com.novomind.ecom.ichat.customisation.persistents;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.stereotype.Repository;
+package com.novomind.ecom.ichat.customisation.persistents.user;
 
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.IChatUserDao;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
 import com.novomind.ecom.ichat.customisation.persistents.mappers.IChatUserRowMapper;
+import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_USER_TABLE;
 

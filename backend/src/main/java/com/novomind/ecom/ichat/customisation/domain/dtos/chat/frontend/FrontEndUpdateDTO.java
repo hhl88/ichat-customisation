@@ -1,10 +1,6 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend;
 
-import javax.validation.constraints.NotNull;
-
 import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
-
-import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoUpdateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudUpdateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
@@ -13,10 +9,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
-@Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class FrontEndUpdateDTO {
@@ -25,11 +21,11 @@ public class FrontEndUpdateDTO {
   @NotNull
   private String name;
 
-  @ApiModelProperty(required = false)
-  private IAgentServerUpdateDTO iAgentServerUpdateDTO;
+  @ApiModelProperty
+  private IAgentServerUpdateDTO iAgentServer;
 
-  @ApiModelProperty(required = false)
-  private CloudUpdateDTO cloudUpdateDTO;
+  @ApiModelProperty
+  private CloudUpdateDTO cloud;
 
   @ApiModelProperty(required = true)
   @NotNull
@@ -39,8 +35,68 @@ public class FrontEndUpdateDTO {
   @NotNull
   private Connection connectionType;
 
-  @ApiModelProperty(required = false)
-  DemandInfoUpdateDTO demandInfoUpdateDTO;
+  @ApiModelProperty
+  DemandInfoUpdateDTO demandInfo;
 
-  
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  @JsonProperty("iAgentServer")
+  public IAgentServerUpdateDTO getIAgentServer() {
+    return iAgentServer;
+  }
+
+  public void setiAgentServer(IAgentServerUpdateDTO iAgentServer) {
+    this.iAgentServer = iAgentServer;
+  }
+
+  public CloudUpdateDTO getCloud() {
+    return cloud;
+  }
+
+  public void setCloud(CloudUpdateDTO cloud) {
+    this.cloud = cloud;
+  }
+
+  public String getUrlPath() {
+    return urlPath;
+  }
+
+  public void setUrlPath(String urlPath) {
+    this.urlPath = urlPath;
+  }
+
+  public Connection getConnectionType() {
+    return connectionType;
+  }
+
+  public void setConnectionType(Connection connectionType) {
+    this.connectionType = connectionType;
+  }
+
+  @JsonProperty("demandInfo")
+  public DemandInfoUpdateDTO getDemandInfo() {
+    return demandInfo;
+  }
+
+  public void setDemandInfo(DemandInfoUpdateDTO demandInfo) {
+    this.demandInfo = demandInfo;
+  }
+
+  @Override
+  public String toString() {
+    return "FrontEndUpdateDTO{" +
+            "name='" + name + '\'' +
+            ", iAgentServer=" + iAgentServer +
+            ", cloud=" + cloud +
+            ", urlPath='" + urlPath + '\'' +
+            ", connectionType=" + connectionType +
+            ", demandInfo=" + demandInfo +
+            '}';
+  }
 }

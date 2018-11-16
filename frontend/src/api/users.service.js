@@ -10,8 +10,6 @@ export const UserService = {
   },
 
   login(data) {
-    console.log(data);
-    console.log(TOKEN_PATH);
     const params = {
       'grant_type' : 'password',
       'client_id' : 'clientid',
@@ -30,12 +28,6 @@ export const UserService = {
     return ApiService.get(AUTH_PATH)
   },
 
-  getAllChatFrontEndByUserId (userId) {
-    return ApiService.get(USERS_PATH, userId, USR_FRONTEND_PATH)
-  },
 
-  getAllChatLayOutByUserId (userId) {
-    return ApiService.get(USERS_PATH, userId, USR_LAYOUT_PATH)
-  }
 
 }

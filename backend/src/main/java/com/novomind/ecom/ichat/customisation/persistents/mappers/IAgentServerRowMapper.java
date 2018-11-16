@@ -1,13 +1,11 @@
 package com.novomind.ecom.ichat.customisation.persistents.mappers;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 public class IAgentServerRowMapper implements RowMapper<IAgentServer> {

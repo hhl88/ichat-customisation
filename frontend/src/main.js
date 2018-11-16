@@ -24,11 +24,9 @@ router.beforeEach(
         .all([
           store.dispatch(CHECK_AUTH).finally(() => {
             if (!store.getters.isAuthenticated) {
-              console.log('not authenticated', store)
 
               next('/login')
             } else {
-              console.log('authenticated', store)
 
               return next()
             }
