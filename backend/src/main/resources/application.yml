@@ -10,6 +10,8 @@ spring:
     username: ${DB_USER:user}
     password: ${DB_USER:example}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    data: mysql.sql
   jpa:
     properties:
       hibernate:

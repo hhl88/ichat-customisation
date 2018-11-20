@@ -4,7 +4,7 @@ import {
   SET_FRONT_END_LIST,
   SET_CURRENT_FRONT_END,
   ADD_ITEM_TO_FRONT_END_LIST,
-  UPDATE_ITEM_FRONT_END_LIST, UNSELECT_CURRENT_FRONT_END
+  UPDATE_ITEM_FRONT_END_LIST, UNSELECT_CURRENT_FRONT_END, ADD_ITEM_TO_LAYOUT_LIST, SET_CURRENT_LAYOUT
 } from '../constants/mutation.type'
 
 import {IChatService} from '../api/ichat.service'
@@ -25,11 +25,15 @@ const getters = {
 };
 
 const actions = {
-  [CHAT_FRONTEND_CREATE](context, chatFrontEndSetting) {
+  [CHAT_FRONTEND_CREATE](context, frontend) {
     return new Promise((resolve, reject) => {
       IChatService
-        .createFrontEnd(chatFrontEndSetting)
+        .createFrontEnd(frontend)
         .then(({data}) => {
+          const newFrontEnd = JSON.parse(JSON.stringify(frontend));
+          newFrontEnd.id = data.id;
+          context.commit(ADD_ITEM_TO_LAYOUT_LIST, newFrontEnd);
+          context.commit(SET_CURRENT_LAYOUT, newFrontEnd);
           resolve(data)
         })
         .catch(({response}) => {
@@ -37,11 +41,12 @@ const actions = {
         })
     })
   },
-  [CHAT_FRONTEND_UPDATE](context, chatFrontEndSetting) {
+  [CHAT_FRONTEND_UPDATE](context, item) {
     return new Promise((resolve, reject) => {
       IChatService
-        .updateFrontEnd(chatFrontEndSetting.id, chatFrontEndSetting)
+        .updateFrontEnd(item.id, item)
         .then(({data}) => {
+          context.commit(UPDATE_ITEM_FRONT_END_LIST, item);
           resolve(data)
         })
         .catch(({response}) => {
@@ -81,7 +86,6 @@ const mutations = {
     console.log('updateItem', index, item);
     state.chatFrontEndList[index] = JSON.parse(JSON.stringify(item));
     console.log('updateItem List', state.chatFrontEndList);
-
   },
   [SET_CURRENT_FRONT_END](state, chatFrontEnd) {
     state.chatFrontEnd = JSON.parse(JSON.stringify(chatFrontEnd));

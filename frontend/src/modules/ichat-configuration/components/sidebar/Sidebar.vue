@@ -43,7 +43,7 @@
   import {
     SET_CURRENT_FRONT_END,
     SET_CURRENT_LAYOUT, UNSELECT_CURRENT_FRONT_END,
-    UNSELECT_CURRENT_LAYOUT, UPDATE_ITEM_FRONT_END_LIST, UPDATE_ITEM_LAYOUT_LIST
+    UNSELECT_CURRENT_LAYOUT
   } from "../../../../constants/mutation.type";
 
   export default {
@@ -61,6 +61,10 @@
         default: () => []
       }
     },
+    mounted() {
+      console.log('chatFrontEndList', this.chatFrontEndList)
+    },
+
     methods: {
       onSelectLayout() {
         // this.$emit('changeView', 'layout')
@@ -83,13 +87,11 @@
         }
       },
       onSelectItemLayout(item) {
-        console.log('itemLayout', item);
-        this.$emit('changeItem', {'view': 'layout'})
         this.$store.commit(UNSELECT_CURRENT_FRONT_END);
         this.$store.commit(SET_CURRENT_LAYOUT, item);
+        this.$emit('changeItem', {'view': 'layout'})
       },
       onSelectItemFrontend(item) {
-        console.log('select item', item, this.$store.getters.frontEndList);
         this.$store.commit(UNSELECT_CURRENT_LAYOUT);
         this.$store.commit(SET_CURRENT_FRONT_END, item);
         this.$emit('changeItem', {'view': 'frontend'})

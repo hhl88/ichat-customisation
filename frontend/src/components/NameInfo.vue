@@ -1,15 +1,15 @@
 <template>
-  <div class="row mx-0 mb-2 vertical-align name-wrapper" :id="id">
+  <div class="row my-2 mx-0 mb-2 vertical-align name-wrapper" :id="id">
     <div v-show="!edit">
-      <label @dblclick="edit = true" class="my-auto mx-4">
+      <label @dblclick="edit = true" class="my-auto ml-4">
         {{ nameInfo.name }}
       </label>
     </div>
-    <input
-      v-if="edit === true"
-      v-model="name"
-      @blur="updateVal"
-      @keyup.enter="updateVal">
+    <input class="my-auto ml-4 w-100  edit-name"
+           v-if="edit === true"
+           v-model="name"
+           @blur="updateVal"
+           @keyup.enter="updateVal">
 
   </div>
 </template>
@@ -20,7 +20,7 @@
     props: {
       nameInfo: {
         type: Object,
-        default() {
+        default () {
           return {
             id: '',
             name: '',
@@ -32,17 +32,16 @@
         default: ''
       }
     },
-    data() {
+    data () {
       return {
         edit: false,
         name: this.nameInfo.name
-      };
+      }
     },
     methods: {
-      updateVal() {
-        this.edit = false;
-        console.log('nbam', this.name);
-        this.$emit('updateName', this.name);
+      updateVal () {
+        this.edit = false
+        this.$emit('updateName', this.name)
       }
     }
 
@@ -52,13 +51,13 @@
 <style scoped>
   .name-wrapper:hover {
     cursor: pointer;
-    background-color: darkorange;
-    color: white;
   }
 
   .name-wrapper:focus {
     cursor: pointer;
-    background-color: darkorange;
-    color: white;
+  }
+
+  .edit-name {
+
   }
 </style>

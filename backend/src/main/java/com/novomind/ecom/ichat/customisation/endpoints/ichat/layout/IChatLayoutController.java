@@ -45,12 +45,11 @@ public class IChatLayoutController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved layout"),
             @ApiResponse(code = 404, message = "Layout is not found"),
-            @ApiResponse(code = 401, message = "No Permission")
     })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ChatLayoutDTO getChatLayoutById(@PathVariable String id, Principal principal) throws UserNotFoundException, ChatLayoutNotFoundException, NoPermissionException {
-        ChatLayout chatLayout = findChatLayout(principal.getName(), id);
+    public ChatLayoutDTO getChatLayoutById(@PathVariable String id) throws  ChatLayoutNotFoundException {
+        ChatLayout chatLayout = chatLayoutService.findChatLayoutById(id).orElseThrow(() -> new ChatLayoutNotFoundException(id));
         return convertToChatLayoutDTO(chatLayout);
     }
 

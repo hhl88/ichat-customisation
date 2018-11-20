@@ -5,7 +5,6 @@ import {
 } from '../constants/action.type'
 import {
   SET_ERROR,
-  SET_FRONT_END_LIST,
   SET_LAYOUT_LIST,
   ADD_ITEM_TO_LAYOUT_LIST,
   UPDATE_ITEM_LAYOUT_LIST,
@@ -24,7 +23,7 @@ const getters = {
   currentChatLayout(state) {
     return JSON.parse(JSON.stringify(state.chatLayout))
   },
-  chatLayoutList(state) {
+  layoutList(state) {
     return JSON.parse(JSON.stringify(state.chatLayoutList))
   }
 };
@@ -35,9 +34,10 @@ const actions = {
       IChatService
         .createLayout(layout)
         .then(({data}) => {
-          layout.id = data.id;
-          context.commit(ADD_ITEM_TO_LAYOUT_LIST, layout);
-          context.commit(SET_CURRENT_LAYOUT, layout);
+          const newLayout = JSON.parse(JSON.stringify(layout));
+          newLayout.id = data.id;
+          context.commit(ADD_ITEM_TO_LAYOUT_LIST, newLayout);
+          context.commit(SET_CURRENT_LAYOUT, newLayout);
           resolve(data)
         })
         .catch(({response}) => {
@@ -64,7 +64,8 @@ const actions = {
       IChatService
         .getChatLayouts()
         .then(({data}) => {
-          context.commit(SET_FRONT_END_LIST, data);
+          console.log('fetch layoutlist', data);
+          context.commit(SET_LAYOUT_LIST, data);
           resolve(data)
         })
         .catch(({response}) => {
@@ -87,7 +88,6 @@ const mutations = {
   [UPDATE_ITEM_LAYOUT_LIST](state, item) {
     const index = state.chatLayoutList.findIndex(layout => layout.id === item.id);
     state.chatLayoutList[index] = JSON.parse(JSON.stringify(item));
-
   },
   [SET_CURRENT_LAYOUT](state, chatLayout) {
     state.chatLayout = JSON.parse(JSON.stringify(chatLayout));

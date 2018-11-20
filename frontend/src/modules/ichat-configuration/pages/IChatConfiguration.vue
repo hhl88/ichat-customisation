@@ -1,5 +1,5 @@
 <template>
-  <div class="container-wrapper row mt-5 mx-auto">
+  <div class="container-wrapper row mt-5 mx-auto" v-if="!isLoading">
     <div class="col-2 sidebar">
       <Sidebar @changeItem="changeItem" :chat-front-end-list="chatFrontEndList" :chat-layout-list="chatLayoutList"/>
     </div>
@@ -28,14 +28,15 @@
         view: 'frontend',
         selectedItem: null,
         chatFrontEndList: [],
-        chatLayoutList: []
+        chatLayoutList: [],
+        isLoading: true
       }
     },
     mounted() {
-      this.fetchIchatFromServer();
+      this.fetchIChatFromStore();
     },
     created() {
-      this.fetchIchatFromStore();
+      this.fetchIChatFromServer();
     },
 
     methods: {
@@ -46,28 +47,29 @@
       changeItem(data) {
         this.changeView(data.view);
       },
-      fetchIchatFromServer() {
+      fetchIChatFromServer() {
+        this.isLoading = true;
         this.$store
           .dispatch(FETCH_CHAT_FRONTEND)
           .then((res) => {
             this.chatFrontEndList = res;
+            this.$store
+              .dispatch(FETCH_CHAT_LAYOUT)
+              .then((res) => {
+                this.chatLayoutList = res;
+                this.isLoading = false;
+              });
           });
 
-        this.$store
-          .dispatch(FETCH_CHAT_LAYOUT)
-          .then((res) => {
-            this.chatLayoutList = res;
-          });
+
       },
-      fetchIchatFromStore() {
+      fetchIChatFromStore() {
         this.$store.subscribe(((mutation, state) => {
           if (mutation.type === SET_FRONT_END_LIST || mutation.type === ADD_ITEM_TO_FRONT_END_LIST || mutation.type === UPDATE_ITEM_FRONT_END_LIST) {
             this.chatFrontEndList = this.$store.getters.frontEndList;
           } else if (mutation.type === SET_LAYOUT_LIST || mutation.type === ADD_ITEM_TO_LAYOUT_LIST || mutation.type === UPDATE_ITEM_LAYOUT_LIST) {
-            console.log('23');
-            this.chatLayoutList = this.$store.getters.chatLayoutList;
+            this.chatLayoutList = this.$store.getters.layoutList;
           }
-
         }));
       }
     }

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import IChatConfiguration from '../modules/ichat-configuration/pages/IChatConfiguration'
-import Registration from '../modules/registration/pages/Registration'
-import Login from '../modules/login/pages/Login'
+import Registration from '../modules/entry/registration/Registration'
+import Login from '../modules/entry/login/Login'
 
 
 Vue.use(Router)

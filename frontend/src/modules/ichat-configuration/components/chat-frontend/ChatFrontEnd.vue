@@ -67,7 +67,6 @@
     created() {
       this.$store.subscribe((mutation, state) => {
         if (mutation.type === SET_CURRENT_FRONT_END) {
-          console.log('linsterForend');
           this.urlPath = '';
           this.getCurrentChatFrontEnd();
         }
@@ -104,6 +103,7 @@
         item.demandInfo = {
           demandInfoItems: this.demandInfoList
         };
+        console.log('item', item);
         if (item.id) {
           this.$store
             .dispatch(CHAT_FRONTEND_UPDATE, item)

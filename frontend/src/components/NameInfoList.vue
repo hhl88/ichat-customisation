@@ -4,7 +4,7 @@
       <NameInfo
         v-for="(nameInfo, index) in nameInfoList"
         :nameInfo="nameInfo"
-        :key="nameInfo.name + index"
+        :key="nameInfo.id"
         :id="nameDefault + index"
         @click.native="onSelect(nameInfo)"
         @updateName="updateName"
@@ -44,31 +44,26 @@
       }
     },
     mounted() {
+      console.log('list', this.nameInfoList)
     },
     methods: {
       onSelect(nameInfo) {
         this.$emit('changeItem', nameInfo)
       },
       updateName(name) {
-        let item = this.$store.getters.getCurrentChatFrontEnd;
-        console.log('updateName', item);
-
+        let item = this.$store.getters.currentChatFrontEnd;
         if (item) {
           item.name = name;
-          this.$store.commit(SET_CURRENT_FRONT_END, item);
           this.$store.commit(UPDATE_ITEM_FRONT_END_LIST, item);
+          this.$store.commit(SET_CURRENT_FRONT_END, item);
 
         } else {
-          item = this.$store.getters.getCurrentLayout;
-          console.log('updateName', item);
-
+          item = this.$store.getters.currentChatLayout;
           if (item) {
-            console.log('update');
             item.name = name;
-            this.$store.commit(SET_CURRENT_LAYOUT, item);
             this.$store.commit(UPDATE_ITEM_LAYOUT_LIST, item);
+            this.$store.commit(SET_CURRENT_LAYOUT, item);
           }
-
         }
       }
     }

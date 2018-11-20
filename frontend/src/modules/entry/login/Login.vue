@@ -19,7 +19,10 @@
             <input class="col-auto" id="password" type="password" v-model="password" placeholder="Password">
           </div>
         </div>
-        <button class="ml-3 mb-5">Anmelden</button>
+        <button class="ml-3">Anmelden</button>
+        <div class="ml-3 my-2">
+          <span>Kein Konto. </span> <a>Sign up</a>
+        </div>
       </form>
     </div>
   </div>

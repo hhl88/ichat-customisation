@@ -99,7 +99,10 @@
             </div>
             <div class="col-4 my-1 text-center">
               <b-button-group class="my-2 button-group" size="sm">
-                <b-button class="font-style" v-for="btn in buttons" :pressed.sync="btn.state">
+                <b-button class="font-style"
+                          v-for="(btn, k) in buttons"
+                          :key="k"
+                          :pressed.sync="btn.state">
                   {{ btn.caption }}
                 </b-button>
               </b-button-group>

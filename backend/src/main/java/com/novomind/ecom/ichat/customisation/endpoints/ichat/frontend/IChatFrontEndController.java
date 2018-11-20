@@ -53,12 +53,12 @@ public class IChatFrontEndController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved frontend"),
             @ApiResponse(code = 404, message = "frontend is not found"),
-            @ApiResponse(code = 401, message = "No Permission")
     })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FrontEndDTO getFrontEndById(@PathVariable String id, Principal principal) throws UserNotFoundException, ChatFrontEndNotFoundException, NoPermissionException {
-        ChatFrontEnd chatFrontEnd = findChatFrontEnd(principal.getName(), id);
+    public FrontEndDTO getFrontEndById(@PathVariable String id) throws  ChatFrontEndNotFoundException {
+        ChatFrontEnd chatFrontEnd =  chatFrontEndManagementService.findChatFrontEndById(id)
+                .orElseThrow(() -> new ChatFrontEndNotFoundException(id));
         return convertToFrontEndDTO(chatFrontEnd);
     }
 
