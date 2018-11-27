@@ -49,7 +49,10 @@ public class IChatLayoutController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ChatLayoutDTO getChatLayoutById(@PathVariable String id) throws  ChatLayoutNotFoundException {
+        log.info("getChatlayout " + id);
         ChatLayout chatLayout = chatLayoutService.findChatLayoutById(id).orElseThrow(() -> new ChatLayoutNotFoundException(id));
+        log.info("chatlayout " + chatLayout);
+
         return convertToChatLayoutDTO(chatLayout);
     }
 

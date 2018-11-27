@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import IChatConfiguration from '../modules/ichat-configuration/pages/IChatConfiguration'
 import Registration from '../modules/entry/registration/Registration'
 import Login from '../modules/entry/login/Login'
+import Preview from '../modules/preview/pages/Preview'
 
 
 Vue.use(Router)
@@ -26,6 +27,11 @@ export default new Router({
       path: '/login',
       name:'login',
       component: Login
+    },
+    {
+      path: '/preview',
+      name:'preview',
+      component: Preview
     },
   ]
 })
