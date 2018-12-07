@@ -31,7 +31,10 @@ export const IChatService = {
 
   getChatLayouts() {
     return ApiService.get(ICHAT_LAYOUT_API)
+  },
 
+  getChatLayout(id) {
+    return ApiService.get(ICHAT_LAYOUT_API + '/' + id)
   }
 
 };

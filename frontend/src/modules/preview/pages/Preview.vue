@@ -1,195 +1,112 @@
 <template>
+  <div>
+    <div class="top-header">
+      Header
+    </div>
+    <div class="main">
+      <div class="button-group"
+           v-if="!opened">
+        <button class="open-button"
+                @click.prevent="openChat()">
+          Chat
+        </button>
 
-  <div class="messenger-wrapper">
-    <div class="logo-chat"/>
-    <div class="messenger-scroll">
-      <div class="messenger-body">
-        <div class="messenger-content pt-3">
-          <div class="text-center request-created-info">
-            CHAT
-          </div>
-          <SingleMessage v-for="(message, index) in messages"
-                         :msg="message"
-                         :key="index"/>
-
-        </div>
+        <button class="popup-button"
+                @click.prevent="openPopup()">
+          Chat Popup
+        </button>
       </div>
+      <Chat class="chat-window"
+            :class="isFixed ? 'chat-popup' : 'integrate'"
+            id="chatWindow"
+            ref="chatWindow"
+            :is-pop-up="isPopUp"
+            v-if="opened && !isPopUp"
+            @closeChat="closeChat"/>
     </div>
-    <div class="input-area row no-gutters mx-0 vertical-align">
-      <textarea class="input-text w-100 h-100"
-                placeholder="Write something..."
-                type="text"
-                @keyup.enter="sendMessage"/>
-      <a class="send-message-button col-auto px-3 text-center" @click="sendMessage">
-        <div>Send</div>
-      </a>
-    </div>
-  </div>
 
+    <div class="footer">
+      <button @click.prevent="toggleChat">toggle chat</button>
+    </div>
+
+  </div>
 </template>
 
 <script>
-  import SingleMessage from '../components/single-message'
+  import Chat from '../components/Chat'
 
   export default {
     name: 'Preview',
     components: {
-      SingleMessage
+      Chat
     },
     data () {
       return {
-        messages: []
+        isPopUp: false,
+        isFixed: true,
+        opened: false,
+        chatLayout: null
       }
     },
-    created () {
-      this.messages = []
-      this.messages.push({
-        message: 'Kunden ist dem chat beigetreten',
-        date: '27.11.2018 16:18:41',
-        isSystem: true,
-        isAgent: false
-      })
-      this.messages.push({
-        message: 'Agent A ist dem chat beigetreten',
-        date: '27.11.2018 16:19:00',
-        isSystem: true,
-        isAgent: false
-      })
-
-      this.messages.push({
-        message: 'Willkommen Mein Name, wie kann ich Ihnen helfen?Willkommen Mein Name, wie kann ich Ihnen helfen?Willkommen Mein Name, wie kann ich Ihnen helfen?Willkommen Mein Name, wie kann ich Ihnen helfen?Willkommen Mein Name, wie kann ich Ihnen helfen?',
-        date: '27.11.2018 16:19:05',
-        isSystem: false,
-        isAgent: true
-      })
-      this.messages.push({
-        message: 'hallo, mein Laptop funktioniert nicht mehr',
-        date: '27.11.2018 16:19:45',
-        isSystem: false,
-        isAgent: false
-      })
-      this.messages.push({
-        message: 'Der Bildschirm zeigt gar nichts',
-        date: '27.11.2018 16:19:55',
-        isSystem: false,
-        isAgent: false
-      })
-      this.messages.push({
-        message: 'Könnten Sie bitte Akku überprüfen?',
-        date: '27.11.2018 16:20:10',
-        isSystem: false,
-        isAgent: true
-      })
-      this.messages.push({message: 'Moment bitte', date: '27.11.2018 16:20:30', isSystem: false, isAgent: false})
-      this.messages.push({
-        message: 'Oh, Kein Akku mehr. ich habe vergessen, kabel anzuschließen',
-        date: '27.11.2018 16:21:00',
-        isSystem: false,
-        isAgent: true
-      })
-      this.messages.push({
-        message: 'Dann funktioniert Ihr Laptop wieder.',
-        date: '27.11.2018 16:21:30',
-        isSystem: false,
-        isAgent: true
-      })
-      this.messages.push({
-        message: 'Danke, schönen Tag noch',
-        date: '27.11.2018 16:22:00',
-        isSystem: false,
-        isAgent: false
-      })
-      this.messages.push({message: 'Danke, ebenfalls', date: '27.11.2018 16:22:20', isSystem: false, isAgent: true})
-      this.messages.push({
-        message: 'Der Chat wurde von "Agent A" beendet',
-        date: '27.11.2018 16:22:30',
-        isSystem: true,
-        isAgent: false
-      })
-      this.messages.push({
-        message: 'Der Chat wurde von "Kunden" beendet',
-        date: '27.11.2018 16:23:00',
-        isSystem: true,
-        isAgent: false
-      })
-
-    },
     methods: {
-      sendMessage () {
-        console.log('asdad')
+      openChat () {
+        this.opened = true
+        this.isPopUp = false
+      },
+      openPopup () {
+        window.open('/chat', '', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800,height=1024')
+        this.isPopUp = true
+      },
+      closeChat () {
+        this.opened = false
+        this.isPopUp = false
+      },
+      toggleChat () {
+        this.isFixed = !this.isFixed
+        this.opened = !this.opened
       }
     }
   }
 </script>
 
 <style scoped>
-  .messenger-wrapper {
+  .top-header {
+    position: fixed;
+    top: 0;
   }
 
-  .logo-chat {
-    width: 100%;
-    height: 100px;
-    background-image: url(../../../assets/novomind_logo.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #FFF;
-    border-bottom: 1px solid;
-    position: absolute;
-    left: -20px;
+  .footer {
+    position: fixed;
+    bottom: 0;
+  }
+
+  .button-group {
+    position: fixed;
+    bottom: 0;
     right: 0;
-    margin: 0 auto;
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
 
-  .input-area {
-    border: 1px solid rgba(0, 0, 0, .10);
-    height: 80px;
+
+  .chat-window {
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
 
-  textarea {
-    padding: 9px 12px;
+  .chat-popup {
+    z-index: 9;
+    max-width: 450px !important;
+    max-height: 600px !important;
+    position: fixed;
+    bottom: 0;
+    right: 0;
   }
 
-  textarea:focus {
-    border: none;
-    overflow: auto;
-    outline: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
+  .integrate {
+    max-height: 900px !important;
+    max-width: 1000px !important;
+    resize: both;
   }
 
-  .messenger-scroll {
-    margin-right: -30px;
-    padding-right: 30px;
-  }
-
-  .messenger-body {
-    position: relative;
-    height: calc(100vh - 80px);
-    overflow-y: auto;
-  }
-
-  .send-message-button {
-    border: none;
-    border-radius: 0;
-  }
-
-  .send-message-button:hover {
-    cursor: pointer;
-  }
-
-  .input-text {
-    border: none;
-  / / overflow-: break-word;
-  }
-
-  .request-created-info {
-    font-style: italic;
-    font-size: .8rem;
-    color: #ccc;
-  }
-
-  .select-request-hint {
-    color: #ddd;
-  }
 </style>

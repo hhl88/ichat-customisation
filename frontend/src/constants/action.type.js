@@ -13,6 +13,7 @@ export const CHAT_LAYOUT_CREATE = 'createChatLayout';
 export const CHAT_LAYOUT_UPDATE = 'updateChatLayout';
 export const FETCH_CHAT_LAYOUT = 'fetchChatLayout';
 
+export const GET_CHAT_LAYOUT = 'getChatLayout';
 
 export const FETCH_DEMAND_INFO = "fetchDemandInfo";
 

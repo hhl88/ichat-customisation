@@ -44,7 +44,7 @@
     SET_CURRENT_FRONT_END,
     SET_CURRENT_LAYOUT, UNSELECT_CURRENT_FRONT_END,
     UNSELECT_CURRENT_LAYOUT
-  } from "../../../../constants/mutation.type";
+  } from '../../../../constants/mutation.type'
 
   export default {
     name: 'Sidebar',
@@ -61,19 +61,18 @@
         default: () => []
       }
     },
-    mounted() {
+    mounted () {
       console.log('chatFrontEndList', this.chatFrontEndList)
     },
-
     methods: {
-      onSelectLayout() {
+      onSelectLayout () {
         // this.$emit('changeView', 'layout')
       },
-      onSelectFrontend() {
+      onSelectFrontend () {
         // console.log('changeview')
         // this.$emit('changeView', 'frontend')
       },
-      addItem(choose) {
+      addItem (choose) {
         if (choose === 0) {
           if (this.chatLayoutList == null) {
             this.chatLayoutList = []
@@ -86,14 +85,14 @@
           this.chatFrontEndList.push({id: null, name: 'FrontEnd'})
         }
       },
-      onSelectItemLayout(item) {
-        this.$store.commit(UNSELECT_CURRENT_FRONT_END);
-        this.$store.commit(SET_CURRENT_LAYOUT, item);
+      onSelectItemLayout (item) {
+        this.$store.commit(UNSELECT_CURRENT_FRONT_END)
+        this.$store.commit(SET_CURRENT_LAYOUT, item)
         this.$emit('changeItem', {'view': 'layout'})
       },
-      onSelectItemFrontend(item) {
-        this.$store.commit(UNSELECT_CURRENT_LAYOUT);
-        this.$store.commit(SET_CURRENT_FRONT_END, item);
+      onSelectItemFrontend (item) {
+        this.$store.commit(UNSELECT_CURRENT_LAYOUT)
+        this.$store.commit(SET_CURRENT_FRONT_END, item)
         this.$emit('changeItem', {'view': 'frontend'})
 
       }

@@ -50,6 +50,9 @@
       onSelect(nameInfo) {
         this.$emit('changeItem', nameInfo)
       },
+      loadData() {
+
+      },
       updateName(name) {
         let item = this.$store.getters.currentChatFrontEnd;
         if (item) {

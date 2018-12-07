@@ -7,9 +7,9 @@
     </div>
     <input class="my-auto ml-4 w-100  edit-name"
            v-if="edit === true"
-           v-model="name"
-           @blur="updateVal"
-           @keyup.enter="updateVal">
+           :value="name"
+           @blur="changeVal"
+           @keyup.enter="changeVal">
 
   </div>
 </template>
@@ -38,11 +38,19 @@
         name: this.nameInfo.name
       }
     },
+    updated() {
+      this.$nextTick(this.updateVal);
+    },
     methods: {
       updateVal () {
+       this.name = this.name;
+      },
+      changeVal() {
         this.edit = false
         this.$emit('updateName', this.name)
+        this.updateVal();
       }
+
     }
 
   }

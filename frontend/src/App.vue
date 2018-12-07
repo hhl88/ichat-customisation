@@ -12,7 +12,7 @@
         view: '',
       }
     },
-    mounted(){
+    mounted () {
     },
 
   }
@@ -20,8 +20,11 @@
 
 <style>
   /*body {*/
-    /*height: 100vh;*/
+  /*height: 100vh;*/
   /*}*/
+  html {
+    padding-bottom: 0;
+  }
 
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -41,6 +44,7 @@
     border: 1px solid black;
     box-shadow: 0 0 0.75rem #e4e4e4;
   }
+
   input {
     border-radius: 3px;
     border: 1px solid black;

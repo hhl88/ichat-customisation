@@ -4,6 +4,7 @@ import IChatConfiguration from '../modules/ichat-configuration/pages/IChatConfig
 import Registration from '../modules/entry/registration/Registration'
 import Login from '../modules/entry/login/Login'
 import Preview from '../modules/preview/pages/Preview'
+import Chat from '../modules/preview/components/Chat'
 
 
 Vue.use(Router)
@@ -32,6 +33,11 @@ export default new Router({
       path: '/preview',
       name:'preview',
       component: Preview
+    },
+    {
+      path: '/chat',
+      name:'chat',
+      component: Chat
     },
   ]
 })
