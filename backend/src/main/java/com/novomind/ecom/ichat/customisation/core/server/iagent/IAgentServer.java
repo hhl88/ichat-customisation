@@ -1,6 +1,5 @@
 package com.novomind.ecom.ichat.customisation.core.server.iagent;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,6 @@ public class IAgentServer implements Serializable{
   private String address;
   private String userAPI;
   
-  @JsonIgnore
   private String password;
   private String clientId;
   private String secret;

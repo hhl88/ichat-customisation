@@ -17,6 +17,7 @@ public class IAgentServerRowMapper implements RowMapper<IAgentServer> {
                 .id(rs.getString("id"))
                 .address(rs.getString("address"))
                 .userAPI(rs.getString("user_api"))
+                .password(rs.getString("password"))
                 .clientId(rs.getString("client_id"))
                 .secret(rs.getString("secret"))
                 .build();

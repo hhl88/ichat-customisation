@@ -17,6 +17,8 @@ export const UNSELECT_CURRENT_LAYOUT = 'unselectCurrentLayout';
 
 export const SET_LAYOUT = 'setLayout';
 
+export const SET_IAGENT_SERVER = 'setIAgentServer'
+
 
 
 

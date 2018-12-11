@@ -3,30 +3,33 @@
     <div class="top-header">
       Header
     </div>
-    <div class="main">
+    <div class="main mt-4">
+      <div class="row">
+        <div class="col-4">
+          asdas
+        </div>
+        <div class="col-8">
+          <Chat class="chat-window"
+                :class="isFixed ? 'chat-popup' : 'integrate'"
+                id="chatWindow"
+                ref="chatWindow"
+                :is-pop-up="isPopUp"
+                v-if="opened && !isPopUp"
+                @closeChat="closeChat"/>
+        </div>
+      </div>
       <div class="button-group"
            v-if="!opened">
-        <button class="open-button"
-                @click.prevent="openChat()">
-          Chat
-        </button>
-
         <button class="popup-button"
+                v-if="displayType === '2'"
                 @click.prevent="openPopup()">
           Chat Popup
         </button>
       </div>
-      <Chat class="chat-window"
-            :class="isFixed ? 'chat-popup' : 'integrate'"
-            id="chatWindow"
-            ref="chatWindow"
-            :is-pop-up="isPopUp"
-            v-if="opened && !isPopUp"
-            @closeChat="closeChat"/>
+
     </div>
 
     <div class="footer">
-      <button @click.prevent="toggleChat">toggle chat</button>
     </div>
 
   </div>
@@ -34,6 +37,8 @@
 
 <script>
   import Chat from '../components/Chat'
+  import {GET_CHAT_LAYOUT} from '../../../constants/action.type'
+
 
   export default {
     name: 'Preview',
@@ -45,8 +50,13 @@
         isPopUp: false,
         isFixed: true,
         opened: false,
-        chatLayout: null
+        displayType: 0
       }
+    },
+    mounted () {
+    },
+    created() {
+      this.getChatLayout()
     },
     methods: {
       openChat () {
@@ -64,6 +74,23 @@
       toggleChat () {
         this.isFixed = !this.isFixed
         this.opened = !this.opened
+      },
+      getChatLayout() {
+        this.$store
+          .dispatch(GET_CHAT_LAYOUT, 'kzJ3mf0ABY')
+          .then((res) => {
+            console.log(res)
+            this.displayType = res.displayType
+            if(this.displayType === '0') {
+              this.opened = true
+              this.isFixed = false
+
+            } else if (this.displayType === '1') {
+              this.isFixed = true
+              this.opened = true
+
+            }
+          })
       }
     }
   }

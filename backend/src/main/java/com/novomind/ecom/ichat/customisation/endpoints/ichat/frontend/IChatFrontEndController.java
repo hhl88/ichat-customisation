@@ -12,7 +12,9 @@ import com.novomind.ecom.ichat.customisation.domain.dtos.IdDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndUpdateDTO;
-import com.novomind.ecom.ichat.customisation.exceptions.*;
+import com.novomind.ecom.ichat.customisation.exceptions.ChatFrontEndNotFoundException;
+import com.novomind.ecom.ichat.customisation.exceptions.NoPermissionException;
+import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -128,10 +130,12 @@ public class IChatFrontEndController {
     private FrontEndDTO convertToFrontEndDTO(ChatFrontEnd chatFrontEnd) {
         IAgentServer iAgentServer = null;
         DemandInfo demandInfo = null;
-        if (chatFrontEnd.getIAgentServerId() != null)
+        if (chatFrontEnd.getIAgentServerId() != null) {
             iAgentServer = iAgentServerService
                     .findIAgentServerById(chatFrontEnd.getIAgentServerId())
                     .get();
+        }
+
         if (chatFrontEnd.getDemandInfoId() != null)
             demandInfo = demandInfoService.findDemandInfoById(chatFrontEnd.getDemandInfoId()).get();
 

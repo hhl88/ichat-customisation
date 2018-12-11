@@ -68,6 +68,7 @@
 
 <script>
   import {SET_CURRENT_FRONT_END} from "../../../../../constants/mutation.type";
+  import {FETCH_IAGENT_SERVER} from '../../../../../constants/action.type'
 
   export default {
     name: 'ServerSetting',
@@ -112,6 +113,7 @@
       },
       testIAgentServer() {
         console.log(this.server);
+        this.$store.dispatch(FETCH_IAGENT_SERVER, this.server).then(res => console.log(res));
         // this.getServer(server)
       },
       // getServerSetting({connectionType, server}) {

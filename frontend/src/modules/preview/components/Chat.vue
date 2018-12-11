@@ -11,7 +11,8 @@
            'order': chatLayout.textInputType === '0' ? 2 : 1
            }"
       >
-        <div class="messenger-content pt-3">
+        <div class="messenger-content pt-3"
+             ref="messengerContent">
           <SingleMessage v-for="(message, index) in messages"
                          :msg="message"
                          :key="index"/>
@@ -67,6 +68,7 @@
       return {
         messages: [],
         chatLayout: null,
+        chatFrontEnd: null,
         isLoading: true
       }
     },
@@ -205,7 +207,7 @@
         this.setImage(this.chatLayout.logo, 'logoChat')
         this.setImage(this.chatLayout.backgroundImg, 'messengerBody')
         this.setImageStyle(this.chatLayout.backgroundType, 'messengerBody')
-        this.setFont(this.chatLayout.font, 'chatWindowWrapper')
+        this.setFont(this.chatLayout.font, 'messengerContent')
       },
       sendMessage () {
       },
