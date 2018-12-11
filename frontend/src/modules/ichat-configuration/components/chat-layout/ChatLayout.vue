@@ -53,7 +53,7 @@
         </div>
         <label class="mt-2">Logo</label>
         <div class="col-11 border-option">
-          <ImageUploader class="no-border my-2" @imageUploader="changeLogo"/>
+          <ImageCropper @imageUploader="changeLogo" class="no-border my-2"/>
           <img v-if="layout.logo" :src="layout.logo" style="width: 200px; height: 150px; border: 1px solid gray">
 
         </div>
@@ -121,16 +121,17 @@
 
 <script>
   import ImageUploader from '../../../../components/ImageUploader'
-  import VueCropper from 'vue-cropperjs';
-  import {SET_CURRENT_LAYOUT} from "../../../../constants/mutation.type";
-  import {CHAT_LAYOUT_CREATE, CHAT_LAYOUT_UPDATE} from "../../../../constants/action.type";
+  import ImageCropper from '../../../../components/ImageCropper'
+  import {SET_CURRENT_LAYOUT} from '../../../../constants/mutation.type'
+  import {CHAT_LAYOUT_CREATE, CHAT_LAYOUT_UPDATE} from '../../../../constants/action.type'
 
   export default {
     name: 'ChatLayout',
     components: {
-      ImageUploader
+      ImageUploader,
+      ImageCropper
     },
-    data() {
+    data () {
       return {
         layout: {
           id: '',
@@ -158,32 +159,31 @@
         ]
       }
     },
-    mounted() {
-      this.getCurrentLayoutFromStore();
+    mounted () {
+      this.getCurrentLayoutFromStore()
     },
-    created() {
+    created () {
 
       this.$store.subscribe(((mutation, state) => {
         if (mutation.type === SET_CURRENT_LAYOUT) {
-          this.getCurrentLayoutFromStore();
+          this.getCurrentLayoutFromStore()
         }
 
-      }));
+      }))
 
     },
     methods: {
 
-      getCurrentLayoutFromStore() {
-        console.log('layout', this.$store.getters.currentChatLayout);
-        console.log('frontend', this.$store.getters.currentChatFrontEnd);
+      getCurrentLayoutFromStore () {
+        console.log('layout', this.$store.getters.currentChatLayout)
+        console.log('frontend', this.$store.getters.currentChatFrontEnd)
 
-        const currentLayout = this.$store.getters.currentChatLayout;
+        const currentLayout = this.$store.getters.currentChatLayout
         if (currentLayout) {
-          if (currentLayout.id){
-            this.layout = this.$store.getters.currentChatLayout;
+          if (currentLayout.id) {
+            this.layout = this.$store.getters.currentChatLayout
             this.layout.font.fontStyles.forEach(styles => this.buttons[parseInt(styles)].state = true)
-          }
-          else
+          } else {
             this.layout = {
               id: '',
               name: '',
@@ -198,23 +198,25 @@
                 fontSize: 14,
                 fontStyles: []
               }
-            };
+            }
+          }
         }
       },
-      changeLogo(image) {
-        this.layout.logo = image
+      changeLogo (image) {
+        this.layout.logo = image[1]
         console.log('logo', this.layout.logo)
       },
-      changeBackground(image) {
+      changeBackground (image) {
         this.layout.backgroundImg = image
       },
-      saveLayout() {
+      saveLayout () {
         const fontStyles = []
         for (let i = 0; i < this.buttons.length; i++) {
-          if (this.buttons[i].state)
-            fontStyles.push(i);
+          if (this.buttons[i].state) {
+            fontStyles.push(i)
+          }
         }
-        this.layout.font.fontStyles = fontStyles;
+        this.layout.font.fontStyles = fontStyles
 
         if (this.layout.id) {
           this.$store
