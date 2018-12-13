@@ -1,0 +1,23 @@
+{
+  "SignIn": {
+    "Header": "Login",
+    "Error": "Wrong email or password",
+    "EmailPlaceholder": "Email",
+    "PasswordPlaceholder": "Password",
+    "Button": "Log In",
+    "SignUpInvitation": "Don't have an account? ",
+    "SignUp": "Sign up"
+  },
+  "SignUp": {
+    "Header": "Registration",
+    "EmailPlaceholder": "Email",
+    "EmailError": "Email is not valid",
+    "PasswordPlaceholder": "Password",
+    "PassError": "Password is not valid",
+    "RetypedPassPlaceholder": "Repeat password",
+    "PassNoMatch": "Password does not match the confirm password",
+    "Button": "Sign up",
+    "SignInInvitation": "Already have an account? ",
+    "SignIn": "Sign in"
+  }
+}

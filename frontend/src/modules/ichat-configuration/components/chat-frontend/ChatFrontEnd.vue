@@ -29,12 +29,13 @@
       </div>
     </div>
 
-    <div class="button-group col-7 d-flex justify-content-around">
+    <div class="button-group col-7  justify-content-around align-self-end">
       <button class="">Abrechen</button>
       <button @click="changeStep(0)" v-if="step === 1">Zurück</button>
       <button @click="changeStep(1)" v-if="step === 0">Weiter</button>
       <button @click.prevent="saveSetting()">Speichern</button>
     </div>
+
   </div>
 </template>
 
@@ -75,7 +76,7 @@
     methods: {
       getCurrentChatFrontEnd() {
         this.frontEndSetting = this.$store.getters.currentChatFrontEnd;
-        if(this.frontEndSetting){
+        if (this.frontEndSetting) {
           this.urlPath = this.frontEndSetting.urlPath;
           this.step = 0;
         }
@@ -103,7 +104,6 @@
         item.demandInfo = {
           demandInfoItems: this.demandInfoList
         };
-        console.log('item', item);
         if (item.id) {
           this.$store
             .dispatch(CHAT_FRONTEND_UPDATE, item)

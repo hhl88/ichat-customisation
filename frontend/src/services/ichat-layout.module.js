@@ -21,19 +21,19 @@ const state = {
 }
 
 const getters = {
-  currentChatLayout (state) {
+  currentChatLayout(state) {
     return JSON.parse(JSON.stringify(state.chatLayout))
   },
-  layoutList (state) {
+  layoutList(state) {
     return JSON.parse(JSON.stringify(state.chatLayoutList))
   },
-  selectedChatLayout (state) {
+  selectedChatLayout(state) {
     return JSON.parse(JSON.stringify(state.selectedChatLayout))
   }
 }
 
 const actions = {
-  [CHAT_LAYOUT_CREATE] (context, layout) {
+  [CHAT_LAYOUT_CREATE](context, layout) {
     return new Promise((resolve, reject) => {
       IChatService
         .createLayout(layout)
@@ -49,7 +49,7 @@ const actions = {
         })
     })
   },
-  [CHAT_LAYOUT_UPDATE] (context, chatFrontEndSetting) {
+  [CHAT_LAYOUT_UPDATE](context, chatFrontEndSetting) {
     return new Promise((resolve, reject) => {
       IChatService
         .updateLayout(chatFrontEndSetting.id, chatFrontEndSetting)
@@ -62,7 +62,7 @@ const actions = {
         })
     })
   },
-  [FETCH_CHAT_LAYOUT] (context) {
+  [FETCH_CHAT_LAYOUT](context) {
 
     return new Promise((resolve, reject) => {
       IChatService
@@ -76,7 +76,7 @@ const actions = {
         })
     })
   },
-  [GET_CHAT_LAYOUT] (context, chatLayoutId) {
+  [GET_CHAT_LAYOUT](context, chatLayoutId) {
     return new Promise((resolve, reject) => {
       IChatService
         .getChatLayout(chatLayoutId)
@@ -85,7 +85,7 @@ const actions = {
           resolve(data)
         })
         .catch(({response}) => {
-          if(response) {
+          if (response) {
             context.commit(SET_ERROR, response.data.errors)
 
           }
@@ -95,27 +95,26 @@ const actions = {
 }
 
 const mutations = {
-  [SET_ERROR] (state, error) {
+  [SET_ERROR](state, error) {
     state.errors = error
   },
-  [SET_LAYOUT_LIST] (state, list) {
+  [SET_LAYOUT_LIST](state, list) {
     state.chatLayoutList = JSON.parse(JSON.stringify(list))
   },
-  [ADD_ITEM_TO_LAYOUT_LIST] (state, item) {
+  [ADD_ITEM_TO_LAYOUT_LIST](state, item) {
     state.chatLayoutList.push(JSON.parse(JSON.stringify(item)))
   },
-  [UPDATE_ITEM_LAYOUT_LIST] (state, item) {
+  [UPDATE_ITEM_LAYOUT_LIST](state, item) {
     const index = state.chatLayoutList.findIndex(layout => layout.id === item.id)
     state.chatLayoutList[index] = JSON.parse(JSON.stringify(item))
   },
-  [SET_CURRENT_LAYOUT] (state, chatLayout) {
+  [SET_CURRENT_LAYOUT](state, chatLayout) {
     state.chatLayout = JSON.parse(JSON.stringify(chatLayout))
   },
-  [SET_LAYOUT] (state, chatLayout) {
-    console.log('SET_LAYOUT', chatLayout)
+  [SET_LAYOUT](state, chatLayout) {
     state.selectedChatLayout = JSON.parse(JSON.stringify(chatLayout))
   },
-  [UNSELECT_CURRENT_LAYOUT] (state) {
+  [UNSELECT_CURRENT_LAYOUT](state) {
     state.chatLayout = null
   }
 }

@@ -9,25 +9,33 @@
           Layout
         </div>
         <div class="col-2 px-0 text-center">
-          <button type="button" class="add-button" @click="addItem(0)">
+          <button type="button"
+                  class="add-button"
+                  @click="addItem(0)">
             +
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatLayoutList" :name-default="'layout'" @changeItem="onSelectItemLayout"/>
+      <!--:collapseAll="collapseAll"-->
+      <!--:key="a"-->
+      <NameInfoList :name-info-list="chatLayoutList"
+                    :name-default="'layout'"
+                    @changeItem="onSelectItemLayout"/>
 
       <div class="chat-frontend list-header row mx-0 vertical-align">
         <div class="header col-10" @click="onSelectFrontend">
           Chat-Frontends
         </div>
         <div class="col-2 px-0 text-center">
-          <button class="add-button" @click="addItem(1)">
+          <button class="add-button"
+                  @click="addItem(1)">
             +
           </button>
         </div>
       </div>
-      <NameInfoList :name-info-list="chatFrontEndList" :name-default="'frontEnd'" @changeItem="onSelectItemFrontend"/>
-
+      <NameInfoList :name-info-list="chatFrontEndList"
+                    :name-default="'frontEnd'"
+                    @changeItem="onSelectItemFrontend"/>
 
       <div class="chat-layout list-header">
         <div class="header col">
@@ -61,18 +69,16 @@
         default: () => []
       }
     },
-    mounted () {
-      console.log('chatFrontEndList', this.chatFrontEndList)
+    mounted() {
     },
     methods: {
-      onSelectLayout () {
+      onSelectLayout() {
         // this.$emit('changeView', 'layout')
       },
-      onSelectFrontend () {
-        // console.log('changeview')
+      onSelectFrontend() {
         // this.$emit('changeView', 'frontend')
       },
-      addItem (choose) {
+      addItem(choose) {
         if (choose === 0) {
           if (this.chatLayoutList == null) {
             this.chatLayoutList = []
@@ -85,12 +91,12 @@
           this.chatFrontEndList.push({id: null, name: 'FrontEnd'})
         }
       },
-      onSelectItemLayout (item) {
+      onSelectItemLayout(item) {
         this.$store.commit(UNSELECT_CURRENT_FRONT_END)
         this.$store.commit(SET_CURRENT_LAYOUT, item)
         this.$emit('changeItem', {'view': 'layout'})
       },
-      onSelectItemFrontend (item) {
+      onSelectItemFrontend(item) {
         this.$store.commit(UNSELECT_CURRENT_LAYOUT)
         this.$store.commit(SET_CURRENT_FRONT_END, item)
         this.$emit('changeItem', {'view': 'frontend'})

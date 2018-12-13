@@ -43,7 +43,6 @@
         }
       },
       getDemandInfo: function (demandInfoList) {
-        console.log('demand from List', demandInfoList)
         this.demandList = demandInfoList
         this.$emit('getDemandInfo', demandInfoList)
       },

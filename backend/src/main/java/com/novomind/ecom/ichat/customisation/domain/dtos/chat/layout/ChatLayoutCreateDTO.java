@@ -4,6 +4,7 @@ import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
@@ -30,14 +31,14 @@ public class ChatLayoutCreateDTO {
   private ButtonDisplay buttonType;
 
   @ApiModelProperty
-  private String logo;
+  private MultipartFile logo;
 
   @ApiModelProperty(required = true)
   @NotNull
   private BackgroundDisplay backgroundType;
 
   @ApiModelProperty
-  private String backgroundImg;
+  private MultipartFile backgroundImg;
 
   @ApiModelProperty(required = true)
   @NotNull

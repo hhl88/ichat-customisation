@@ -1,15 +1,8 @@
 <template>
   <div class="row mx-0 my-1"
-       :class="{
-       'justify-content-start' : !msg.isSystem && !msg.isAgent,
-       'justify-content-end': !msg.isSystem && msg.isAgent,
-       'justify-content-center': msg.isSystem
-       }">
+       :class="{'justify-content-start' : !msg.isSystem && !msg.isAgent, 'justify-content-end': !msg.isSystem && msg.isAgent, 'justify-content-center': msg.isSystem}">
     <div class="col-auto msg-bubble"
-         :class="{
-         'my-msg' : !msg.isSystem && msg.isAgent,
-         'their-msg': !msg.isSystem && !msg.isAgent,
-         'system-msg': msg.isSystem}">
+         :class="{'my-msg' : !msg.isSystem && msg.isAgent, 'their-msg': !msg.isSystem && !msg.isAgent, 'system-msg': msg.isSystem}">
       <div class="row" v-if="!msg.isSystem">
         <div class="col-auto">{{ msg.name }}</div>
         <div class="col text-right">{{ msg.email }}</div>

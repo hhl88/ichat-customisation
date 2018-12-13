@@ -57,7 +57,7 @@ public class IChatUserController {
             return ResponseEntity.status(HttpStatus.OK).body("Successfully created user");
         }
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("dupplicated email");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("duplicated email");
     }
 
     @ApiOperation(value = "Update password", response = ResponseEntity.class)

@@ -8,21 +8,39 @@ import {
 
 export const IChatService = {
 
-  createFrontEnd (chatFrontEnd) {
-    console.log('chatfrontend', chatFrontEnd);
+  createFrontEnd(chatFrontEnd) {
     return ApiService.post(ICHAT_FRONTEND_API, chatFrontEnd, null)
   },
 
-  createLayout (layout) {
+  createLayout(layout) {
     return ApiService.post(ICHAT_LAYOUT_API, layout, null)
   },
 
-  updateFrontEnd (id, params) {
+  updateFrontEnd(id, params) {
     return ApiService.put(ICHAT_FRONTEND_API, id, params)
   },
 
-  updateLayout (id, params) {
-    return ApiService.put(ICHAT_LAYOUT_API, id, params)
+  updateLayout(id, params) {
+    const formData = new FormData;
+    Object.keys(params).forEach(key => {
+      if (key !== 'font' && key !== 'logo') {
+        formData.append(key, params[key])
+      } else if (key === 'font') {
+        formData.append(key, JSON.stringify(params[key]))
+      } else if (key === 'logo'){
+        console.log('logo', params[key])
+        formData.append('logo', params[key], 'logo.png')
+        console.log('logoform', formData.get('logo'))
+
+      }
+    })
+    let config = {
+      header : {
+        'Content-Type' : 'multipart/form-data'
+      }
+    }
+
+    return ApiService.put(ICHAT_LAYOUT_API, id, params, config)
   },
 
   getChatFrontends() {

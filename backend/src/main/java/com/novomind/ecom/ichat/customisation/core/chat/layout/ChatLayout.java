@@ -34,8 +34,6 @@ public class ChatLayout implements Serializable {
                 .displayType(dto.getDisplayType())
                 .textInputType(dto.getTextInputType())
                 .buttonType(dto.getButtonType())
-                .logo(dto.getLogo())
-                .backgroundImg(dto.getBackgroundImg())
                 .backgroundType(dto.getBackgroundType())
                 .font(dto.getFont())
                 .build();
@@ -47,8 +45,6 @@ public class ChatLayout implements Serializable {
                 .displayType(dto.getDisplayType())
                 .textInputType(dto.getTextInputType())
                 .buttonType(dto.getButtonType())
-                .logo(dto.getLogo())
-                .backgroundImg(dto.getBackgroundImg())
                 .backgroundType(dto.getBackgroundType())
                 .font(dto.getFont())
                 .build();

@@ -82,10 +82,7 @@ const mutations = {
   },
   [UPDATE_ITEM_FRONT_END_LIST](state, item) {
     const index = state.chatFrontEndList.findIndex(frontend => frontend.id === item.id);
-    console.log('updateItem List', state.chatFrontEndList);
-    console.log('updateItem', index, item);
     state.chatFrontEndList[index] = JSON.parse(JSON.stringify(item));
-    console.log('updateItem List', state.chatFrontEndList);
   },
   [SET_CURRENT_FRONT_END](state, chatFrontEnd) {
     state.chatFrontEnd = JSON.parse(JSON.stringify(chatFrontEnd));

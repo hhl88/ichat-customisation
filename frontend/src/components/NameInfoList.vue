@@ -44,7 +44,6 @@
       }
     },
     mounted() {
-      console.log('list', this.nameInfoList)
     },
     methods: {
       onSelect(nameInfo) {
@@ -64,8 +63,8 @@
           item = this.$store.getters.currentChatLayout;
           if (item) {
             item.name = name;
-            this.$store.commit(UPDATE_ITEM_LAYOUT_LIST, item);
             this.$store.commit(SET_CURRENT_LAYOUT, item);
+            this.$store.commit(UPDATE_ITEM_LAYOUT_LIST, item);
           }
         }
       }

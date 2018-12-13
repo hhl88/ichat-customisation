@@ -5,25 +5,17 @@
          ref="logoChat">
     </div>
     <div class="messenger-wrapper">
-      <div class="messenger-body"
+      <div class="messenger-body pt-3"
            ref="messengerBody"
-           :style="{
-           'order': chatLayout.textInputType === '0' ? 2 : 1
-           }"
-      >
-        <div class="messenger-content pt-3"
-             ref="messengerContent">
-          <SingleMessage v-for="(message, index) in messages"
-                         :msg="message"
-                         :key="index"/>
-        </div>
+           :style="{'order': chatLayout.textInputType === '0' ? 2 : 1}">
+        <SingleMessage v-for="(message, index) in messages"
+                       :msg="message"
+                       :key="index"/>
       </div>
       <div class="input-area row mx-0 vertical-align"
            :class="chatLayout.buttonType === '0' ? 'in-row' : 'in-column'"
            ref="messengerFooter"
-           :style="{
-            'order': chatLayout.textInputType === '1' ? 1 : 2
-           }">
+           :style="{'order': chatLayout.textInputType === '1' ? 1 : 2}">
         <textarea class="input-text"
                   :class="chatLayout.buttonType === '0' ? 'by-row' : 'by-side'"
                   placeholder="Write something..."
@@ -58,29 +50,22 @@
     components: {
       SingleMessage
     },
-    props: {
-      isPopUp: {
-        type: Boolean,
-        default: false
-      }
-    },
-    data () {
+    data() {
       return {
         messages: [],
         chatLayout: null,
-        chatFrontEnd: null,
         isLoading: true
       }
     },
-    updated () {
+    updated() {
       this.$nextTick(this.changeStyle)
     },
-    mounted () {
+    mounted() {
       this.loadData()
     },
-    created () {
+    created() {
       this.$store
-        .dispatch(GET_CHAT_LAYOUT, 'kzJ3mf0ABY')
+        .dispatch(GET_CHAT_LAYOUT, 'HRqm0IlqKG')
         .then((res) => {
         })
 
@@ -194,7 +179,7 @@
 
     },
     methods: {
-      loadData () {
+      loadData() {
         this.$store.subscribe(((mutation, state) => {
           if (mutation.type === SET_LAYOUT) {
             this.chatLayout = this.$store.getters.selectedChatLayout
@@ -202,22 +187,22 @@
           }
         }))
       },
-      changeStyle () {
+      changeStyle() {
         this.setDimension()
         this.setImage(this.chatLayout.logo, 'logoChat')
         this.setImage(this.chatLayout.backgroundImg, 'messengerBody')
         this.setImageStyle(this.chatLayout.backgroundType, 'messengerBody')
-        this.setFont(this.chatLayout.font, 'messengerContent')
+        this.setFont(this.chatLayout.font, 'chatWindowWrapper')
       },
-      sendMessage () {
+      sendMessage() {
       },
-      closeChat () {
+      closeChat() {
         this.$emit('closeChat', null)
       },
-      setImage (img, refName) {
+      setImage(img, refName) {
         this.$refs[refName].style.backgroundImage = 'url(' + img + ')'
       },
-      convertStyle (numStyle) {
+      convertStyle(numStyle) {
         switch (numStyle) {
           case '0':
             return 'bold'
@@ -229,7 +214,7 @@
             return ''
         }
       },
-      convertImageStyle (numStyle) {
+      convertImageStyle(numStyle) {
         switch (numStyle) {
           case '0':
             return 'cover'
@@ -239,10 +224,10 @@
             return 'auto'
         }
       },
-      setImageStyle (numStyle, refName) {
+      setImageStyle(numStyle, refName) {
         this.$refs[refName].style.backgroundSize = this.convertImageStyle(numStyle)
       },
-      setFont (font, refName) {
+      setFont(font, refName) {
         let fontStyle = ''
         let isUnderline = false
         for (let numStyle of font.fontStyles) {
@@ -258,8 +243,9 @@
           this.$refs[refName].style.textDecoration = 'underline'
         }
       },
-      setDimension () {
+      setDimension() {
         let chatWindow = document.getElementById('chatWindow')
+        let maxHeightWrapper = window.innerHeight;
         if (chatWindow) {
           chatWindow = window.getComputedStyle(chatWindow)
         }
@@ -268,11 +254,13 @@
 
         const heightLogo = +logoChat.height.substr(0, logoChat.height.indexOf('p'))
         const heightFooter = +messengerFooter.height.substr(0, messengerFooter.height.indexOf('p'))
-        let maxHeightWrapper = 1024
         if (chatWindow) {
           maxHeightWrapper = +chatWindow.maxHeight.substr(0, chatWindow.maxHeight.indexOf('p'))
         }
+        console.log('maxHeightWrapper', maxHeightWrapper, heightLogo, heightFooter)
         this.$refs.messengerBody.style.maxHeight = (maxHeightWrapper - heightLogo - heightFooter) + 'px'
+
+
       }
     }
   }
@@ -289,7 +277,6 @@
     flex-direction: column;
   }
 
-
   .logo-chat {
     width: 100%;
     height: 100px;
@@ -299,6 +286,8 @@
     border-bottom: 1px solid;
     position: sticky;
     z-index: 2;
+    margin: 0 auto;
+    right: 0;
     border-radius: 5px 5px 0 0;
   }
 

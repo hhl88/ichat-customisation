@@ -1,0 +1,6 @@
+<main>
+  <div class="page-wrapper" [@routeAnimations]="this.router.url ==='/' && o.isActivated && o.activatedRoute.routeConfig.path" [ngClass]="{'no-mtop' : isOnHomepage}" >
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+</main>
+

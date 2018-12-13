@@ -3,33 +3,29 @@
     <div class="top-header">
       Header
     </div>
-    <div class="main mt-4">
-      <div class="row">
-        <div class="col-4">
-          asdas
-        </div>
-        <div class="col-8">
-          <Chat class="chat-window"
-                :class="isFixed ? 'chat-popup' : 'integrate'"
-                id="chatWindow"
-                ref="chatWindow"
-                :is-pop-up="isPopUp"
-                v-if="opened && !isPopUp"
-                @closeChat="closeChat"/>
-        </div>
-      </div>
+    <div class="main">
       <div class="button-group"
            v-if="!opened">
+        <button class="open-button"
+                @click.prevent="openChat()">
+          Chat
+        </button>
+
         <button class="popup-button"
-                v-if="displayType === '2'"
                 @click.prevent="openPopup()">
           Chat Popup
         </button>
       </div>
-
+      <Chat class="chat-window"
+            :class="isFixed ? 'chat-popup' : 'integrate'"
+            id="chatWindow"
+            ref="chatWindow"
+            v-if="opened && !isPopUp"
+            @closeChat="closeChat"/>
     </div>
 
     <div class="footer">
+      <button @click.prevent="toggleChat">toggle chat</button>
     </div>
 
   </div>
@@ -37,8 +33,6 @@
 
 <script>
   import Chat from '../components/Chat'
-  import {GET_CHAT_LAYOUT} from '../../../constants/action.type'
-
 
   export default {
     name: 'Preview',
@@ -50,13 +44,8 @@
         isPopUp: false,
         isFixed: true,
         opened: false,
-        displayType: 0
+        chatLayout: null
       }
-    },
-    mounted () {
-    },
-    created() {
-      this.getChatLayout()
     },
     methods: {
       openChat () {
@@ -64,8 +53,8 @@
         this.isPopUp = false
       },
       openPopup () {
-        window.open('/chat', '', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=800,height=1024')
         this.isPopUp = true
+        window.open('/chat', '', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no')
       },
       closeChat () {
         this.opened = false
@@ -74,23 +63,6 @@
       toggleChat () {
         this.isFixed = !this.isFixed
         this.opened = !this.opened
-      },
-      getChatLayout() {
-        this.$store
-          .dispatch(GET_CHAT_LAYOUT, 'kzJ3mf0ABY')
-          .then((res) => {
-            console.log(res)
-            this.displayType = res.displayType
-            if(this.displayType === '0') {
-              this.opened = true
-              this.isFixed = false
-
-            } else if (this.displayType === '1') {
-              this.isFixed = true
-              this.opened = true
-
-            }
-          })
       }
     }
   }

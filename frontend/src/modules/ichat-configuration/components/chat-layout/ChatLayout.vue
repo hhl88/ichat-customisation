@@ -53,8 +53,8 @@
         </div>
         <label class="mt-2">Logo</label>
         <div class="col-11 border-option">
-          <ImageCropper @imageUploader="changeLogo" class="no-border my-2"/>
-          <img v-if="layout.logo" :src="layout.logo" style="width: 200px; height: 150px; border: 1px solid gray">
+          <ImageUploader class="no-border my-2" :max-width="600" :max-height="200" @imageUploader="changeLogo"/>
+          <img v-if="logo" :src="logo" style="width: 200px; height: 150px; border: 1px solid gray">
 
         </div>
 
@@ -71,8 +71,8 @@
               <label>ausfüllend</label>
             </div>
           </div>
-          <ImageUploader class="no-border mb-2" @imageUploader="changeBackground"/>
-          <img v-if="layout.backgroundImg" :src="layout.backgroundImg"
+          <ImageUploader class="no-border mb-2" :max-width="300" :max-height="300" @imageUploader="changeBackground"/>
+          <img v-if="backgroundImg" :src="backgroundImg"
                style="width: 200px; height: 150px; border: 1px solid gray">
 
         </div>
@@ -100,8 +100,8 @@
             <div class="col-4 my-1 text-center">
               <b-button-group class="my-2 button-group" size="sm">
                 <b-button class="font-style"
-                          v-for="(btn, k) in buttons"
-                          :key="k"
+                          v-for="(btn, index) in buttons"
+                          :key="index"
                           :pressed.sync="btn.state">
                   {{ btn.caption }}
                 </b-button>
@@ -121,17 +121,16 @@
 
 <script>
   import ImageUploader from '../../../../components/ImageUploader'
-  import ImageCropper from '../../../../components/ImageCropper'
-  import {SET_CURRENT_LAYOUT} from '../../../../constants/mutation.type'
-  import {CHAT_LAYOUT_CREATE, CHAT_LAYOUT_UPDATE} from '../../../../constants/action.type'
+  import VueCropper from 'vue-cropperjs';
+  import {SET_CURRENT_LAYOUT} from "../../../../constants/mutation.type";
+  import {CHAT_LAYOUT_CREATE, CHAT_LAYOUT_UPDATE} from "../../../../constants/action.type";
 
   export default {
     name: 'ChatLayout',
     components: {
-      ImageUploader,
-      ImageCropper
+      ImageUploader
     },
-    data () {
+    data() {
       return {
         layout: {
           id: '',
@@ -156,34 +155,36 @@
           {caption: 'B', state: false},
           {caption: 'U', state: false},
           {caption: 'I', state: false}
-        ]
+        ],
+        logo: '',
+        backgroundImg: '',
       }
     },
-    mounted () {
-      this.getCurrentLayoutFromStore()
+    mounted() {
+      this.getCurrentLayoutFromStore();
     },
-    created () {
+    created() {
 
       this.$store.subscribe(((mutation, state) => {
         if (mutation.type === SET_CURRENT_LAYOUT) {
-          this.getCurrentLayoutFromStore()
+          this.getCurrentLayoutFromStore();
         }
 
-      }))
+      }));
 
     },
     methods: {
 
-      getCurrentLayoutFromStore () {
-        console.log('layout', this.$store.getters.currentChatLayout)
-        console.log('frontend', this.$store.getters.currentChatFrontEnd)
-
-        const currentLayout = this.$store.getters.currentChatLayout
+      getCurrentLayoutFromStore() {
+        const currentLayout = this.$store.getters.currentChatLayout;
         if (currentLayout) {
           if (currentLayout.id) {
-            this.layout = this.$store.getters.currentChatLayout
+            this.layout = this.$store.getters.currentChatLayout;
             this.layout.font.fontStyles.forEach(styles => this.buttons[parseInt(styles)].state = true)
+
           } else {
+
+
             this.layout = {
               id: '',
               name: '',
@@ -198,25 +199,30 @@
                 fontSize: 14,
                 fontStyles: []
               }
-            }
+            };
           }
+          this.logo = this.layout.logo
+          this.backgroundImg = this.layout.backgroundImg
         }
       },
-      changeLogo (image) {
-        this.layout.logo = image[1]
-        console.log('logo', this.layout.logo)
+      changeLogo(imageFile) {
+        this.layout.logo = imageFile[0]
+        this.logo = imageFile[1]
+        console.log(this.layout.logo)
+
       },
-      changeBackground (image) {
-        this.layout.backgroundImg = image
+      changeBackground(imageFile) {
+        this.layout.backgroundImg = imageFile[0]
+        this.backgroundImg = imageFile[1]
       },
-      saveLayout () {
+      saveLayout() {
         const fontStyles = []
+        console.log('layoit', this.layout)
         for (let i = 0; i < this.buttons.length; i++) {
-          if (this.buttons[i].state) {
-            fontStyles.push(i)
-          }
+          if (this.buttons[i].state)
+            fontStyles.push(i);
         }
-        this.layout.font.fontStyles = fontStyles
+        this.layout.font.fontStyles = fontStyles;
 
         if (this.layout.id) {
           this.$store

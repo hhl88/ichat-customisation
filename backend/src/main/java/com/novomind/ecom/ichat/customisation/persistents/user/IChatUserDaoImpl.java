@@ -38,6 +38,7 @@ public class IChatUserDaoImpl extends BaseDao implements IChatUserDao {
 
     @Override
     public Optional<IChatUser> findIChatUserByEmail(String email) {
+        System.out.println("email "+ email);
         String query = "Select * FROM " + ICHAT_USER_TABLE + " WHERE email LIKE ?";
         List<IChatUser> list = getJdbcTemplate().query(query, new IChatUserRowMapper(), email);
         IChatUser user = DataAccessUtils.singleResult(list);

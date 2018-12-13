@@ -38,15 +38,15 @@ module.exports = {
     'prefer-arrow-callback': 2,
 
     //'indent': ['error', 4, {'SwitchCase': 1}],
-/*    'object-curly-spacing': ['error', 'never'],
-    'space-before-function-paren': ['error', 'never'],
-    'space-before-blocks': ['error', 'always'],
-    'space-infix-ops': ['error', {'int32Hint': false}],
-    'no-alert': 'error',
-    'no-dupe-args': 'error',
-    'no-duplicate-case': 'error',
-    'no-duplicate-imports': 'error',
-    'no-empty': 'error',*/
+    /*    'object-curly-spacing': ['error', 'never'],
+        'space-before-function-paren': ['error', 'never'],
+        'space-before-blocks': ['error', 'always'],
+        'space-infix-ops': ['error', {'int32Hint': false}],
+        'no-alert': 'error',
+        'no-dupe-args': 'error',
+        'no-duplicate-case': 'error',
+        'no-duplicate-imports': 'error',
+        'no-empty': 'error',*/
     'max-len': 'off',
     'vue/attributes-order': 'off',
     'vue/max-attributes-per-line': 'off',
@@ -54,9 +54,9 @@ module.exports = {
     'max-line-length': 'off',
     'vue/require-prop-types': 'off',
     'vue/no-dupe-keys': 'off',
-    'vue/attribute-hyphenation' : 'off',
+    'vue/attribute-hyphenation': 'off',
     'no-unused-vars': 0,
-    'curly': 0
-
+    'curly': 0,
+    'vue/html-self-closing': 'off'
   }
 }

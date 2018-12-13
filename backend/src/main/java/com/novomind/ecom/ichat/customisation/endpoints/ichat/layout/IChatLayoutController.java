@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,7 +80,7 @@ public class IChatLayoutController {
             @ApiResponse(code = 401, message = "No Permission"),
             @ApiResponse(code = 404, message = "Layout is not found")
     })
-    @PutMapping("/{id}")
+    @PutMapping(value= "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateChatLayout(@PathVariable(value = "id") String id,
                                               @Valid @RequestBody ChatLayoutUpdateDTO dto,
                                               Principal principal) throws UserNotFoundException, ChatLayoutNotFoundException, NoPermissionException {

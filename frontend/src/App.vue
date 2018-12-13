@@ -19,9 +19,6 @@
 </script>
 
 <style>
-  /*body {*/
-  /*height: 100vh;*/
-  /*}*/
   html {
     padding-bottom: 0;
   }

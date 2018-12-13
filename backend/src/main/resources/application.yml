@@ -11,17 +11,17 @@ spring:
     password: ${DB_USER:example}
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
-    data: mysql.sql
   jpa:
     properties:
       hibernate:
+        ddl-auto: validate
         jdbc:
           lob:
             non_contextual_creation: true
   security:
     oauth2:
       client:
-        access-token-uri: http://0.0.0.0:9990/api/v1/oauth/token
+        access-token-uri: http://0.0.0.0:9990/oauth/token
       resource:
         userInfoUri: http://0.0.0.0:9990/api/v1/auth/me
         

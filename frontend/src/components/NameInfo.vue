@@ -20,7 +20,7 @@
     props: {
       nameInfo: {
         type: Object,
-        default () {
+        default() {
           return {
             id: '',
             name: '',
@@ -32,7 +32,7 @@
         default: ''
       }
     },
-    data () {
+    data() {
       return {
         edit: false,
         name: this.nameInfo.name
@@ -42,14 +42,12 @@
       this.$nextTick(this.updateVal);
     },
     methods: {
-      updateVal () {
+      updateVal() {
         this.nameInfo.name = this.name;
-
       },
       changeVal() {
         this.edit = false
         this.$emit('updateName', this.name)
-
         this.updateVal();
       }
 

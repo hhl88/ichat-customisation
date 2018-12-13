@@ -25,7 +25,6 @@
       },
     },
     mounted() {
-      console.log('demandInfo', this.demandInfo);
     }
 
   }

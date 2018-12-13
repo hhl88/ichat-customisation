@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
@@ -31,14 +32,14 @@ public class ChatLayoutUpdateDTO {
   private ButtonDisplay buttonType;
 
   @ApiModelProperty
-  private String logo;
+  private MultipartFile logo;
 
   @ApiModelProperty(required = true)
   @NotNull
   private BackgroundDisplay backgroundType;
 
   @ApiModelProperty
-  private String backgroundImg;
+  private MultipartFile backgroundImg;
 
   @ApiModelProperty(required = true)
   @NotNull
