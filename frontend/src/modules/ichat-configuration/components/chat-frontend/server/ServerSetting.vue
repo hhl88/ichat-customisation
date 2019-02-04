@@ -2,12 +2,11 @@
   <div class="container-wrapper">
     <div>
       <input type="radio" id="agentServer" value="0" v-model="type"
-             :change="$emit('getServerSetting', {type, server})">
+             :change="serverSettingChange(type, server)">
       <label for="agentServer">Eigenes iAgent System</label>
     </div>
     <div class="ml-4" v-if="type === '0'">
-      <form @submit.prevent="testIAgentServer(server)"
-            :change="$emit('getServerSetting', {type, server})">
+      <form :change="serverSettingChange(type, server)">
         <div class="row mx-0 mt-3 vertical-align">
           <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
             <label class="my-auto" for="address">iAgent URL (Chat API)</label>
@@ -53,12 +52,23 @@
             <input class="col-5" id="secret" type="text" v-model="server.secret" placeholder="CHAT">
           </div>
         </div>
-        <button class="ml-3 mt-3 mb-5">Testen</button>
+        <button class="ml-3 mt-3 mb-5" @click.prevent="testIAgentServer">
+          <span>Testen</span>
+
+
+
+        </button>
+        <img v-show="isClicked && isConnected" src="../../../../../assets/not_ok.svg">
+
+        <img v-show="isClicked && !isConnected" src="../../../../../assets/not_ok.svg">
+        <span v-if="isClicked">If Clicked</span>
+        <span v-if="!isClicked">If not Clicked</span>
+
       </form>
     </div>
     <div>
       <input type="radio" id="cloudSystem" value="1" v-model="type"
-             :change="$emit('getServerSetting', {type, server})">
+             :change="serverSettingChange(type, server)">
       <label for="cloudSystem">Cloud System</label>
     </div>
   </div>
@@ -81,12 +91,20 @@
           clientId: '',
           secret: ''
         },
-        type: '0'
+        type: '0',
+        isConnected: false,
+        isClicked: false
       }
     },
 
     mounted() {
       this.getCurrentSettingServer();
+    },
+    updated () {
+
+      this.$nextTick(this.updateValue)
+      console.log('updated run', 'isConnected', this.isConnected, 'isClicked', this.isClicked)
+
     },
     created() {
       this.$store.subscribe((mutation, state) => {
@@ -104,6 +122,16 @@
       })
     },
     methods: {
+      updateValue() {
+        this.isConnected = this.isConnected
+        this.isClicked = this.isClicked
+        console.log('updateValue ', 'isConnected', this.isConnected, 'isClicked', this.isClicked)
+      },
+      serverSettingChange(connectionType, server) {
+        this.isClicked = false
+        this.isConnected = false;
+        this.$emit('getServerSetting', {connectionType, server});
+      },
       getCurrentSettingServer() {
         const selectedChatFrontEnd = this.$store.getters.currentChatFrontEnd;
         if (selectedChatFrontEnd.id) {
@@ -112,9 +140,16 @@
         }
       },
       testIAgentServer() {
-        console.log(this.server);
-        this.$store.dispatch(FETCH_IAGENT_SERVER, this.server).then(res => console.log(res));
-        // this.getServer(server)
+        this.isClicked = true;
+        this.isConnected = false
+        this.$store.dispatch(FETCH_IAGENT_SERVER, this.server).then(res => {
+            if(res && res.hasOwnProperty('access_token')) {
+              this.isConnected = true
+            } else {
+              this.isConnected = false
+            }
+            console.log('isConnected', this.isConnected, 'isClicked', this.isClicked)
+        });
       },
       // getServerSetting({connectionType, server}) {
       //   this.connectionType = connectionType;

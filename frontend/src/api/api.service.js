@@ -27,10 +27,20 @@ const ApiService = {
   post (path, body, params) {
     console.log('Path', body)
     console.log('params', params)
+    if(params) {
+     /* return Vue.axios.post(`${path}`, body, {params: params['params'], headers: params['headers']}).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })*/
+      return Vue.axios.post(`${path}`, body, {params: params}).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })
+    } else {
+      return Vue.axios.post(`${path}`, body).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })
+    }
 
-    return Vue.axios.post(`${path}`, body, {params: params['params'], headers: params['headers']}).catch((error) => {
-      throw new Error(`[RWV] ApiService ${error}`)
-    })
+
   },
 
   get (path, id = '', subPath = '') {
