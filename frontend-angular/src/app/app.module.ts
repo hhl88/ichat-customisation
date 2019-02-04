@@ -14,6 +14,7 @@ import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatBadgeModule, MatCheckboxModule, MatIconModule, MatNativeDateModule, MatTableModule} from '@angular/material';
 import {CookieService} from 'ngx-cookie-service';
+import {TokenInterceptor} from 'core/services/token.interceptor';
 
 
 @NgModule({
@@ -53,6 +54,11 @@ import {CookieService} from 'ngx-cookie-service';
   ],
   providers: [
     CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent],
 

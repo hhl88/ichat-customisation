@@ -1,0 +1,44 @@
+<div class="container form-wrapper">
+  <div class="form-content">
+    <h4>Registrierung</h4>
+
+    <form class="w-100 mb-3" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+      <div class="form-group">
+        <input class="form-control flat-input flat-input-lg form-control-success w-100"
+               type="email"
+               placeholder="email"
+               formControlName="email">
+        <div class="input-error-text mt-2"
+             *ngIf="!form.controls['email'].valid && form.controls['email'].dirty">
+          E-Mail ist ungültig
+        </div>
+
+      </div>
+
+
+      <button type="button" class="btn btn-danger btn-block btn-lg" type="submit" [disabled]="form.invalid">
+        <span *ngIf="!isSigningUp; else signingUp">
+            Registrieren
+        </span>
+        <ng-template #signingUp>
+          <app-loading-spinner></app-loading-spinner>
+        </ng-template>
+      </button>
+
+    </form>
+    <div class="form-divider my-4"></div>
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <span>
+          Hast du schon ein Konto?
+        </span>
+        <label (click)="onSwitchToSignIn()">
+          Einloggen
+        </label>
+      </div>
+    </div>
+  </div>
+
+
+</div>

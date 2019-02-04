@@ -5,7 +5,7 @@ import {CommonModule} from '@angular/common';
 
 
 const routes: Routes = [
-
+  {path: '', loadChildren: 'entry/entry.module#EntryModule'},
 ];
 
 @NgModule({

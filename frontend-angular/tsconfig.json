@@ -32,6 +32,9 @@
       ],
       "core/*": [
         "app/core/*"
+      ],
+      "entry/*": [
+        "app/modules/entry/*"
       ]
     }
   },
