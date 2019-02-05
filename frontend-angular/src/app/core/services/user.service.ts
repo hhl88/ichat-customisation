@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import {AuthService} from 'core/authentication/authentication.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from 'environments/environment';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class UserService {
 
-  constructor(private httpClient: HttpClient, private authService: AuthService) {
+  constructor(private httpClient: HttpClient) {
   }
 
-  register(email: string) {
-    return this.httpClient.post(environment.userApi, { 'email': email});
+  register(email: string): Observable<HttpResponse<any>> {
+    return this.httpClient.post(environment.userApi, { 'email': email}, {responseType: 'text' as 'json', observe: 'response'});
   }
 
-  changePassword (data) {
-    return this.httpClient.put(environment.userApi, data);
+  changePassword (data): Observable<HttpResponse<any>> {
+    return this.httpClient.put(environment.userApi, data, {responseType: 'text' as 'json', observe: 'response'});
   }
 
 }

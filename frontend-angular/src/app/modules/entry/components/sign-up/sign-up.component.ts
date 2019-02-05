@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from 'core/authentication/authentication.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from 'core/services/user.service';
 import {Router} from '@angular/router';
 import {LOGIN_PAGE} from 'core/constants/routing.constants';
-import {catchError} from 'rxjs/operators';
+import {catchError, map, timeout, timeoutWith} from 'rxjs/operators';
+import {SwalComponent} from '@toverux/ngx-sweetalert2';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,6 +16,10 @@ import {catchError} from 'rxjs/operators';
 export class SignUpComponent implements OnInit {
   form: FormGroup;
   isSigningUp = false;
+
+  @ViewChild('userCreatedSwal') private userCreatedSwal: SwalComponent;
+  @ViewChild('userDuplicatedSwal') private userDuplicatedSwal: SwalComponent;
+  @ViewChild('signupErrorSwal') private signupErrorSwal: SwalComponent;
 
   constructor(private authService: AuthService,
               private userService: UserService,
@@ -35,9 +41,27 @@ export class SignUpComponent implements OnInit {
       this.form.get(key).markAsDirty();
     });
     this.isSigningUp = true;
-    this.userService.register(this.form.value.email).subscribe(res => {
-      console.log('register', res);
-    });
+
+    this.userService
+      .register(this.form.value.email)
+      .subscribe(res => {
+        if (res.status === 201) {
+          this.userCreatedSwal.show().then(() => {
+            this.form.reset();
+          });
+        }
+        this.isSigningUp = false;
+      }, (err) => {
+        if (err.status === 409) {
+          this.userDuplicatedSwal.show().then(() => {
+            this.form.reset();
+          });
+        } else {
+          this.signupErrorSwal.show().then(() => {
+          });
+        }
+        this.isSigningUp = false;
+      });
   }
 
 }

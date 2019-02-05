@@ -2,12 +2,12 @@ import {NgModule} from '@angular/core';
 import {
   MatButtonModule,
   MatCheckboxModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatMenuModule,
-  MatStepperModule,
+  MatStepperModule, MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
 
@@ -22,6 +22,8 @@ import {
     MatMenuModule,
     MatFormFieldModule,
     MatInputModule,
+    MatExpansionModule,
+    MatToolbarModule,
   ],
   exports: [
     MatTooltipModule,
@@ -32,7 +34,9 @@ import {
     MatButtonModule,
     MatMenuModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatExpansionModule,
+    MatToolbarModule,
   ]
 
 })

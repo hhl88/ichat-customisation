@@ -35,6 +35,9 @@
       ],
       "entry/*": [
         "app/modules/entry/*"
+      ],
+      "ichat/*": [
+        "app/modules/ichat/*"
       ]
     }
   },

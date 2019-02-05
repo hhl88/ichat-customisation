@@ -15,7 +15,8 @@ export class TokenInterceptor implements HttpInterceptor {
   loggedIn = false;
 
 
-  constructor(private authService: AuthService, private store: Store<fromRoot.State>) {
+  constructor(private authService: AuthService,
+              private store: Store<fromRoot.State>) {
     this.store.pipe(select(fromRoot.getUser)).subscribe(r => {
       this.loggedIn = r != null;
     });
@@ -23,18 +24,17 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
-
-    request = request.clone(
-      {
-        setHeaders: {
+    request = request.clone({
+        headers: new HttpHeaders({
           'Accept-Version': '1',
           'Accept': '*/*',
-          'Access-Control-Allow-Origin': '*',
-          'Content-Type': 'application/json, application/x-www-form-urlencoded',
-          'Access-Control-Allow-Headers': 'Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin'
-        }
-      }
-    );
+          'Access-Control-Allow-Origin': window.location.origin,
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
+          'Vary': 'Accept-Encoding',
+        })
+      });
     if (token != null) {
       request = request.clone({
         setHeaders: {
@@ -42,19 +42,6 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    request = request.clone({
-      headers: new HttpHeaders({
-        'Accept-Version': '1',
-        'Accept': '*/*',
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json, application/x-www-form-urlencoded',
-        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-        'Vary': 'Accept-Encoding',
-      })
-    });
-
-    console.log('request', request);
     //
     // return next.handle(request)
     //   .catch(error => {

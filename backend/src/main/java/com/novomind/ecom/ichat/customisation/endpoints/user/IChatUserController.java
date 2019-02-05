@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class IChatUserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved user"),
             @ApiResponse(code = 404, message = "User is not found")})
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public IChatUser getUserInfoById(@PathVariable String id) throws UserNotFoundException {
         log.info("get user ID");
@@ -42,29 +43,31 @@ public class IChatUserController {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
+
     @ApiOperation(value = "Create a user", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Successfully created user"),
             @ApiResponse(code = 409, message = "duplicated email"),
 
     })
-    @PostMapping
+    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         Optional<IChatUser> user = userManagementService.findIChatUserByEmail(userCreateDTO.getEmail());
         if (!user.isPresent()) {
             userManagementService.register(IChatUser.of(userCreateDTO));
-            return ResponseEntity.status(HttpStatus.OK).body("Successfully created user");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Successfully created user");
         }
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("dupplicated email");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("duplicated email");
     }
+
 
     @ApiOperation(value = "Update password", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated user"),
             @ApiResponse(code = 404, message = "User is not found")})
-    @PutMapping
+    @PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
             throws UserNotFoundException {

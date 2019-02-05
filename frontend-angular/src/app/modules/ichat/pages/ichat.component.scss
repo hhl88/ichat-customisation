@@ -1,0 +1,8 @@
+@import '../../../../assets/styles/variables';
+
+.ichat-wrapper {
+  .sidebar {
+    min-height: calc(100vh - #{$navbar_wrapper_height} - #{$footer_height} - 10px);
+    border-right: 1px solid black;
+  }
+}

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {EntryComponent} from './entry.component';
+import {EntryComponent} from './pages/entry.component';
 import {LOGIN_PAGE, SIGN_UP_PAGE} from 'core/constants/routing.constants';
-import {SignInComponent} from './sign-in/sign-in.component';
-import {SignUpComponent} from './sign-up/sign-up.component';
+import {SignInComponent} from './components/sign-in/sign-in.component';
+import {SignUpComponent} from './components/sign-up/sign-up.component';
 
 const routes: Routes = [
   {
@@ -11,10 +11,10 @@ const routes: Routes = [
     component: EntryComponent,
     children: [
       {
-        path: LOGIN_PAGE, component: SignInComponent
+        path: LOGIN_PAGE, component: SignInComponent, data: {isPublic: true}
       },
       {
-        path: SIGN_UP_PAGE, component: SignUpComponent
+        path: SIGN_UP_PAGE, component: SignUpComponent, data: {isPublic: true}
       },
     ],
   }

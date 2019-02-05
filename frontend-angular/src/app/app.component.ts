@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, CanActivate, Router, RoutesRecognized} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
+import {AuthGuard} from 'core/guard/auth.guard';
+import {AuthService} from 'core/authentication/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -14,23 +16,49 @@ export class AppComponent implements OnInit {
 
   isOnHomepage: boolean;
 
-  constructor(
-              private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer,
-              public router: Router) {
+  constructor(private matIconRegistry: MatIconRegistry,
+              private authService: AuthService,
+              private authGuard: AuthGuard,
+              public router: Router,
+              private route: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
-    this.router.events.subscribe(val => {
-      this.isOnHomepage = this.router.url === '/';
-    });
-    this.matIconRegistry.addSvgIcon(
-      'item-cart',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/img/svg/packaging-box.svg')
-    );
+    if(this.authService.getToken()) {
+      this.router.events.subscribe(event => {
+        if (event instanceof RoutesRecognized) {
+          console.log(event)
+          this.guardRoute(event);
+        }
+      });
+    } else {
+      this.router.navigate(['']);
+    }
+
+
   }
 
-  closeModal() {
+  private guardRoute(event: RoutesRecognized): void {
+    if (this.isPublic(event)) {
+      console.log('public');
+      return;
+    }
+
+    if (!this.callCanActivate(event, this.authGuard)) {
+      console.log('callCanActivate');
+      return;
+    }
+
+  }
+
+  private callCanActivate(event: RoutesRecognized, guard: CanActivate) {
+    console.log('snapshot', this.route.snapshot);
+    console.log('event', event);
+    return guard.canActivate(this.route.snapshot, event.state);
+  }
+
+  private isPublic(event: RoutesRecognized) {
+    return event.state.root.firstChild.data.isPublic;
   }
 }

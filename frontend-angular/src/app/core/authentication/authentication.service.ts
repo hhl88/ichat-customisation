@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
@@ -20,32 +20,14 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-
-    const options = {};
     return this.httpClient.post<any>(`${environment.tokenApi}`, null, {
       params: new HttpParams()
-        .set('email', email)
+        .set('username', email)
         .set('password', password)
         .set('grant_type', 'password')
         .set('client_id', 'clientid')
         .set('client_secret', 'secret')
-    })
-      .pipe(
-        tap(r => {
-          if (r.body === null) {
-            // console.log('login failed');
-            this.logout();
-            return false;
-          } else {
-            this.store.dispatch(new UserLoginAction(r));
-
-            localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, r.access_token);
-            // this.getUserData();
-            return true;
-          }
-        }),
-        catchError(this.handleError(USER_LOGOUT, null))
-      );
+    });
   }
 
   getToken() {
@@ -53,26 +35,24 @@ export class AuthService {
   }
 
   fetchUser() {
-    // console.log('fetching with token: ', this.getToken());
     return this.httpClient.get(`${environment.authApi}`, {withCredentials: true, observe: 'response'});
   }
 
   logout() {
     localStorage.removeItem(LOCAL_STORAGE_AUTH_TOKEN);
-
     this.cookieService.deleteAll();
-
     this.store.dispatch(new UserLogoutAction());
   }
 
   performAutoLogin() {
-    // console.log('autologin');
+    console.log('autologin');
     const token = this.getToken();
     if (token !== null) {
       this.fetchUser().subscribe(r => {
-        if (r.body !== null)
+        if (r.body !== null) {
           this.store.dispatch(new UserLoginAction(r.body));
-        else
+          console.log('r', r.body);
+        } else
           this.store.dispatch(new UserLogoutAction());
       }, catchError(this.handleError(USER_LOGOUT, null)));
     }

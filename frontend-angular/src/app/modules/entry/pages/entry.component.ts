@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {LOGIN_PAGE, SIGN_UP_PAGE} from 'core/constants/routing.constants';
 
@@ -8,18 +8,19 @@ import {LOGIN_PAGE, SIGN_UP_PAGE} from 'core/constants/routing.constants';
   styleUrls: ['./entry.component.scss']
 })
 export class EntryComponent implements OnInit {
-  constructor(private route: Router) { }
+  constructor(private route: Router) {
+  }
 
   ngOnInit() {
-    console.log('entry')
+    console.log('entry');
     this.navigateToSignIn();
   }
 
- private navigateToSignIn() {
+  private navigateToSignIn() {
     this.route.navigate([LOGIN_PAGE]);
- }
+  }
 
   private navigateToSignUp() {
-  this.route.navigate([SIGN_UP_PAGE]);
+    this.route.navigate([SIGN_UP_PAGE]);
   }
 }

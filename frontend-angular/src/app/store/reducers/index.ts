@@ -2,18 +2,20 @@ import {ActionReducer, ActionReducerMap, combineReducers, createSelector, MetaRe
 import {environment} from 'environments/environment';
 
 import * as fromEntry from './entry';
-
+import * as fromIChat from './ichat';
 
 // import * as fromRouter from './router';
 
 
 export interface State {
   entry: fromEntry.State;
+  iChat: fromIChat.State;
   // router: fromRouter.RouterReducerState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   entry: fromEntry.reducer,
+  iChat: fromIChat.reducer,
   // router: fromRouter.routerReducer,
 };
 
@@ -42,8 +44,18 @@ export function reducer(state: any, action: any) {
 //   }
 }
 export const getEntryState = (state: State) => state.entry;
+export const getIChatState = (state: State) => state.iChat;
+
 
 export const getUser = createSelector(getEntryState, fromEntry.getUser);
+
+export const getSelectedItem = createSelector(getIChatState, fromIChat.getSelectedItem);
+export const getLoadedChatFrontEnds = createSelector(getIChatState, fromIChat.getLoadedChatFrontEnds);
+export const getLoadedChatLayouts = createSelector(getIChatState, fromIChat.getLoadedChatLayouts);
+
+export const getStatusChatFrontEnds = createSelector(getIChatState, fromIChat.getLoadedChatFrontEnds);
+export const getStatusChatLayouts = createSelector(getIChatState, fromIChat.getStatusChatLayouts);
+
 
 
 
