@@ -44,36 +44,4 @@ export class AuthService {
     this.store.dispatch(new UserLogoutAction());
   }
 
-  performAutoLogin() {
-    console.log('autologin');
-    const token = this.getToken();
-    if (token !== null) {
-      this.fetchUser().subscribe(r => {
-        if (r.body !== null) {
-          this.store.dispatch(new UserLoginAction(r.body));
-          console.log('r', r.body);
-        } else
-          this.store.dispatch(new UserLogoutAction());
-      }, catchError(this.handleError(USER_LOGOUT, null)));
-    }
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      if (operation === USER_LOGOUT)
-        this.logout();
-
-
-      // TODO: send the error to remote logging infrastructure
-      // console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for supplier consumption
-      // console.log(`${operation} failed: ${error.message}`);
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-
 }

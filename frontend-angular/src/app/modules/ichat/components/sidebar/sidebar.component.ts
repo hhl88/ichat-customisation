@@ -4,7 +4,7 @@ import {Frontend} from 'core/interface/frontend.interface';
 import {Layout} from 'core/interface/layout.interface';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {getLoadedChatFrontEnds, getLoadedChatLayouts, getStatusChatFrontEnds} from 'store/reducers';
+import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';
 import {Subscription} from 'rxjs';
 
 @Component({

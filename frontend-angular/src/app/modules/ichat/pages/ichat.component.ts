@@ -18,7 +18,6 @@ export class IChatComponent implements OnInit {
 
   constructor(private store: Store<fromRoot.State>,
               private iChatService: IChatService) {
-    console.log('ichat');
   }
 
   ngOnInit() {

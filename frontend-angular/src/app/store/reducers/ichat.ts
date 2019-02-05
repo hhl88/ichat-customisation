@@ -86,7 +86,7 @@ export function reducer(state = initialState, action: ichat.Actions): State {
   }
 }
 
-export const getSelectedItem = (state: State) => state.selectedItem;
+export const getSelectedItem = (state: State) => JSON.parse(JSON.stringify(state.selectedItem)) ;
 
 export const getLoadedChatFrontEnds = (state: State) => state.chatFrontEnds;
 export const getLoadedChatLayouts = (state: State) => state.chatLayouts;

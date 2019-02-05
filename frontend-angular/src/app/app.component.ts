@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
     if(this.authService.getToken()) {
       this.router.events.subscribe(event => {
         if (event instanceof RoutesRecognized) {
-          console.log(event)
           this.guardRoute(event);
         }
       });
@@ -41,20 +40,15 @@ export class AppComponent implements OnInit {
 
   private guardRoute(event: RoutesRecognized): void {
     if (this.isPublic(event)) {
-      console.log('public');
       return;
     }
 
     if (!this.callCanActivate(event, this.authGuard)) {
-      console.log('callCanActivate');
       return;
     }
-
   }
 
   private callCanActivate(event: RoutesRecognized, guard: CanActivate) {
-    console.log('snapshot', this.route.snapshot);
-    console.log('event', event);
     return guard.canActivate(this.route.snapshot, event.state);
   }
 

@@ -38,7 +38,6 @@ export class SignInComponent implements OnInit {
     this.isLoggingIn = true;
     this.store.dispatch(new UserLoadingAction());
     this.authService.login(this.form.value.email, this.form.value.password).subscribe(res => {
-      console.log('res', res);
       if (res != null) {
         this.store.dispatch(new UserLoginAction(res));
         localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, res.access_token);
