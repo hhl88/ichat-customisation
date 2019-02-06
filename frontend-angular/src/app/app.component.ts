@@ -1,50 +1,58 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, CanActivate, Router, RoutesRecognized} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry} from '@angular/material';
+import {AuthGuard} from 'core/guard/auth.guard';
 import {AuthService} from 'core/authentication/authentication.service';
-import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
-import {routeAnimations} from 'core/animations/route.animation';
-import {select, Store} from '@ngrx/store';
-import * as fromRoot from 'store/reducers';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [routeAnimations]
-
+  animations: []
 })
 export class AppComponent implements OnInit {
   title = 'IChat Customisation';
-  languages = [];
-  isLoading = true;
 
   isOnHomepage: boolean;
 
-  constructor(private translate: TranslateService,
+  constructor(private matIconRegistry: MatIconRegistry,
               private authService: AuthService,
-              private store: Store<fromRoot.State>,
-              public router: Router) {
+              private authGuard: AuthGuard,
+              public router: Router,
+              private route: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
-    this.authService.performAutoLogin();
-    this.router.events.subscribe(val => {
-      this.isOnHomepage = this.router.url === '/';
-    });
-    this.initLanguage();
+    if(this.authService.getToken()) {
+      this.router.events.subscribe(event => {
+        if (event instanceof RoutesRecognized) {
+          this.guardRoute(event);
+        }
+      });
+    } else {
+      this.router.navigate(['']);
+    }
 
-    this.store.pipe(select(fromRoot.getUser)).subscribe(user => {
-      if (user) {
-        this.router.navigate(['ichat']);
-      }
-    });
+
   }
 
+  private guardRoute(event: RoutesRecognized): void {
+    if (this.isPublic(event)) {
+      return;
+    }
 
-  private initLanguage() {
+    if (!this.callCanActivate(event, this.authGuard)) {
+      return;
+    }
+  }
 
-    this.translate.setDefaultLang('en');
+  private callCanActivate(event: RoutesRecognized, guard: CanActivate) {
+    return guard.canActivate(this.route.snapshot, event.state);
+  }
 
+  private isPublic(event: RoutesRecognized) {
+    return event.state.root.firstChild.data.isPublic;
   }
 }

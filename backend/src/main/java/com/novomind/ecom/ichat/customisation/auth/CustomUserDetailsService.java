@@ -27,6 +27,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (!user.isPresent()){
             throw new UsernameNotFoundException("username_not_found");
         }
+        logger.info("found user " + new CustomUserDetails(user.get()));
+
         return new CustomUserDetails(user.get());
     }
 }

@@ -52,6 +52,7 @@
           this.$store
             .dispatch(LOGIN, {email, password})
             .then(() => {
+              console.log('asdsad')
               this.$router.push({name: 'ichat'})
             })
         }

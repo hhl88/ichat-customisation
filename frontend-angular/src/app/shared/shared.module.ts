@@ -1,15 +1,18 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LoadingSpinnerComponent} from 'shared/components/loading-spinner/loading-spinner.component';
-import {MatButtonModule, MatIconModule, MatListModule, MatNativeDateModule, MatSidenavModule, MatToolbarModule} from '@angular/material';
-import {CustomMaterialModule} from 'shared/material.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SweetAlert2Module} from '@toverux/ngx-sweetalert2';
+import {CustomMaterialModule} from 'shared/material/custom-material.module';
+import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    SweetAlert2Module,
     CustomMaterialModule
   ],
   declarations: [
@@ -18,11 +21,14 @@ import {CustomMaterialModule} from 'shared/material.module';
   exports: [
     CommonModule,
     FormsModule,
+    NgbModule,
     ReactiveFormsModule,
+    SweetAlert2Module,
     CustomMaterialModule,
 
-    LoadingSpinnerComponent
-  ]
+    LoadingSpinnerComponent,
+  ],
+
 })
 export class SharedModule {
 }

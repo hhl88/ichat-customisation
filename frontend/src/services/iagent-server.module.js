@@ -22,18 +22,18 @@ const getters = {
 
 const actions = {
   [FETCH_IAGENT_SERVER] (context, layout) {
-    console.log('1231')
     return new Promise((resolve, reject) => {
       IAgentService
         .fetchIAgentServer(layout)
         .then(({data}) => {
-          console.log('datafromserver', data)
           context.commit(SET_IAGENT_SERVER, true)
           resolve(data)
         })
         .catch(({response}) => {
+          console.log('response', response)
           context.commit(SET_IAGENT_SERVER, false)
           context.commit(SET_ERROR, response)
+          resolve(response)
         })
     })
   }

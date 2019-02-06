@@ -1,0 +1,25 @@
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px !important;
+  border: 1px solid black !important;
+  border-radius: 0;
+}
+.mat-expansion-indicator {
+  position: absolute;
+  left: 15px;
+}
+
+.mat-expansion-panel-header[aria-disabled=true] {
+  color: #000000;
+  :hover {
+    cursor: pointer;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.item-list:hover {
+  cursor: pointer;
+  background: red;
+}

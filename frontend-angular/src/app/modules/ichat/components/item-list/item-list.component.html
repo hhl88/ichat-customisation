@@ -1,0 +1,32 @@
+<div class="list-wrapper">
+  <div class="wrapper">
+    <div class="mask"></div>
+    <mat-expansion-panel #matExpansionPanel
+                         [hideToggle]="hideToggle"
+                         [disabled]="hideToggle"
+                         [expanded]="expanded">
+      <mat-expansion-panel-header (click)="expandPanel(matExpansionPanel, $event)">
+        <mat-panel-title>
+          <div class="w-100">
+            <span style="vertical-align:middle; float:left; line-height: 38px">{{header}}</span>
+            <button class="add-button"
+                    *ngIf="!hideToggle"
+                    style="vertical-align:middle; float:right; line-height: 38px"
+                    (click)="addItem()"
+                    mat-icon-button>
+              <mat-icon class="add-icon">add_circle_outline</mat-icon>
+            </button>
+            <div style="clear: both;"></div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="itemList.length > 0">
+        <div class="item-list mt-2" *ngFor="let item of itemList; let i = index" (click)="selectItem(i, item)">
+          {{item.name}}
+        </div>
+      </div>
+
+
+    </mat-expansion-panel>
+  </div>
+</div>

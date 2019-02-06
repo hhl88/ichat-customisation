@@ -80,7 +80,7 @@ public class IChatLayoutController {
             @ApiResponse(code = 401, message = "No Permission"),
             @ApiResponse(code = 404, message = "Layout is not found")
     })
-    @PutMapping(value= "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value="/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> updateChatLayout(@PathVariable(value = "id") String id,
                                               @Valid @RequestBody ChatLayoutUpdateDTO dto,
                                               Principal principal) throws UserNotFoundException, ChatLayoutNotFoundException, NoPermissionException {
@@ -94,7 +94,7 @@ public class IChatLayoutController {
             @ApiResponse(code = 200, message = "Successfully retrieved layout"),
             @ApiResponse(code = 400, message = "Invalid arguments"),
     })
-    @PostMapping("")
+    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<IdDTO> createChatLayout(@Valid @RequestBody ChatLayoutCreateDTO dto, Principal principal) throws UserNotFoundException {
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("user_not_found"));

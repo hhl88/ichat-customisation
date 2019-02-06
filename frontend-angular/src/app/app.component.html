@@ -1,6 +1,22 @@
+<div id="modal-wrapper" class="modal-wrapper">
+
+  <div class="d-flex align-items-center justify-content-center h-100 modal-subwrapper">
+    <div id="modal-container" style="visibility: hidden">
+      <!--<button type="button" class="close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>-->
+    </div>
+    <div id="modal-background" class="modal-background" (click)="closeModal()" style="visibility: hidden"></div>
+
+  </div>
+
+</div>
+
+
 <main>
-  <div class="page-wrapper" [@routeAnimations]="this.router.url ==='/' && o.isActivated && o.activatedRoute.routeConfig.path" [ngClass]="{'no-mtop' : isOnHomepage}" >
+  <div class="page-wrapper" [ngClass]="{'no-mtop' : isOnHomepage}" >
     <router-outlet #o="outlet"></router-outlet>
   </div>
 </main>
+
 

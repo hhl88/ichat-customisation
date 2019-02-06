@@ -1,0 +1,9 @@
+@import "../assets/styles/variables";
+.page-wrapper {
+  margin-top: $navbar_height;
+  margin-bottom: 30px;
+  min-height: calc(#{$homepage_height} - #{$navbar_height} - #{$footer_height});
+  &.no-mtop{
+    margin-top: 0 !important;
+  }
+}

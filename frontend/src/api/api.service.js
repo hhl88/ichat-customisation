@@ -7,21 +7,43 @@ import {TIMEOUT} from '../constants/constants'
 
 const ApiService = {
 
-  init() {
+  init () {
     Vue.use(VueAxios, axios)
     Vue.axios.defaults.baseURL = SERVER_URL
     Vue.axios.defaults.timeout = TIMEOUT
+    Vue.axios.defaults.headers.common = {
+      'Accept-Version': 1,
+      'Accept': '*/*',
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json, application/x-www-form-urlencoded',
+      'Access-Control-Allow-Headers': 'Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin'
+    }
   },
 
   // setHeader () {
   //   Vue.axios.defaults.headers['Authorization'] = `Bearer ${JwtService.getToken()}`
   // },
 
-  post(path, body, params) {
-    return Vue.axios.post(`${path}`, body, {params: params})
+  post (path, body, params) {
+    console.log('Path', body)
+    console.log('params', params)
+    if(params) {
+     /* return Vue.axios.post(`${path}`, body, {params: params['params'], headers: params['headers']}).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })*/
+      return Vue.axios.post(`${path}`, body, {params: params}).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })
+    } else {
+      return Vue.axios.post(`${path}`, body).catch((error) => {
+        throw new Error(`[RWV] ApiService ${error}`)
+      })
+    }
+
+
   },
 
-  get(path, id = '', subPath = '') {
+  get (path, id = '', subPath = '') {
     return Vue.axios
       .get(`${path}/${id}${subPath}`)
       .catch((error) => {
@@ -29,14 +51,9 @@ const ApiService = {
       })
   },
 
-  put(path, id, params, config) {
-    console.log('config', config)
-    console.log('params', params)
-
+  put (path, id, params) {
     return Vue.axios
-      .put(`${path}/${id}`, {data : params}, {
-        headers: {'Content-Type' : 'multipart/form-data'}
-      })
+      .put(`${path}/${id}`, params)
   }
 
 }

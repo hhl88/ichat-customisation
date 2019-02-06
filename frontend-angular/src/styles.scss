@@ -1,2 +1,254 @@
 /* You can add global styles to this file, and also import other style files */
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "assets/styles/_variables.scss";
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  font-size: .9em;
+  letter-spacing: 1px;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-weight: bold;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}
+
+.navbar {
+  .navbar-brand {
+    color: #6a6a6a;
+    font-size: 22px;
+
+    img {
+      display: inline-block;
+      margin-right: 8px;
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .navbar-nav .nav-link {
+    color: #6a6a6a;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+
+
+hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+
+.input-wrapper {
+  width: inherit;
+
+  input {
+    box-shadow: none !important;
+  }
+
+  .place-autocomplete-dropdown {
+    list-style: none;
+    position: absolute;
+    z-index: 999;
+    background: #ffffff;
+    display: block;
+    width: 100%;
+    border-radius: 4px !important;
+    border: 1px solid #DBDBDB !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    padding: 20px 20px;
+
+    li.place-prediction {
+      padding: 10px 20px;
+
+      &:hover {
+        background: #dfe6e9;
+      }
+    }
+  }
+}
+
+
+.modal-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 2000;
+  display: none;
+
+  .modal-subwrapper {
+    z-index: 3000;
+    width: 100%;
+    height: 100%;
+
+    #modal-container {
+      position: absolute;
+      background: #ffffff;
+      z-index: 4000;
+      padding: 24px;
+      min-width: 568px;
+      max-width: 90%;
+      border-radius: 4px;
+      box-sizing: border-box;
+      box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
+      color: rgba(0, 0, 0, .87);
+      // width: 100%;
+      animation-name: opacityOn;
+      animation-duration: .5s;
+      animation-fill-mode: forwards;
+      transition-timing-function: ease-in-out;
+      overflow-y: hidden;
+    }
+
+    .modal-background {
+      // background: rgba(10,10,10,.5);
+      // background: transparent;
+      background: rgba(0, 0, 0, .1);
+      width: 100%;
+      height: 100%;
+      top: 0;
+      z-index: 2000;
+    }
+  }
+
+}
+
+@keyframes opacityOn {
+  0% {
+    opacity: 0;
+    //max-height: 0px;
+  }
+  100% {
+    opacity: 1;
+    //max-height: 100%;
+  }
+}
+
+input.flat-input {
+  border-radius: 1px;
+  color: rgb(72, 72, 72);
+
+  &.flat-input-lg {
+    padding: 10px 15px;
+  }
+
+  &:focus {
+    box-shadow: none;
+    width: 100% !important;
+    border-radius: 2px !important;
+    border: 1px solid rgb(0, 132, 137) !important;
+  }
+}
+
+
+.btn {
+  border-radius: 3px;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &.btn-danger {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+
+    &:hover {
+      background-color: #ee5253;
+      border-color: #ee5253;
+
+    }
+  }
+}
+
+
+input.ng-dirty.ng-invalid {
+  border: 1px solid rgb(252, 100, 45) !important;
+  background-color: rgb(255, 248, 246) !important;
+}
+
+.input-error-text {
+  color: rgb(217, 57, 0) !important;
+  line-height: 18px;
+}
+
+
+.section-heading {
+  background: #ff7675;
+  color: #fff;
+  font-size: .9rem;
+  padding: 5px 12px;
+}
+
+.card-header {
+  background: #ff7675;
+  color: #fff !important;
+}
+
+.vertical-middle {
+  display: flex;
+  align-items: center;
+}
+
+textarea {
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  resize: none;
+}
+
+
+/**
+ ALERT
+ */
+
+.alert {
+  border: none !important;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px !important;
+  border: 1px solid #DBDBDB !important;
+
+
+}
+
+input.form-control, textarea.form-control {
+  padding: 11px 11px 11px 25px;
+}
+
+button {
+  outline: none !important;
+}
+
+.standard-mh {
+  min-height: 1200px !important;
+}
+
+
+.mat-checkbox-disabled .mat-checkbox-label {
+  color: inherit;
+}

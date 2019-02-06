@@ -1,0 +1,9 @@
+<div class="content-wrapper" *ngIf="currentItem">
+  <div *ngIf="currentItem.type === itemTypes[0]">
+    <app-layout-content></app-layout-content>
+  </div>
+
+  <div *ngIf="currentItem.type === itemTypes[1]">
+    <app-frontend-content></app-frontend-content>
+  </div>
+</div>
