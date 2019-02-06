@@ -1,3 +1,3 @@
-<p>
-  frontend-content works!
-</p>
+<div *ngIf="frontEnd">
+  <app-iagent-server [iAgentServer]="frontEnd.iAgentServer" [connectionType]="frontEnd.connectionType"></app-iagent-server>
+</div>

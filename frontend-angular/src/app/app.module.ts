@@ -12,9 +12,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from 'environments/environment';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatBadgeModule, MatCheckboxModule, MatIconModule, MatNativeDateModule, MatTableModule} from '@angular/material';
 import {CookieService} from 'ngx-cookie-service';
-import {TokenInterceptor} from 'core/services/token.interceptor';
+import {TokenInterceptor} from 'core/interceptor/token.interceptor';
 
 
 @NgModule({
@@ -24,14 +23,12 @@ import {TokenInterceptor} from 'core/services/token.interceptor';
   imports: [
     BrowserModule,
     NgbModule.forRoot(),
-    MatNativeDateModule, MatCheckboxModule, MatBadgeModule, MatTableModule,
     HttpClientModule,
     HttpClientXsrfModule.withOptions({
       cookieName: 'X-CSRF-Token',
       headerName: 'X-CSRF-Token'
     }),
     AppRoutingModule,
-    MatIconModule,
 
     BrowserAnimationsModule,
     SweetAlert2Module.forRoot({
@@ -41,11 +38,8 @@ import {TokenInterceptor} from 'core/services/token.interceptor';
       cancelButtonClass: 'btn'
     }),
     StoreModule.forRoot(reducers, {metaReducers}),
-    // StoreRouterConnectingModule.forRoot(),
     StoreRouterConnectingModule.forRoot(),
 
-
-    // !environment.production ? StoreDevtoolsModule.instrument() : [],
 
     StoreDevtoolsModule.instrument({
       name: 'NgRx IChat Customisation Store App',

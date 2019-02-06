@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import 'rxjs-compat/add/operator/do';
 import 'rxjs-compat/add/operator/filter';
@@ -7,32 +7,32 @@ import 'rxjs-compat/add/operator/take';
 import 'rxjs-compat/add/operator/switchMap';
 import 'rxjs-compat/add/operator/delay';
 import {AuthService} from '../authentication/authentication.service';
-import * as fromRoot from '../../store/reducers';
-import {select, Store} from '@ngrx/store';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  loggedIn = false;
-  isRefreshingToken = false;
-  tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
 
-  constructor(private authService: AuthService, private store: Store<fromRoot.State>) {
-    this.store.pipe(select(fromRoot.getUser)).subscribe(r => {
-      this.loggedIn = r != null;
-    });
+  constructor(private authService: AuthService) {
+
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
-    // request = request.clone({
-    //     withCredentials: true
-    //   },
-    // );
+    request = request.clone({
+        headers: new HttpHeaders({
+          'Accept-Version': '1',
+          'Accept': '*/*',
+          'Access-Control-Allow-Origin': window.location.origin,
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
+          'Vary': 'Accept-Encoding',
+        })
+      });
     if (token != null) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         }
       });
     }

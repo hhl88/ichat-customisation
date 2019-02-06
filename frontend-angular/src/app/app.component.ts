@@ -4,6 +4,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 import {AuthGuard} from 'core/guard/auth.guard';
 import {AuthService} from 'core/authentication/authentication.service';
+import {PREVIEW_PAGE} from 'core/constants/routing.constants';
 
 @Component({
   selector: 'app-root',
@@ -25,10 +26,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.authService.getToken()) {
+    if (this.authService.getToken()) {
       this.router.events.subscribe(event => {
         if (event instanceof RoutesRecognized) {
-          this.guardRoute(event);
+          if (event.url !== ('/' + PREVIEW_PAGE)) {
+            this.guardRoute(event);
+          }
         }
       });
     } else {

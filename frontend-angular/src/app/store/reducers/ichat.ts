@@ -1,23 +1,23 @@
 import * as ichat from 'store/actions/ichat';
-import {Frontend} from 'core/interface/frontend.interface';
-import {Layout} from 'core/interface/layout.interface';
-import {Item} from 'core/interface/item.interface';
+import {Frontend} from 'core/interfaces/frontend.interface';
+import {Layout} from 'core/interfaces/layout.interface';
 
 export interface State {
   chatFrontEnds: Frontend[];
   chatLayouts: Layout[];
-  selectedItem: Item;
+  selectedFrontend: Frontend;
+  selectedLayout: Layout;
   frontEndsLoading: boolean;
   frontEndsLoaded: boolean;
   layoutsLoading: boolean;
   layoutsLoaded: boolean;
-
 }
 
 const initialState: State = {
   chatFrontEnds: [],
   chatLayouts: [],
-  selectedItem: null,
+  selectedFrontend: null,
+  selectedLayout: null,
   frontEndsLoading: false,
   frontEndsLoaded: false,
   layoutsLoading: false,
@@ -74,9 +74,17 @@ export function reducer(state = initialState, action: ichat.Actions): State {
       });
     }
 
-    case ichat.CURRENT_ITEM_SELECTED: {
+    case ichat.CURRENT_FRONTEND_SELECTED: {
       return Object.assign({}, state, {
-        selectedItem: action.payload
+        selectedFrontend: action.payload,
+        selectedLayout: null
+      });
+    }
+
+    case ichat.CURRENT_LAYOUT_SELECTED: {
+      return Object.assign({}, state, {
+        selectedLayout: action.payload,
+        selectedFrontend: null
       });
     }
 
@@ -86,7 +94,9 @@ export function reducer(state = initialState, action: ichat.Actions): State {
   }
 }
 
-export const getSelectedItem = (state: State) => JSON.parse(JSON.stringify(state.selectedItem)) ;
+export const getSelectedFrontend = (state: State) => JSON.parse(JSON.stringify(state.selectedFrontend)) ;
+export const getSelectedLayout = (state: State) => JSON.parse(JSON.stringify(state.selectedLayout)) ;
+
 
 export const getLoadedChatFrontEnds = (state: State) => state.chatFrontEnds;
 export const getLoadedChatLayouts = (state: State) => state.chatLayouts;

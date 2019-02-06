@@ -8,7 +8,9 @@ export const LAYOUT_LIST_LOADING = 'ichat/LAYOUT_LIST_LOADING';
 export const LAYOUT_LIST_LOAD_SUCCESS = 'ichat/FRONTEND_LIST_LOAD_SUCCESS';
 export const LAYOUT_LIST_LOAD_FAILED = 'ichat/FRONTEND_LIST_LOAD_FAILED';
 
-export const CURRENT_ITEM_SELECTED = 'ichat/CURRENT_ITEM_SELECTED';
+export const CURRENT_FRONTEND_SELECTED = 'ichat/CURRENT_FRONTEND_SELECTED';
+export const CURRENT_LAYOUT_SELECTED = 'ichat/CURRENT_LAYOUT_SELECTED';
+
 
 /**
  * Frontend List Loading in Action
@@ -73,10 +75,20 @@ export class LayoutListLoadFailedAction implements Action {
 
 
 /**
- *Item Selection in Action
+ * Frontend Selection in Action
  */
-export class CurrentItemSelectedAction implements Action {
-  readonly type = CURRENT_ITEM_SELECTED;
+export class CurrentFrontEndSelectedAction implements Action {
+  readonly type = CURRENT_FRONTEND_SELECTED;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
+ * Layout Selection in Action
+ */
+export class CurrentLayoutSelectedAction implements Action {
+  readonly type = CURRENT_LAYOUT_SELECTED;
 
   constructor(public payload: any) {
   }
@@ -89,4 +101,5 @@ export type Actions
   | LayoutListLoadingAction
   | LayoutListLoadSuccessAction
   | LayoutListLoadFailedAction
-  | CurrentItemSelectedAction;
+  | CurrentFrontEndSelectedAction
+  | CurrentLayoutSelectedAction;

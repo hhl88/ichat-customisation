@@ -1,5 +1,5 @@
 import * as entry from 'store/actions/entry';
-import {User} from 'core/interface/user.interface';
+import {User} from 'core/interfaces/user.interface';
 
 export interface State {
   user: User;

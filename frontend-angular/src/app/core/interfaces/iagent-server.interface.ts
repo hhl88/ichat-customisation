@@ -5,3 +5,11 @@ export interface IAgentServer {
   clientId: string;
   secret: string;
 }
+
+export const DefaultIAgentServer: IAgentServer = {
+  address: '',
+  userAPI: '',
+  password: '',
+  clientId: '',
+  secret: ''
+};

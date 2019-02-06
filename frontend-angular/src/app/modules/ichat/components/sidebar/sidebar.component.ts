@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ItemType} from 'core/interface/item.type';
-import {Frontend} from 'core/interface/frontend.interface';
-import {Layout} from 'core/interface/layout.interface';
+import {ItemType} from 'core/enum/item-type.enum';
+import {Frontend} from 'core/interfaces/frontend.interface';
+import {Layout} from 'core/interfaces/layout.interface';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';

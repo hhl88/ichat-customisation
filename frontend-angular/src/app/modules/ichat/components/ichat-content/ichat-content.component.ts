@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {Item} from 'core/interface/item.interface';
-import {getSelectedItem} from 'store/reducers';
-import {ItemType} from 'core/interface/item.type';
+import {getSelectedFrontend, getSelectedLayout} from 'store/reducers';
+import {Layout} from 'core/interfaces/layout.interface';
+import {Frontend} from 'core/interfaces/frontend.interface';
 
 @Component({
   selector: 'app-ichat-content',
@@ -11,16 +11,20 @@ import {ItemType} from 'core/interface/item.type';
   styleUrls: ['./ichat-content.component.scss']
 })
 export class IChatContentComponent implements OnInit {
-  currentItem: Item;
-  itemTypes: ItemType[] = [];
+  selectedLayout: Layout;
+  selectedFrontend: Frontend;
+
   constructor(private store: Store<fromRoot.State>) {
-    this.itemTypes.push(ItemType.LAYOUT);
-    this.itemTypes.push(ItemType.FRONTEND);
+
   }
 
   ngOnInit() {
-    this.store.pipe(select(getSelectedItem)).subscribe(storedItem => {
-      this.currentItem = JSON.parse(JSON.stringify(storedItem));
+    this.store.pipe(select(getSelectedFrontend)).subscribe(frontend => {
+      this.selectedFrontend = JSON.parse(JSON.stringify(frontend));
+    });
+
+    this.store.pipe(select(getSelectedLayout)).subscribe(layout => {
+      this.selectedLayout = JSON.parse(JSON.stringify(layout));
     });
   }
 

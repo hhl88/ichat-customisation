@@ -1,10 +1,10 @@
---DROP TABLE IF EXISTS choose_chat_ui;
---DROP TABLE IF EXISTS choose_layout;
---DROP TABLE IF EXISTS ichat_ui;
---DROP TABLE IF EXISTS chat_layout;
---DROP TABLE IF EXISTS demand_info;
---DROP TABLE IF EXISTS iagent_server;
---DROP TABLE IF EXISTS ichat_user;
+-- DROP TABLE IF EXISTS choose_chat_ui;
+-- DROP TABLE IF EXISTS choose_layout;
+-- DROP TABLE IF EXISTS ichat_ui;
+-- DROP TABLE IF EXISTS chat_layout;
+-- DROP TABLE IF EXISTS demand_info;
+-- DROP TABLE IF EXISTS iagent_server;
+-- DROP TABLE IF EXISTS ichat_user;
 
 
 CREATE TABLE IF NOT EXISTS ichat_user

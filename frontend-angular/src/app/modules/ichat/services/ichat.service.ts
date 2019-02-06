@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from 'environments/environment';
-import {Frontend} from 'core/interface/frontend.interface';
-import {Layout} from 'core/interface/layout.interface';
+import {Frontend} from 'core/interfaces/frontend.interface';
+import {Layout} from 'core/interfaces/layout.interface';
 import {Observable} from 'rxjs';
 
 @Injectable()

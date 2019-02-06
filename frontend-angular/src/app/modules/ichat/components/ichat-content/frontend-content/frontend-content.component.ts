@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import { Store} from '@ngrx/store';
+import * as fromRoot from 'store/reducers';
+import {Frontend} from 'core/interfaces/frontend.interface';
 
 @Component({
   selector: 'app-frontend-content',
@@ -6,10 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./frontend-content.component.scss']
 })
 export class FrontendContentComponent implements OnInit {
+  @Input() frontEnd: Frontend;
 
-  constructor() { }
+  constructor(private store: Store<fromRoot.State>) {
+
+  }
 
   ngOnInit() {
+    console.log('frontend', this.frontEnd);
   }
 
 }

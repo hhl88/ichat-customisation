@@ -6,7 +6,7 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatMenuModule,
+  MatMenuModule, MatRadioModule,
   MatStepperModule, MatToolbarModule,
   MatTooltipModule
 } from '@angular/material';
@@ -24,6 +24,7 @@ import {
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
+    MatRadioModule
   ],
   exports: [
     MatTooltipModule,
@@ -37,6 +38,7 @@ import {
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
+    MatRadioModule
   ]
 
 })

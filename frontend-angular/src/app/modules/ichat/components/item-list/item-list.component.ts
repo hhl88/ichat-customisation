@@ -1,14 +1,11 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatExpansionPanel} from '@angular/material';
-import {Item} from 'core/interface/item.interface';
-import {ItemType} from 'core/interface/item.type';
-import {Frontend} from 'core/interface/frontend.interface';
-import {select, Store} from '@ngrx/store';
+import {ItemType} from 'core/enum/item-type.enum';
+import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {getSelectedItem} from 'store/reducers';
-import {CurrentItemSelectedAction} from 'store/actions/ichat';
-import {st} from '@angular/core/src/render3';
-import {Subscription} from 'rxjs';
+import {CurrentFrontEndSelectedAction, CurrentLayoutSelectedAction} from 'store/actions/ichat';
+import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
+import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
 
 @Component({
   selector: 'app-item-list',
@@ -18,33 +15,40 @@ import {Subscription} from 'rxjs';
 export class ItemListComponent implements OnInit {
   @Input() header: ItemType;
   @Input() hideToggle: boolean;
-  @Input() itemList: Item[] = [];
+  @Input() itemList: any[] = [];
   expanded = false;
-  sub: Subscription;
 
   constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
+    if (this.header === ItemType.FRONTEND) {
+      this.itemList = [] as Frontend[];
+    } else if (this.header === ItemType.LAYOUT) {
+      this.itemList = [] as Layout[];
+    }
   }
 
-  selectItem(index: number, item: Item) {
-    this.sub = this.store.pipe(select(getSelectedItem)).subscribe(storedItem => {
-      if (storedItem === null || item.index !== storedItem.index || item.type !== storedItem.type) {
-        if (this.sub) {
-          this.sub.unsubscribe();
-        }
-        this.store.dispatch(new CurrentItemSelectedAction(JSON.parse(JSON.stringify(item))));
-      }
-    });
+  selectItem(index: number, item) {
+    if (this.header === ItemType.FRONTEND) {
+      this.store.dispatch(new CurrentFrontEndSelectedAction(JSON.parse(JSON.stringify(item))));
+    } else if (this.header === ItemType.LAYOUT) {
+      this.store.dispatch(new CurrentLayoutSelectedAction(JSON.parse(JSON.stringify(item))));
+    }
+
   }
 
   addItem() {
-    this.itemList.push({
-      index: this.itemList.length,
-      type: this.header,
-      name: this.header + ' ' + this.itemList.length
-    });
+    let item;
+    if (this.header === ItemType.FRONTEND) {
+      item = FrontendDefault;
+    } else if (this.header === ItemType.LAYOUT) {
+      item = LayoutDefault;
+    }
+    item['index'] = this.itemList.length;
+    item['name'] = this.header + ' ' + this.itemList.length;
+
+    this.itemList.push(JSON.parse(JSON.stringify(item)));
   }
 
   expandPanel(matExpansionPanel: MatExpansionPanel, event): void {
