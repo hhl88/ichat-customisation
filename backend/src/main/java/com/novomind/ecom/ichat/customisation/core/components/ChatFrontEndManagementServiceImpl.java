@@ -44,7 +44,7 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
             iAgentServerId = iAgentServerService.addNewIAgentServer(IAgentServer.of(dto.getIAgentServer()));
         if (dto.getDemandInfo() != null) {
             dto.getDemandInfo()
-                    .getDemandInfoItems()
+                    .getDemandInfoList()
                     .forEach(demandInfoItemDTO -> demandInfo.add(DemandInfoItem.of(demandInfoItemDTO)));
             demandInfoId = demandInfoService.addDemandInFo(demandInfo);
         }
@@ -58,16 +58,19 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
 
     @Override
     public void update(ChatFrontEnd chatFrontEnd, FrontEndUpdateDTO dto) {
+        log.info("dto " + dto);
         String iAgentServerId = chatFrontEnd.getIAgentServerId();
         String cloudId = chatFrontEnd.getCloudId();
         String demandInfoId = chatFrontEnd.getDemandInfoId();
         IAgentServer iAgentServer = IAgentServer.of(dto.getIAgentServer());
 
         List<DemandInfoItem> demandInfos = new ArrayList<>();
-        if (dto.getDemandInfo() != null)
+        if (dto.getDemandInfo() != null) {
             dto.getDemandInfo()
-                    .getDemandInfoItems()
+                    .getDemandInfoList()
                     .forEach(item -> demandInfos.add(DemandInfoItem.of(item)));
+        }
+
 
         if (iAgentServerId != null) {
             iAgentServer.setId(iAgentServerId);

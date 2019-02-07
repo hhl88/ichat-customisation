@@ -1,3 +1,54 @@
-<div *ngIf="frontEnd">
-  <app-iagent-server [iAgentServer]="frontEnd.iAgentServer" [connectionType]="frontEnd.connectionType"></app-iagent-server>
+<div class="frontend-wrapper ml-2" *ngIf="frontEnd">
+  <div class="frontend-body">
+    <ng-container [ngSwitch]="step">
+      <ng-container *ngSwitchCase="0">
+        <div class="server-settings">
+
+          <div class="header">iAgent System</div>
+          <app-server [iAgentServer]="selectedFrontend.iAgentServer"
+                      [connectionType]="selectedFrontend.connectionType"
+                      (onServerChanged)="serverChanged($event)"
+                      (onConnectionTypeChanged)="connectionTypeChanged($event)">
+          </app-server>
+        </div>
+        <div class="frontend-settings">
+          <div class="header">Frontend Settings</div>
+          <div class="body">
+            <div class="content ml-3 my-3">
+              <div class="row ml-4 mx-0 mt-2 vertical-align">
+                <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+                  <label class="my-auto" for="urlPath">Secret</label>
+                </div>
+                <div class="col">
+                  <input class="col-md-12 col-lg-5 "
+                         id="urlPath"
+                         type="text"
+                         placeholder="Path"
+                         [(ngModel)]="selectedFrontend.urlPath">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="1">
+        <div class="demand-info-settings">
+          <div class="header">Eröffnungsdialog</div>
+          <app-demand-info [demandInfoList]="selectedFrontend.demandInfo"
+                           (onDemandInfoListChanged)="demandInfoListChanged($event)">
+          </app-demand-info>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+
+
+  <div class="frontend-fotter button-group">
+    <button mat-raised-button (click)="cancelCurrent()">Abrechen</button>
+    <button mat-raised-button *ngIf="step === 0" (click)="nextStep()">Weiter</button>
+    <button mat-raised-button *ngIf="step === 1" (click)="prevStep()">Zurück</button>
+    <button mat-raised-button (click)="submitCurrent()">Speichern</button>
+  </div>
 </div>

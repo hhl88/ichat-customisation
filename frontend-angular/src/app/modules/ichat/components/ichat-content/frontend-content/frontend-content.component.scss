@@ -1,0 +1,27 @@
+.frontend-settings {
+  .body {
+    margin: 1em 0;
+    border: 1px solid #000000;
+  }
+}
+.frontend-body {
+  max-height: 650px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.header {
+  font-weight: bold;
+}
+button {
+  background-color: #ababab !important;
+  margin-right: 40px;
+  &:hover {
+    background-color: #8a8a8a !important;
+  }
+}
+
+.button-group {
+  position:absolute;
+  bottom:2%;
+}

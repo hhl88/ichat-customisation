@@ -15,20 +15,21 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DemandInfoUpdateDTO {
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  private List<DemandInfoItemDTO> demandInfoItems;
+    @ApiModelProperty(required = true)
+    @NotNull
+    @JsonProperty
+    private List<DemandInfoItemDTO> demandInfoList;
 
 
-  public List<DemandInfoItemDTO> getDemandInfoItems() {
-    return demandInfoItems;
-  }
+    public List<DemandInfoItemDTO> getDemandInfoList() {
+        return demandInfoList;
+    }
 
 
-  @Override
-  public String toString() {
-    return "DemandInfoUpdateDTO{" +
-            "demandInfoItems=" + demandInfoItems +
-            '}';
-  }
+    @Override
+    public String toString() {
+        return "DemandInfoUpdateDTO{" +
+                "demandInfoList=" + demandInfoList +
+                '}';
+    }
 }

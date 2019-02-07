@@ -17,13 +17,13 @@ public class DemandInfoItemDTO {
  
   @ApiModelProperty(required = true)
   @NotNull
-  private boolean isRequired;
+  @JsonProperty
+  private boolean required;
   
   
   @ApiModelProperty(required = true)
   @NotNull
   private String example;
-
 
   public String getName() {
     return name;
@@ -33,12 +33,14 @@ public class DemandInfoItemDTO {
     this.name = name;
   }
 
-  public boolean isRequired() {
-    return isRequired;
+  @JsonProperty
+  public boolean required() {
+    return required;
   }
 
-  public void setIsRequired(boolean required) {
-    isRequired = required;
+  @JsonProperty
+  public void setRequired(boolean required) {
+    this.required = required;
   }
 
   public String getExample() {
@@ -53,7 +55,7 @@ public class DemandInfoItemDTO {
   public String toString() {
     return "DemandInfoItemDTO{" +
             "name='" + name + '\'' +
-            ", isRequired=" + isRequired +
+            ", required=" + required +
             ", example='" + example + '\'' +
             '}';
   }

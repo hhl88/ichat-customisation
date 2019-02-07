@@ -13,7 +13,9 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  itemTypes: ItemType[] = [];
+  layoutType: ItemType = ItemType.LAYOUT;
+  frontendType: ItemType = ItemType.FRONTEND;
+
   chatFrontEnds: Frontend[] = [];
   chatLayouts: Layout[] = [];
 
@@ -24,8 +26,7 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.itemTypes.push(ItemType.LAYOUT);
-    this.itemTypes.push(ItemType.FRONTEND);
+
     this.subFrontEnd = this.store.pipe(select(getLoadedChatFrontEnds)).subscribe(frontends => {
       this.chatFrontEnds = frontends;
     });

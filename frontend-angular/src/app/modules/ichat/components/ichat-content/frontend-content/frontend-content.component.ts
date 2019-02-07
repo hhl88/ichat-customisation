@@ -1,7 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { Store} from '@ngrx/store';
+import {Component, Input, NgZone, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
+import {ConnectionType} from 'core/enum/connection-type.enum';
+import {IChatService} from 'ichat/services/ichat.service';
+import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
 
 @Component({
   selector: 'app-frontend-content',
@@ -10,13 +13,72 @@ import {Frontend} from 'core/interfaces/frontend.interface';
 })
 export class FrontendContentComponent implements OnInit {
   @Input() frontEnd: Frontend;
+  step = 0;
+  isServerValid: boolean;
+  isDemandInfoListValid: boolean;
+  selectedFrontend: Frontend;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>,
+              private iChatService: IChatService,
+              private zone: NgZone) {
 
   }
 
   ngOnInit() {
-    console.log('frontend', this.frontEnd);
+    this.selectedFrontend = JSON.parse(JSON.stringify(this.frontEnd));
+    if (!this.selectedFrontend.demandInfo) {
+      this.selectedFrontend.demandInfo = DefaultDemandInfo;
+    }
   }
 
+  prevStep() {
+    this.zone.run(() => {
+      this.step--;
+    });
+
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  demandInfoListChanged(rawValue) {
+    this.selectedFrontend.demandInfo.demandInfoList = rawValue.data;
+    this.isDemandInfoListValid = rawValue.isFormValid;
+
+    console.log('demandInfoListChanged', rawValue);
+  }
+
+  serverChanged(rawValue) {
+    if (this.selectedFrontend.connectionType === ConnectionType.IAGENT_SERVER) {
+      this.selectedFrontend.iAgentServer = rawValue.data;
+    }
+    this.isServerValid = rawValue.isFormValid;
+  }
+
+  connectionTypeChanged(newType) {
+    this.selectedFrontend.connectionType = newType;
+  }
+
+
+  submitCurrent() {
+    console.log('new frontend', this.selectedFrontend);
+    if (this.selectedFrontend.id) {
+      this.iChatService.updateFrontEnd(this.selectedFrontend.id, this.selectedFrontend).subscribe(res => {
+        console.log('update frontend', res);
+      }, error1 => {
+        console.log('error update', error1);
+      });
+    } else {
+      this.iChatService.createFrontEnd(this.selectedFrontend).subscribe(res => {
+        console.log('create Frontend', res);
+      }, error1 => {
+        console.log('error', error1);
+      });
+    }
+  }
+
+  cancelCurrent() {
+
+  }
 }

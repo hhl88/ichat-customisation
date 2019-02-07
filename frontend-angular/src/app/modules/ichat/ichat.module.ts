@@ -10,6 +10,9 @@ import {IChatService} from 'ichat/services/ichat.service';
 import {FrontendContentComponent} from './components/ichat-content/frontend-content/frontend-content.component';
 import {LayoutContentComponent} from './components/ichat-content/layout-content/layout-content.component';
 import {IAgentServerComponent} from 'ichat/components/ichat-content/iagent-server/iagent-server.component';
+import { ServerComponent } from './components/ichat-content/server/server.component';
+import {IAgentServerService} from 'ichat/services/iagent-server.service';
+import { DemandInfoComponent } from './components/ichat-content/demand-info/demand-info.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,9 @@ import {IAgentServerComponent} from 'ichat/components/ichat-content/iagent-serve
     ItemListComponent,
     FrontendContentComponent,
     LayoutContentComponent,
-    IAgentServerComponent
+    IAgentServerComponent,
+    ServerComponent,
+    DemandInfoComponent
   ],
   imports: [
     SharedModule,

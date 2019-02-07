@@ -5,16 +5,14 @@ import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoUp
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudUpdateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerUpdateDTO;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@ToString
 public class FrontEndUpdateDTO {
   
   @ApiModelProperty(required = true)
@@ -36,6 +34,7 @@ public class FrontEndUpdateDTO {
   private Connection connectionType;
 
   @ApiModelProperty
+  @JsonProperty
   DemandInfoUpdateDTO demandInfo;
 
   public String getName() {

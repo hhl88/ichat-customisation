@@ -20,8 +20,14 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div *ngIf="itemList.length > 0">
-        <div class="item-list mt-2" *ngFor="let item of itemList; let i = index" (click)="selectItem(i, item)">
+      <div *ngIf="isFrontEnd && frontEndList.length > 0">
+        <div class="item-list mt-2" *ngFor="let item of frontEndList; let i = index" (click)="selectItem(i, item)">
+          {{item.name}}
+        </div>
+      </div>
+
+      <div *ngIf="!isFrontEnd && layoutList.length > 0">
+        <div class="item-list mt-2" *ngFor="let item of layoutList; let i = index" (click)="selectItem(i, item)">
           {{item.name}}
         </div>
       </div>
@@ -29,4 +35,11 @@
 
     </mat-expansion-panel>
   </div>
+  <div>
+    <span> {{isFrontEnd}} </span>
+    <span> - {{frontEndList.length}} </span>
+    <span> - {{layoutList.length}} </span>
+
+  </div>
+
 </div>

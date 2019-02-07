@@ -29,7 +29,7 @@ public class DemandInfoDaoImpl extends BaseDao implements DemandInfoDao {
     @Override
     public void updateInfoList(DemandInfo demandInfo) {
         String query = "UPDATE " + DEMAND_INFO_TABLE + " SET demand_info = ? WHERE id = ?";
-        getJdbcTemplate().update(query, new Gson().toJson(demandInfo.getDemandInfoItems()), demandInfo.getId());
+        getJdbcTemplate().update(query, new Gson().toJson(demandInfo.getDemandInfoList()), demandInfo.getId());
     }
 
     @Override

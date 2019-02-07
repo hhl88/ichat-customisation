@@ -1,63 +1,55 @@
-<div class="container-wrapper">
-  <div>
-    <mat-radio-button [checked]="servers[0].checked" [value]="servers[0].id" (change)="onSelectConnectionType($event)">
-      {{servers[0].title}}
-    </mat-radio-button>
-
+<form class="mb-5"(ngSubmit)="checkServer()" [formGroup]="formIAgentServer" novalidate>
+  <div class="row mx-0 mt-3 vertical-align">
+    <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+      <label class="my-auto" for="address">iAgent URL (Chat API)</label>
+    </div>
+    <div class="col">
+      <input class="col-md-12 col-lg-5 " id="address" type="text" formControlName="address"
+             placeholder="http://chat.novomind.com:5830">
+    </div>
   </div>
-  <div class="ml-4" *ngIf="servers[0].checked">
-    <form (ngSubmit)="checkServer()" [formGroup]="formIAgentServer" novalidate>
-      <div class="row mx-0 mt-3 vertical-align">
-        <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-          <label class="my-auto" for="address">iAgent URL (Chat API)</label>
-        </div>
-        <div class="col">
-          <input class="col-5" id="address" type="text" formControlName="address"
-                 placeholder="http://chat.novomind.com:5830">
-        </div>
-      </div>
 
-      <div class="row mx-0 mt-2 vertical-align">
-        <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-          <label class="my-auto" for="userAPI">API Benutzer</label>
-        </div>
-        <div class="col">
-          <input class="col-5" id="userAPI" type="text" formControlName="userAPI" placeholder="chatuser">
-        </div>
-      </div>
-
-      <div class="row mx-0 mt-2 vertical-align">
-        <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-          <label class="my-auto" for="password">Kennwort</label>
-        </div>
-        <div class="col">
-          <input class="col-5" id="password" type="password" formControlName="password" placeholder="Password">
-        </div>
-      </div>
-
-      <div class="row mx-0 mt-2 vertical-align">
-        <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-          <label class="my-auto" for="clientID">Client ID</label>
-        </div>
-        <div class="col">
-          <input class="col-5" id="clientID" type="text" formControlName="clientId" placeholder="CHAT">
-        </div>
-      </div>
-
-      <div class="row mx-0 mt-2 vertical-align">
-        <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-          <label class="my-auto" for="secret">Secret</label>
-        </div>
-        <div class="col">
-          <input class="col-5" id="secret" type="text" formControlName="secret" placeholder="CHAT">
-        </div>
-      </div>
-      <button class="ml-3 mt-3 mb-5">Testen</button>
-    </form>
+  <div class="row mx-0 mt-2 vertical-align">
+    <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+      <label class="my-auto" for="userAPI">API Benutzer</label>
+    </div>
+    <div class="col">
+      <input class="col-md-12 col-lg-5" id="userAPI" type="text" formControlName="userAPI" placeholder="chatuser">
+    </div>
   </div>
-  <div>
-    <mat-radio-button [checked]="servers[1].checked" [value]="servers[1].id" (change)="onSelectConnectionType($event)">
-      {{servers[1].title}}
-    </mat-radio-button>
+
+  <div class="row mx-0 mt-2 vertical-align">
+    <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+      <label class="my-auto" for="password">Kennwort</label>
+    </div>
+    <div class="col">
+      <input class="col-md-12 col-lg-5 " id="password" type="password" formControlName="password"
+             placeholder="Password">
+    </div>
   </div>
-</div>
+
+  <div class="row mx-0 mt-2 vertical-align">
+    <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+      <label class="my-auto" for="clientID">Client ID</label>
+    </div>
+    <div class="col">
+      <input class="col-md-12 col-lg-5 " id="clientID" type="text" formControlName="clientId" placeholder="CHAT">
+    </div>
+  </div>
+
+  <div class="row mx-0 mt-2 vertical-align">
+    <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
+      <label class="my-auto" for="secret">Secret</label>
+    </div>
+    <div class="col">
+      <input class="col-md-12 col-lg-5 " id="secret" type="text" formControlName="secret" placeholder="CHAT">
+    </div>
+  </div>
+  <div class="row mx-0 pl-0 mt-3 vertical-middle">
+    <button mat-raised-button>Testen</button>
+    <div *ngIf="isProcessed">
+      <div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>
+      <div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>
+    </div>
+  </div>
+</form>

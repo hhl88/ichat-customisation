@@ -21,6 +21,18 @@ body {
   }
 }
 
+input, input.form-control, textarea.form-control {
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 0.375em !important;
+  font-size: 1em;
+  line-height: normal;
+  -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+}
+
 .navbar {
   .navbar-brand {
     color: #6a6a6a;
@@ -43,90 +55,6 @@ body {
   }
 }
 
-
-hidden {
-  display: none;
-}
-
-.show {
-  display: block;
-}
-
-
-.input-wrapper {
-  width: inherit;
-
-  input {
-    box-shadow: none !important;
-  }
-
-  .place-autocomplete-dropdown {
-    list-style: none;
-    position: absolute;
-    z-index: 999;
-    background: #ffffff;
-    display: block;
-    width: 100%;
-    border-radius: 4px !important;
-    border: 1px solid #DBDBDB !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    padding: 20px 20px;
-
-    li.place-prediction {
-      padding: 10px 20px;
-
-      &:hover {
-        background: #dfe6e9;
-      }
-    }
-  }
-}
-
-
-.modal-wrapper {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  z-index: 2000;
-  display: none;
-
-  .modal-subwrapper {
-    z-index: 3000;
-    width: 100%;
-    height: 100%;
-
-    #modal-container {
-      position: absolute;
-      background: #ffffff;
-      z-index: 4000;
-      padding: 24px;
-      min-width: 568px;
-      max-width: 90%;
-      border-radius: 4px;
-      box-sizing: border-box;
-      box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2), 0 24px 38px 3px rgba(0, 0, 0, .14), 0 9px 46px 8px rgba(0, 0, 0, .12);
-      color: rgba(0, 0, 0, .87);
-      // width: 100%;
-      animation-name: opacityOn;
-      animation-duration: .5s;
-      animation-fill-mode: forwards;
-      transition-timing-function: ease-in-out;
-      overflow-y: hidden;
-    }
-
-    .modal-background {
-      // background: rgba(10,10,10,.5);
-      // background: transparent;
-      background: rgba(0, 0, 0, .1);
-      width: 100%;
-      height: 100%;
-      top: 0;
-      z-index: 2000;
-    }
-  }
-
-}
 
 @keyframes opacityOn {
   0% {
@@ -212,8 +140,8 @@ textarea {
 
 
 /**
- ALERT
- */
+ALERT
+*/
 
 .alert {
   border: none !important;
@@ -241,7 +169,11 @@ input.form-control, textarea.form-control {
 }
 
 button {
+  display: block;
   outline: none !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .standard-mh {

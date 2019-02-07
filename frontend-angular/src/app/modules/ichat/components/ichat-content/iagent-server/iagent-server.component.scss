@@ -1,3 +1,15 @@
-.container-wrapper {
-  margin: 1em 0.5em 1em 1.5em;
+
+button {
+  background-color: #ababab !important;
+  &:hover {
+    background-color: #8a8a8a !important;
+  }
+}
+
+.server-connected {
+  color: #1e7e34;
+}
+
+.server-unconnected {
+  color: #bd2130;
 }

@@ -27,14 +27,14 @@ export class IChatComponent implements OnInit {
 
   fetchChatFrontEnd() {
     this.store.dispatch(new FrontEndListLoadingAction());
-    this.iChatService.getChatFrontends().subscribe(async frontends => {
+    this.iChatService.getChatFrontends().subscribe( frontends => {
       this.store.dispatch(new FrontEndListLoadSuccessAction(frontends));
     });
   }
 
   fetchChatLayout() {
     this.store.dispatch(new LayoutListLoadingAction());
-    this.iChatService.getChatLayouts().subscribe(async layouts => {
+    this.iChatService.getChatLayouts().subscribe( layouts => {
       this.store.dispatch(new LayoutListLoadSuccessAction(layouts));
 
     });

@@ -17,7 +17,7 @@ public class DemandInfoRowMapper implements RowMapper<DemandInfo> {
     public DemandInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
         return DemandInfo.builder()
                 .id(rs.getString("id"))
-                .demandInfoItems(Arrays.asList(new Gson().fromJson(rs.getString("demand_info"), DemandInfoItem[].class)))
+                .demandInfoList(Arrays.asList(new Gson().fromJson(rs.getString("demand_info"), DemandInfoItem[].class)))
                 .build();
     }
 

@@ -15,7 +15,6 @@ export class IChatContentComponent implements OnInit {
   selectedFrontend: Frontend;
 
   constructor(private store: Store<fromRoot.State>) {
-
   }
 
   ngOnInit() {

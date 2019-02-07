@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import 'rxjs-compat/add/operator/do';
-import 'rxjs-compat/add/operator/filter';
-import 'rxjs-compat/add/operator/take';
-import 'rxjs-compat/add/operator/switchMap';
-import 'rxjs-compat/add/operator/delay';
+
 import {AuthService} from '../authentication/authentication.service';
 
 @Injectable()
@@ -50,7 +47,6 @@ export class TokenInterceptor implements HttpInterceptor {
     //       return Observable.throw(error);
     //     }
     //   });
-
     return next.handle(request).do((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
       }

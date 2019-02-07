@@ -98,8 +98,8 @@ export const getSelectedFrontend = (state: State) => JSON.parse(JSON.stringify(s
 export const getSelectedLayout = (state: State) => JSON.parse(JSON.stringify(state.selectedLayout)) ;
 
 
-export const getLoadedChatFrontEnds = (state: State) => state.chatFrontEnds;
-export const getLoadedChatLayouts = (state: State) => state.chatLayouts;
+export const getLoadedChatFrontEnds = (state: State) =>  JSON.parse(JSON.stringify(state.chatFrontEnds));
+export const getLoadedChatLayouts = (state: State) =>  JSON.parse(JSON.stringify(state.chatLayouts));
 
 export const getStatusChatFrontEnds = (state: State) => state.frontEndsLoaded;
 export const getStatusChatLayouts = (state: State) => state.layoutsLoaded;

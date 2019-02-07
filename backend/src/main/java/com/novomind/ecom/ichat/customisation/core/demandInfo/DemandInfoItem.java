@@ -11,13 +11,15 @@ import lombok.*;
 public class DemandInfoItem {
     private String name;
     private String example;
-    private boolean isRequired;
+
+    @JsonProperty
+    private boolean required;
 
     public static DemandInfoItem of(DemandInfoItemDTO dto) {
         return DemandInfoItem.builder()
                 .name(dto.getName())
                 .example(dto.getExample())
-                .isRequired(dto.isRequired())
+                .required(dto.required())
                 .build();
     }
 
@@ -29,8 +31,8 @@ public class DemandInfoItem {
         return example;
     }
 
-    @JsonProperty("isRequired")
-    public boolean isRequired() {
-        return isRequired;
+    @JsonProperty
+    public boolean required() {
+        return required;
     }
 }

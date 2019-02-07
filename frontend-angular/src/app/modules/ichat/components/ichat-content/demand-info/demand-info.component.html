@@ -1,0 +1,58 @@
+<div class="demand-info-wrapper" [formGroup]="form">
+  <div class="demand-info-body ml-3 my-3" formArrayName="demandInfoList">
+    <div class="hint">
+      Die folgenden Felder werden dem Kunden vor dem Chat-Begin zum Ausfüllen angezeigt
+    </div>
+
+
+    <table class="table" *ngIf="demandInfoList.length > 0">
+      <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Example</th>
+        <th scope="col">Display</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <ng-container *ngFor="let range of form.controls['demandInfoList']['controls']; let i=index">
+        <tr [formGroupName]="i">
+          <td class="form-group">
+            <input class="form-control" formControlName="name">
+          </td>
+
+          <td class="form-group align-middle text-center">
+            <input class="form-control" formControlName="example">
+          </td>
+
+          <td class="form-group">
+            <mat-checkbox class="example-margin" formControlName="required"></mat-checkbox>
+          </td>
+          <td>
+            <button class="remove-button"
+                    (click)="removeDemandInfo($event, i)"
+                    mat-raised-button>
+              X
+            </button>
+
+          </td>
+        </tr>
+
+      </ng-container>
+      </tbody>
+    </table>
+
+
+  </div>
+
+  <div class="row  ml-3 my-3">
+    <div class="col-auto">
+      <button class="add-button" mat-raised-button (click)="addDemandInfo()">
+        <mat-icon class="add-icon">add</mat-icon>
+        Feld hinzufügen
+      </button>
+
+    </div>
+  </div>
+</div>

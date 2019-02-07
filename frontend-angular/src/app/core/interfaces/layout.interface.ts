@@ -17,7 +17,7 @@ export interface Layout {
   font?: FontType[];
 }
 
-export const LayoutDefault: Layout =  {
+export const LayoutDefault: Layout = {
   name: 'Layout',
   displayType: DisplayType.BESIDE_PAGE,
   textInputType: TextInputType.ABOVE_DIALOG,
@@ -26,4 +26,4 @@ export const LayoutDefault: Layout =  {
   backgroundImg: '',
   backgroundType: BackgroundType.FILLING,
   font: [],
-}
+};
