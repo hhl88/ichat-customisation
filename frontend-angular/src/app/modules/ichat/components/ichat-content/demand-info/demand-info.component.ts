@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Info} from 'core/interfaces/info.interface';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {DemandInfo} from 'core/interfaces/demand-info.interface';
 
 @Component({
   selector: 'app-demand-info',
@@ -8,7 +9,7 @@ import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./demand-info.component.scss']
 })
 export class DemandInfoComponent implements OnInit, OnChanges {
-  @Input() demandInfoList: Info[];
+  @Input() demandInfo: DemandInfo;
   @Output() onDemandInfoListChanged = new EventEmitter<any>();
 
   form: FormGroup;
@@ -17,18 +18,7 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initForm();
-
     this.reloadForm();
-
-
-    this.form.controls['demandInfoList'].valueChanges.subscribe(data => {
-        this.onDemandInfoListChanged.emit({
-          data: this.getList().getRawValue(),
-          isFormValid: this.isFormValid()
-        });
-      }
-    );
   }
 
   ngOnChanges(): void {
@@ -36,22 +26,26 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   }
 
   reloadForm() {
-    if (this.form) {
-      this.form.reset();
-    } else {
-      this.initForm();
-    }
-    console.log('demandInfo', this.demandInfoList);
+    console.log('demandIf', this.demandInfo)
+    this.initForm();
 
-    if (this.demandInfoList.length > 0) {
-      for (let i = 0; i < this.demandInfoList.length; i++) {
+    if (this.demandInfo && this.demandInfo.demandInfoList.length > 0) {
+      const demandList: Info[] = JSON.parse(JSON.stringify(this.demandInfo.demandInfoList));
+      for (let i = 0; i < demandList.length; i++) {
         this.addDemandInfo();
-        this.getFormGroup(i).controls['name'].setValue(this.demandInfoList[i].name);
-        this.getFormGroup(i).controls['example'].setValue(this.demandInfoList[i].example);
-        this.getFormGroup(i).controls['required'].setValue(this.demandInfoList[i].required);
+        this.getFormGroup(i).controls['name'].setValue(demandList[i].name);
+        this.getFormGroup(i).controls['example'].setValue(demandList[i].example);
+        this.getFormGroup(i).controls['required'].setValue(demandList[i].required);
 
       }
     }
+    this.form.controls['demandInfoList'].valueChanges.subscribe(data => {
+        this.onDemandInfoListChanged.emit({
+          data: this.getList().getRawValue(),
+          isFormValid: this.isFormValid()
+        });
+      }
+    );
   }
 
   initForm() {

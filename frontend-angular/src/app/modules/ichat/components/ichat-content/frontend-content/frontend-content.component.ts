@@ -31,8 +31,8 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.selectedFrontend === null || this.frontEnd.index !== this.selectedFrontend.index) {
+      this.step = 0;
       this._setFrontend();
-
     }
 
   }

@@ -1,14 +1,118 @@
 <div class="layout-wrapper">
   <div class="display-type">
     <div class="header">Ercheinungsform</div>
-    <div class="body"></div>
+    <div class="body my-2">
+      <div class="option">
+        <input type="radio" value="0" v-model="layout.displayType">
+        <label>Layer auf Seite</label>
+      </div>
+      <div class="option">
+        <input type="radio" value="1" v-model="layout.displayType">
+        <label>Integriert</label>
+      </div>
+      <div class="option">
+        <input type="radio" value="2" v-model="layout.displayType">
+        <label class="mb-0">Popup</label>
+      </div>
+    </div>
+
+    <div class="display-type">
+      <div class="header">Anordnung</div>
+      <div class="body"></div>
+      <div class="formation col-6 ml-3 border-option">
+        <div class="my-3">
+          <div class="row">
+            <div class="col-5">
+              <label>Text-Eingabefeld</label>
+              <div class="border-option">
+                <div class="option mt-3">
+                  <input type="radio" value="0" v-model="layout.textInputType">
+                  <label>über Dialog</label>
+                </div>
+                <div class="option">
+                  <input type="radio" value="1" v-model="layout.textInputType">
+                  <label>unter Dialog</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label>Buttons</label>
+              <div class="border-option">
+                <div class="option mt-3">
+                  <input type="radio" value="0" v-model="layout.buttonType">
+                  <label>Neben Eingabelfeld</label>
+                </div>
+                <div class="option">
+                  <input type="radio" value="1" v-model="layout.buttonType">
+                  <label>unter Dialog</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <label class="mt-2">Logo</label>
+          <div class="col-11 border-option">
+            <!--<ImageUploader class="no-border my-2" :max-width="600" :max-height="200" @imageUploader="changeLogo"/>-->
+            <img v-if="logo" :src="logo" style="width: 200px; height: 150px; border: 1px solid gray">
+
+          </div>
+
+
+          <label class="mt-2">Hintergrund</label>
+          <div class="col-11 border-option">
+            <div class="row mt-2">
+              <div class="col-4">
+                <input type="radio" value="0" v-model="layout.backgroundType">
+                <label>Kacheln</label>
+              </div>
+              <div class="col-4">
+                <input type="radio" value="1" v-model="layout.backgroundType">
+                <label>ausfüllend</label>
+              </div>
+            </div>
+            <!--<ImageUploader class="no-border mb-2" :max-width="300" :max-height="300" @imageUploader="changeBackground"/>-->
+            <img v-if="backgroundImg" :src="backgroundImg"
+                 style="width: 200px; height: 150px; border: 1px solid gray">
+
+          </div>
+
+          <label class="mt-2">Hintergrund</label>
+          <div class="col-11 border-option">
+            <div class="row">
+              <div class="col-5 my-1 vertical-align">
+                <label class="my-2 ">Schriftart</label>
+                <!--<select v-model="layout.font.fontFamily" class="ml-2 col-8">-->
+                  <!--<option v-for="(v, k) in fontFamilies" :key="k" :value="v">-->
+                    <!--{{ v }}-->
+                  <!--</option>-->
+                <!--</select>-->
+              </div>
+
+              <div class="col-3 my-1 vertical-align">
+                <label class="my-2">Größe</label>
+                <!--<select v-model="layout.font.fontSize" class="ml-2 col-auto">-->
+                  <!--<option v-for="(v, k) in sizes" :key="k" :value="v">-->
+                    <!--{{ v }} pt-->
+                  <!--</option>-->
+                <!--</select>-->
+              </div>
+              <div class="col-4 my-1 text-center">
+                <!--<b-button-group class="my-2 button-group" size="sm">-->
+                <!--<b-button class="font-style"-->
+                <!--v-for="(btn, index) in buttons"-->
+                <!--:key="index"-->
+                <!--:pressed.sync="btn.state">-->
+                <!--{{ btn.caption }}-->
+                <!--</b-button>-->
+                <!--</b-button-group>-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
   </div>
-
-  <div class="display-type">
-    <div class="header">Anordnung</div>
-    <div class="body"></div>
-
-  </div>
-
-
 </div>

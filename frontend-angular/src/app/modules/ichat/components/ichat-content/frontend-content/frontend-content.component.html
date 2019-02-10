@@ -35,7 +35,7 @@
       <ng-container *ngSwitchCase="1">
         <div class="demand-info-settings">
           <div class="header">Eröffnungsdialog</div>
-          <app-demand-info [demandInfoList]="selectedFrontend.demandInfo"
+          <app-demand-info [demandInfo]="selectedFrontend.demandInfo"
                            (onDemandInfoListChanged)="demandInfoListChanged($event)">
           </app-demand-info>
         </div>
