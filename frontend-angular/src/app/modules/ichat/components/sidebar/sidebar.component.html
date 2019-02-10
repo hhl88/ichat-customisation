@@ -1,8 +1,14 @@
 <div class="sidebar-wrapper mt-3">
   <app-item-list [header]="'Benutzerverwaltung'" [hideToggle]="true"></app-item-list>
   <div class="sidebar-body">
-    <app-item-list [header]="layoutType"></app-item-list>
-    <app-item-list [header]="frontendType"></app-item-list>
+    <app-item-list [header]="layoutType"
+                   [itemList]="chatLayouts"
+                   (onChangeItem)="changeItem($event)">
+    </app-item-list>
+    <app-item-list [header]="frontendType"
+                   [itemList]="chatFrontEnds"
+                   (onChangeItem)="changeItem($event)">
+    </app-item-list>
 
   </div>
   <app-item-list [header]="'Passwort ändern'" [hideToggle]="true"></app-item-list>

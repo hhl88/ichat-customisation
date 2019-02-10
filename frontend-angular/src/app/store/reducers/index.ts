@@ -49,6 +49,7 @@ export const getIChatState = (state: State) => state.iChat;
 
 export const getUser = createSelector(getEntryState, fromEntry.getUser);
 
+export const getSelectedItem = createSelector(getIChatState, fromIChat.getSelectedItem);
 export const getSelectedFrontend = createSelector(getIChatState, fromIChat.getSelectedFrontend);
 export const getSelectedLayout = createSelector(getIChatState, fromIChat.getSelectedLayout);
 

@@ -1,17 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatExpansionPanel} from '@angular/material';
 import {ItemType} from 'core/enum/item-type.enum';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {
-  CurrentFrontEndSelectedAction,
-  CurrentLayoutSelectedAction,
-  FrontEndListLoadSuccessAction,
-  LayoutListLoadSuccessAction
+  CurrentItemSelectedAction, FrontEndListAddAction, LayoutListAddAction
 } from 'store/actions/ichat';
 import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
 import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
-import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';
+import {getSelectedItem} from 'store/reducers';
+import {Subscription} from 'rxjs';
+import {Item} from 'core/interfaces/item.interface';
 
 @Component({
   selector: 'app-item-list',
@@ -21,59 +20,52 @@ import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';
 export class ItemListComponent implements OnInit {
   @Input() header: ItemType;
   @Input() hideToggle: boolean;
-  @Input() frontEndList: Frontend[] = [];
-  @Input() layoutList: Layout[] = [];
+  @Input() itemList: any[] = [];
+  @Output() onChangeItem = new EventEmitter();
   isFrontEnd: boolean;
   isLayout: boolean;
 
   expanded = false;
-  isLoading = true;
 
   constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
-    this.isFrontEnd = this.header === ItemType.FRONTEND;
-    this.isLayout = this.header === ItemType.LAYOUT;
-    this.isLoading = true;
-    if (this.isFrontEnd) {
-      this.store.pipe(select(getLoadedChatFrontEnds)).subscribe(frontends => {
-        this.frontEndList = frontends;
-        this.isLoading = false;
-      });
-    } else if (this.isLayout) {
-      this.store.pipe(select(getLoadedChatLayouts)).subscribe(layouts => {
-        this.layoutList = layouts;
-        this.isLoading = false;
-      });
+    if (this.header === ItemType.FRONTEND) {
+      this.isFrontEnd = true;
+      this.isLayout = false;
+      this.itemList = [] as Frontend[];
+    } else if (this.header === ItemType.LAYOUT) {
+      this.isFrontEnd = false;
+      this.isLayout = true;
+      this.itemList = [] as Layout[];
     }
-
   }
 
   selectItem(index: number, item) {
-    if (this.isFrontEnd) {
-      this.store.dispatch(new CurrentFrontEndSelectedAction(JSON.parse(JSON.stringify(item))));
-    } else if (this.isLayout) {
-      this.store.dispatch(new CurrentLayoutSelectedAction(JSON.parse(JSON.stringify(item))));
-    }
-
+    this.onChangeItem.emit(item);
   }
 
   addItem() {
+    let item;
     if (this.isFrontEnd) {
-      const item = FrontendDefault;
-      item['index'] = this.frontEndList.length;
-      item['name'] = this.header + ' ' + this.frontEndList.length;
-      this.frontEndList.push(JSON.parse(JSON.stringify(item)));
-      this.store.dispatch(new FrontEndListLoadSuccessAction(JSON.parse(JSON.stringify(this.frontEndList))));
+      item = FrontendDefault;
+      item.type = ItemType.FRONTEND;
     } else if (this.isLayout) {
-      const item = LayoutDefault;
-      item['index'] = this.layoutList.length;
-      item['name'] = this.header + ' ' + JSON.parse(JSON.stringify(this.layoutList)).length;
-      this.layoutList.push(JSON.parse(JSON.stringify(item)));
-      this.store.dispatch(new LayoutListLoadSuccessAction(JSON.parse(JSON.stringify(this.layoutList))));
-    }
+      item = LayoutDefault;
+      item.type = ItemType.LAYOUT;
 
+    }
+    const length = this.itemList.length;
+    item['index'] = length;
+    item['name'] = this.header + ' ' + length;
+
+    this.itemList.push(JSON.parse(JSON.stringify(item)));
+    if (this.isFrontEnd) {
+      this.store.dispatch(new FrontEndListAddAction(JSON.parse(JSON.stringify(item))));
+    } else if (this.isLayout) {
+      this.store.dispatch(new LayoutListAddAction(JSON.parse(JSON.stringify(item))));
+    }
 
   }
 

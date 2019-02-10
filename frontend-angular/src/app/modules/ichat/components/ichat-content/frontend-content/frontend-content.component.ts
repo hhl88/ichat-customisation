@@ -1,4 +1,4 @@
-import {Component, Input, NgZone, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
@@ -11,12 +11,12 @@ import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
   templateUrl: './frontend-content.component.html',
   styleUrls: ['./frontend-content.component.scss']
 })
-export class FrontendContentComponent implements OnInit {
+export class FrontendContentComponent implements OnInit, OnChanges {
   @Input() frontEnd: Frontend;
   step = 0;
   isServerValid: boolean;
   isDemandInfoListValid: boolean;
-  selectedFrontend: Frontend;
+  selectedFrontend: Frontend = null;
 
   constructor(private store: Store<fromRoot.State>,
               private iChatService: IChatService,
@@ -25,6 +25,19 @@ export class FrontendContentComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._setFrontend();
+  }
+
+
+  ngOnChanges() {
+    if (this.selectedFrontend === null || this.frontEnd.index !== this.selectedFrontend.index) {
+      this._setFrontend();
+
+    }
+
+  }
+
+  private _setFrontend() {
     this.selectedFrontend = JSON.parse(JSON.stringify(this.frontEnd));
     if (!this.selectedFrontend.demandInfo) {
       this.selectedFrontend.demandInfo = DefaultDemandInfo;
@@ -35,18 +48,17 @@ export class FrontendContentComponent implements OnInit {
     this.zone.run(() => {
       this.step--;
     });
-
   }
 
   nextStep() {
     this.step++;
   }
 
+
   demandInfoListChanged(rawValue) {
+    console.log('demandInfo', rawValue);
     this.selectedFrontend.demandInfo.demandInfoList = rawValue.data;
     this.isDemandInfoListValid = rawValue.isFormValid;
-
-    console.log('demandInfoListChanged', rawValue);
   }
 
   serverChanged(rawValue) {
@@ -62,7 +74,6 @@ export class FrontendContentComponent implements OnInit {
 
 
   submitCurrent() {
-    console.log('new frontend', this.selectedFrontend);
     if (this.selectedFrontend.id) {
       this.iChatService.updateFrontEnd(this.selectedFrontend.id, this.selectedFrontend).subscribe(res => {
         console.log('update frontend', res);
@@ -81,4 +92,6 @@ export class FrontendContentComponent implements OnInit {
   cancelCurrent() {
 
   }
+
+
 }

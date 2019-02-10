@@ -7,8 +7,8 @@
                          [expanded]="expanded">
       <mat-expansion-panel-header (click)="expandPanel(matExpansionPanel, $event)">
         <mat-panel-title>
-          <div class="w-100">
-            <span style="vertical-align:middle; float:left; line-height: 38px">{{header}}</span>
+          <div class="panel-title-wrapper">
+            <span class="header" style="vertical-align:middle; float:left; line-height: 38px">{{header}}</span>
             <button class="add-button"
                     *ngIf="!hideToggle"
                     style="vertical-align:middle; float:right; line-height: 38px"
@@ -16,18 +16,11 @@
                     mat-icon-button>
               <mat-icon class="add-icon">add_circle_outline</mat-icon>
             </button>
-            <div style="clear: both;"></div>
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div *ngIf="isFrontEnd && frontEndList.length > 0">
-        <div class="item-list mt-2" *ngFor="let item of frontEndList; let i = index" (click)="selectItem(i, item)">
-          {{item.name}}
-        </div>
-      </div>
-
-      <div *ngIf="!isFrontEnd && layoutList.length > 0">
-        <div class="item-list mt-2" *ngFor="let item of layoutList; let i = index" (click)="selectItem(i, item)">
+      <div *ngIf="itemList.length > 0">
+        <div class="item-list mt-2" *ngFor="let item of itemList; let i = index" (click)="selectItem(i, item)">
           {{item.name}}
         </div>
       </div>
@@ -37,8 +30,7 @@
   </div>
   <div>
     <span> {{isFrontEnd}} </span>
-    <span> - {{frontEndList.length}} </span>
-    <span> - {{layoutList.length}} </span>
+    <span> - {{itemList.length}} </span>
 
   </div>
 

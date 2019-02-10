@@ -6,6 +6,8 @@ import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';
 import {Subscription} from 'rxjs';
+import {Item} from 'core/interfaces/item.interface';
+import {CurrentItemSelectedAction} from 'store/actions/ichat';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,6 +21,8 @@ export class SidebarComponent implements OnInit {
   chatFrontEnds: Frontend[] = [];
   chatLayouts: Layout[] = [];
 
+  currentItem: Item = null;
+
   subFrontEnd: Subscription;
   subLayout: Subscription;
 
@@ -26,16 +30,21 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.subFrontEnd = this.store.pipe(select(getLoadedChatFrontEnds)).subscribe(frontends => {
       this.chatFrontEnds = frontends;
     });
-
 
     this.subLayout = this.store.pipe(select(getLoadedChatLayouts)).subscribe(layouts => {
       this.chatLayouts = layouts;
     });
 
+  }
+
+  changeItem(item) {
+    if (this.currentItem === null || this.currentItem.index !== item.index || this.currentItem.type !== item.type) {
+      this.currentItem = JSON.parse(JSON.stringify(item));
+      this.store.dispatch(new CurrentItemSelectedAction(JSON.parse(JSON.stringify(item))));
+    }
   }
 
 }

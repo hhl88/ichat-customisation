@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IAgentServerService} from 'ichat/services/iagent-server.service';
@@ -9,7 +9,7 @@ import {IAgentServerService} from 'ichat/services/iagent-server.service';
   styleUrls: ['./iagent-server.component.scss'],
   providers: [IAgentServerService]
 })
-export class IAgentServerComponent implements OnInit {
+export class IAgentServerComponent implements OnInit, OnChanges {
   formIAgentServer: FormGroup;
   @Input() iAgentServer: any;
 
@@ -34,30 +34,15 @@ export class IAgentServerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('iAgentserver', this.iAgentServer);
-    this.formIAgentServer = new FormGroup({
-      address: new FormControl('', [Validators.required]),
-      userAPI: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      clientId: new FormControl('', [Validators.required]),
-      secret: new FormControl('', [Validators.required]),
-    });
-    if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
-
-      Object.keys(this.iAgentServer).forEach(key => {
-        if (this.formIAgentServer.get(key)) {
-          this.formIAgentServer.controls[key].setValue(this.iAgentServer[key]);
-        }
-      });
-    }
+    this.initForm();
+    this.reloadForm();
     this.formIAgentServer.valueChanges.subscribe(data => {
       this.isClicked = false;
       this.connected = false;
       this.isProcessed = false;
 
-      this.iAgentServer = this.formIAgentServer.getRawValue();
       this.onIAgentServerChanged.emit({
-        data: this.iAgentServer,
+        data: this.formIAgentServer.getRawValue(),
         isFormValid: !this.formIAgentServer.invalid
       });
     });
@@ -77,5 +62,35 @@ export class IAgentServerComponent implements OnInit {
     }, error1 => this.isProcessed = true);
   }
 
+  reloadForm() {
+    if (this.formIAgentServer) {
+      this.formIAgentServer.reset();
+    } else {
+      this.initForm();
+    }
+
+    if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
+
+      Object.keys(this.iAgentServer).forEach(key => {
+        if (this.formIAgentServer.get(key)) {
+          this.formIAgentServer.controls[key].setValue(this.iAgentServer[key]);
+        }
+      });
+    }
+  }
+
+  initForm() {
+    this.formIAgentServer = new FormGroup({
+      address: new FormControl('', [Validators.required]),
+      userAPI: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      clientId: new FormControl('', [Validators.required]),
+      secret: new FormControl('', [Validators.required]),
+    });
+  }
+
+  ngOnChanges() {
+    this.reloadForm();
+  }
 
 }

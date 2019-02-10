@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 
@@ -7,7 +7,7 @@ import {ConnectionType} from 'core/enum/connection-type.enum';
   templateUrl: './server.component.html',
   styleUrls: ['./server.component.scss']
 })
-export class ServerComponent implements OnInit {
+export class ServerComponent implements OnInit, OnChanges {
   @Input() iAgentServer: any;
   @Input() connectionType: ConnectionType;
 
@@ -49,6 +49,10 @@ export class ServerComponent implements OnInit {
 
   serverChanged(rawValue) {
     this.onServerChanged.emit(rawValue);
+  }
+
+  ngOnChanges(): void {
+    console.log('changes', this.iAgentServer);
   }
 
 

@@ -1,9 +1,9 @@
-<div class="content-wrapper" *ngIf="selectedFrontend || selectedLayout">
-  <div *ngIf="selectedLayout">
-    <app-layout-content [layout]="selectedLayout"></app-layout-content>
+<div class="content-wrapper" *ngIf="currentItem">
+  <div *ngIf="currentItem.type === layoutType">
+    <app-layout-content [layout]="currentItem"></app-layout-content>
   </div>
 
-  <div *ngIf="selectedFrontend">
-    <app-frontend-content [frontEnd]="selectedFrontend"></app-frontend-content>
+  <div *ngIf="currentItem.type === frontendType">
+    <app-frontend-content [frontEnd]="currentItem"></app-frontend-content>
   </div>
 </div>

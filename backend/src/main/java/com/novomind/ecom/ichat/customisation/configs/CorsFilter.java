@@ -29,10 +29,13 @@ public class CorsFilter implements Filter {
 
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (request.getHeader(ORIGIN) != null) {
-            String origin = request.getHeader(ORIGIN);
-            response.setHeader("Access-Control-Allow-Origin", origin);
-        }
+//        if (request.getHeader(ORIGIN) != null) {
+//            String origin = request.getHeader(ORIGIN);
+//            response.setHeader("Access-Control-Allow-Origin", origin);
+//        }
+
+        response.setHeader("Access-Control-Allow-Origin", "https://frontend.customisation.test:4321");
+
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
 
         response.setHeader("Access-Control-Allow-Headers", request.getHeader(ALLOWED_HEADERS));
