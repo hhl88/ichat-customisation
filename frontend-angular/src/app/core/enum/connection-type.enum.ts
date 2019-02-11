@@ -1,4 +1,4 @@
 export enum ConnectionType {
-  IAGENT_SERVER,
-  CLOUD
+  IAGENT_SERVER = 'IAGENT_SERVER' ,
+  CLOUD = 'CLOUD'
 }

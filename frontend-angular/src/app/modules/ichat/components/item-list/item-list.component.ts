@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatExpansionPanel} from '@angular/material';
 import {ItemType} from 'core/enum/item-type.enum';
 import {select, Store} from '@ngrx/store';
@@ -21,10 +21,11 @@ export class ItemListComponent implements OnInit {
   @Input() header: ItemType;
   @Input() hideToggle: boolean;
   @Input() itemList: any[] = [];
+  @Input() isActive: boolean;
   @Output() onChangeItem = new EventEmitter();
   isFrontEnd: boolean;
   isLayout: boolean;
-
+  selectedIndex: number;
   expanded = false;
 
   constructor(private store: Store<fromRoot.State>) {
@@ -43,6 +44,7 @@ export class ItemListComponent implements OnInit {
   }
 
   selectItem(index: number, item) {
+    this.selectedIndex = index;
     this.onChangeItem.emit(item);
   }
 
@@ -53,6 +55,7 @@ export class ItemListComponent implements OnInit {
       item.type = ItemType.FRONTEND;
     } else if (this.isLayout) {
       item = LayoutDefault;
+      console.log('item', item);
       item.type = ItemType.LAYOUT;
 
     }
@@ -71,6 +74,7 @@ export class ItemListComponent implements OnInit {
 
   expandPanel(matExpansionPanel: MatExpansionPanel, event): void {
     event.stopPropagation();
+
     if (this._isAddButton(event.target as HTMLElement)) {
       matExpansionPanel.open();
       this.expanded = true;

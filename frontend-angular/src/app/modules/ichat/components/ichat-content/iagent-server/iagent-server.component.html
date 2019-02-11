@@ -1,4 +1,4 @@
-<form class="mb-5"(ngSubmit)="checkServer()" [formGroup]="formIAgentServer" novalidate>
+<form class="mb-5" [formGroup]="formIAgentServer" novalidate>
   <div class="row mx-0 mt-3 vertical-align">
     <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
       <label class="my-auto" for="address">iAgent URL (Chat API)</label>
@@ -46,7 +46,7 @@
     </div>
   </div>
   <div class="row mx-0 pl-0 mt-3 vertical-middle">
-    <button mat-raised-button>Testen</button>
+    <button mat-raised-button (click)="checkServer()">Testen</button>
     <div *ngIf="isProcessed">
       <div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>
       <div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>

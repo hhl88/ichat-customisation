@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Info} from 'core/interfaces/info.interface';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DemandInfo} from 'core/interfaces/demand-info.interface';
@@ -10,7 +10,10 @@ import {DemandInfo} from 'core/interfaces/demand-info.interface';
 })
 export class DemandInfoComponent implements OnInit, OnChanges {
   @Input() demandInfo: DemandInfo;
+  @Input() switchedItem: boolean;
+
   @Output() onDemandInfoListChanged = new EventEmitter<any>();
+  @Output() onFinishedBuild = new EventEmitter<any>();
 
   form: FormGroup;
 
@@ -22,11 +25,13 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.reloadForm();
+    if (this.switchedItem) {
+      this.reloadForm();
+    }
   }
 
+
   reloadForm() {
-    console.log('demandIf', this.demandInfo)
     this.initForm();
 
     if (this.demandInfo && this.demandInfo.demandInfoList.length > 0) {

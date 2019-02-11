@@ -12,22 +12,18 @@ public class FontDTO {
 
     private String fontFamily;
     private int fontSize;
-    private List<String> fontStyles;
+    private List<FontStyle> fontStyles;
 
     private FontDTO() {}
 
-    public FontDTO(String fontFamily, int fontSize, List<String> fontStyles) {
+    public FontDTO(String fontFamily, int fontSize, List<FontStyle> fontStyles) {
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.fontStyles = fontStyles;
     }
 
     public static FontDTO of(Font font) {
-        List<String> fontStyles = font.getFontStyles()
-                .stream()
-                .map(style -> String.valueOf(style.ordinal()))
-                .collect(Collectors.toList());
-        return new FontDTO(font.getFontFamily(), font.getFontSize(), fontStyles);
+        return new FontDTO(font.getFontFamily(), font.getFontSize(), font.getFontStyles());
     }
 
     public String getFontFamily() {
@@ -38,7 +34,7 @@ public class FontDTO {
         return fontSize;
     }
 
-    public List<String> getFontStyles() {
+    public List<FontStyle> getFontStyles() {
         return fontStyles;
     }
 }

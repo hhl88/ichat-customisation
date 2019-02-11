@@ -7,6 +7,7 @@
           <div class="header">iAgent System</div>
           <app-server [iAgentServer]="selectedFrontend.iAgentServer"
                       [connectionType]="selectedFrontend.connectionType"
+                      [switchedItem]="switchedItem"
                       (onServerChanged)="serverChanged($event)"
                       (onConnectionTypeChanged)="connectionTypeChanged($event)">
           </app-server>
@@ -36,6 +37,7 @@
         <div class="demand-info-settings">
           <div class="header">Eröffnungsdialog</div>
           <app-demand-info [demandInfo]="selectedFrontend.demandInfo"
+                           [switchedItem]="switchedItem"
                            (onDemandInfoListChanged)="demandInfoListChanged($event)">
           </app-demand-info>
         </div>
@@ -45,7 +47,7 @@
 
 
 
-  <div class="frontend-fotter button-group">
+  <div class="frontend-footer button-group">
     <button mat-raised-button (click)="cancelCurrent()">Abrechen</button>
     <button mat-raised-button *ngIf="step === 0" (click)="nextStep()">Weiter</button>
     <button mat-raised-button *ngIf="step === 1" (click)="prevStep()">Zurück</button>

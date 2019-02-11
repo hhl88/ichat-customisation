@@ -14,11 +14,11 @@ public class FrontEndDTO {
     private IAgentServer iAgentServer;
     private String urlPath;
     private DemandInfo demandInfo;
-    private String connectionType;
+    private Connection connectionType;
 
     private FrontEndDTO(){}
 
-    public FrontEndDTO(String id, String name, IAgentServer iAgentServer, String urlPath, DemandInfo demandInfo, String connectionType) {
+    public FrontEndDTO(String id, String name, IAgentServer iAgentServer, String urlPath, DemandInfo demandInfo, Connection connectionType) {
         this.id = id;
         this.name = name;
         this.iAgentServer = iAgentServer;
@@ -48,7 +48,7 @@ public class FrontEndDTO {
         return demandInfo;
     }
 
-    public String getConnectionType() {
+    public Connection getConnectionType() {
         return connectionType;
     }
 }

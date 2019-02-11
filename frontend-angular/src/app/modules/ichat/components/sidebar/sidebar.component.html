@@ -3,10 +3,12 @@
   <div class="sidebar-body">
     <app-item-list [header]="layoutType"
                    [itemList]="chatLayouts"
+                   [isActive]="currentItem ? currentItem.type === layoutType : false"
                    (onChangeItem)="changeItem($event)">
     </app-item-list>
     <app-item-list [header]="frontendType"
                    [itemList]="chatFrontEnds"
+                   [isActive]="currentItem ? currentItem.type === frontendType : false"
                    (onChangeItem)="changeItem($event)">
     </app-item-list>
 

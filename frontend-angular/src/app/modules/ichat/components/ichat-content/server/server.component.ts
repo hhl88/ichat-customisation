@@ -7,30 +7,33 @@ import {ConnectionType} from 'core/enum/connection-type.enum';
   templateUrl: './server.component.html',
   styleUrls: ['./server.component.scss']
 })
-export class ServerComponent implements OnInit, OnChanges {
+export class ServerComponent implements OnInit {
   @Input() iAgentServer: any;
   @Input() connectionType: ConnectionType;
+  @Input() switchedItem: boolean;
 
   @Output() onServerChanged = new EventEmitter();
   @Output() onConnectionTypeChanged = new EventEmitter();
+  @Output() onFinishedBuild = new EventEmitter<any>();
 
-  servers = [
-    {
-      id: 0,
-      title: 'Eigenes iAgent System',
-      checked: false,
-    },
-    {
-      id: 1,
-      title: 'Cloud',
-      checked: false
-    }
-  ];
+  cloudType = ConnectionType.CLOUD;
+  iAgentServerType = ConnectionType.IAGENT_SERVER;
+
+  servers: any = {};
 
   constructor() {
+    this.servers[this.iAgentServerType] = {
+      title: 'Eigenes iAgent System',
+      checked: false
+    };
+    this.servers[this.cloudType] = {
+      title: 'Cloud',
+      checked: false
+    };
   }
 
   ngOnInit() {
+    console.log('servers', this.servers);
     if (this.connectionType === null || this.connectionType === undefined) {
       this.connectionType = ConnectionType.IAGENT_SERVER;
     }
@@ -40,19 +43,25 @@ export class ServerComponent implements OnInit, OnChanges {
 
   onSelectConnectionType(event) {
     this.connectionType = event.value;
-    this.servers.forEach(server => {
-      server.checked = server.id === this.connectionType;
-    });
+    if (event.value === this.cloudType) {
+      this.servers[this.cloudType].checked = true;
+      this.servers[this.iAgentServerType].checked = false;
+    } else if (event.value === this.iAgentServerType) {
+      this.servers[this.cloudType].checked = false;
+      this.servers[this.iAgentServerType].checked = true;
+    }
     this.onConnectionTypeChanged.emit(event.value);
-
   }
 
   serverChanged(rawValue) {
+    // if (!this.switchedItem) {
     this.onServerChanged.emit(rawValue);
+    // }
   }
 
-  ngOnChanges(): void {
-    console.log('changes', this.iAgentServer);
+  finishedBuild(event) {
+    this.onFinishedBuild.emit();
+
   }
 
 

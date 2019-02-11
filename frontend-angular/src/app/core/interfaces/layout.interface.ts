@@ -2,7 +2,7 @@ import {DisplayType} from 'core/enum/display-type.enum';
 import {TextInputType} from 'core/enum/text-input-type.enum';
 import {ButtonType} from 'core/enum/button-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
-import {FontType} from 'core/enum/font-type.enum';
+import {Font, FontDefault} from 'core/interfaces/font.interface';
 
 export interface Layout {
   id?: string;
@@ -14,7 +14,7 @@ export interface Layout {
   logo?: string;
   backgroundImg?: string;
   backgroundType?: BackgroundType;
-  font?: FontType[];
+  font?: Font;
 }
 
 export const LayoutDefault: Layout = {
@@ -25,5 +25,5 @@ export const LayoutDefault: Layout = {
   logo: '',
   backgroundImg: '',
   backgroundType: BackgroundType.FILLING,
-  font: [],
+  font: FontDefault,
 };

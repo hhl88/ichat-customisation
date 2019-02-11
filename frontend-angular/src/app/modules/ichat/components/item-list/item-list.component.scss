@@ -29,6 +29,19 @@
 .header {
   text-overflow: ellipsis;
 }
+.mat-expansion-panel-header[class*="active"] {
+  background-color: red !important;
+  .panel-title-wrapper {
+    color: white !important;
+    font-weight: bold;
+  }
+  &:hover {
+    background-color: transparent !important;
+    .panel-title-wrapper {
+      color: black !important;;
+    }
+  }
+}
 
 .panel-title-wrapper {
   text-overflow: ellipsis !important;
@@ -36,12 +49,14 @@
   min-width: 50px !important;
   overflow: hidden !important;
   white-space: nowrap !important;
+
 }
 
 .mat-expansion-panel-header-description, .mat-expansion-panel-header-title {
   display: flex;
   flex-grow: 1;
   margin-right: 0;
+
 }
 
 .mat-expansion-panel-header-title {
@@ -53,4 +68,12 @@
     text-overflow: ellipsis;
   }
 
+}
+.mat-list .mat-list-item {
+  font-size: 1em;
+  height: 35px !important;
+}
+mat-list-item[class*="active"] {
+  background: red;
+  color: white;
 }

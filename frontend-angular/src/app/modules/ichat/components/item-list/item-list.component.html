@@ -5,10 +5,14 @@
                          [hideToggle]="hideToggle"
                          [disabled]="hideToggle"
                          [expanded]="expanded">
-      <mat-expansion-panel-header (click)="expandPanel(matExpansionPanel, $event)">
+      <mat-expansion-panel-header [ngClass]="{'active': isActive && matExpansionPanel.expanded}"
+                                  (click)="expandPanel(matExpansionPanel, $event)">
         <mat-panel-title>
           <div class="panel-title-wrapper">
-            <span class="header" style="vertical-align:middle; float:left; line-height: 38px">{{header}}</span>
+            <span class="header"
+                  style="vertical-align:middle; float:left; line-height: 38px">
+              {{header}}
+            </span>
             <button class="add-button"
                     *ngIf="!hideToggle"
                     style="vertical-align:middle; float:right; line-height: 38px"
@@ -20,18 +24,16 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div *ngIf="itemList.length > 0">
-        <div class="item-list mt-2" *ngFor="let item of itemList; let i = index" (click)="selectItem(i, item)">
-          {{item.name}}
-        </div>
+        <mat-list>
+          <mat-list-item class="item-list"
+                         [ngClass]="{'active': isActive && matExpansionPanel.expanded && selectedIndex === i}"
+                         *ngFor="let item of itemList; let i = index"
+                         (click)="selectItem(i, item)">
+            {{item.name}}
+          </mat-list-item>
+        </mat-list>
       </div>
-
 
     </mat-expansion-panel>
   </div>
-  <div>
-    <span> {{isFrontEnd}} </span>
-    <span> - {{itemList.length}} </span>
-
-  </div>
-
 </div>

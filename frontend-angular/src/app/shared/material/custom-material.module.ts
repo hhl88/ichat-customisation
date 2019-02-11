@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {
-  MatButtonModule,
+  MatButtonModule, MatButtonToggleModule,
   MatCheckboxModule,
   MatDialogModule, MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule,
+  MatInputModule, MatListModule,
   MatMenuModule, MatRadioModule,
   MatStepperModule, MatToolbarModule,
   MatTooltipModule
@@ -24,7 +24,9 @@ import {
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatListModule,
+    MatButtonToggleModule
   ],
   exports: [
     MatTooltipModule,
@@ -38,7 +40,9 @@ import {
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
-    MatRadioModule
+    MatRadioModule,
+    MatListModule,
+    MatButtonToggleModule
   ]
 
 })

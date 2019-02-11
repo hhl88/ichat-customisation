@@ -1,110 +1,173 @@
 <div class="layout-wrapper">
-  <div class="display-type">
-    <div class="header">Ercheinungsform</div>
-    <div class="body my-2">
-      <div class="option">
-        <input type="radio" value="0" v-model="layout.displayType">
-        <label>Layer auf Seite</label>
-      </div>
-      <div class="option">
-        <input type="radio" value="1" v-model="layout.displayType">
-        <label>Integriert</label>
-      </div>
-      <div class="option">
-        <input type="radio" value="2" v-model="layout.displayType">
-        <label class="mb-0">Popup</label>
-      </div>
+  <div class="form-wrapper" [formGroup]="form" novalidate>
+    <div class="display-type">
+      <div class="header">Ercheinungsform</div>
+      <mat-radio-group class="body my-2 border-option" formControlName="displayType">
+
+        <mat-radio-button class="my-2 mx-3"
+                          *ngFor="let item of supportedLayouts; let i = index"
+                          [checked]="selectedLayout.displayType === i"
+                          [value]="item.id">
+          {{item.title}}
+        </mat-radio-button>
+      </mat-radio-group>
     </div>
 
-    <div class="display-type">
+    <div class="formation-type mt-2">
       <div class="header">Anordnung</div>
-      <div class="body"></div>
-      <div class="formation col-6 ml-3 border-option">
-        <div class="my-3">
-          <div class="row">
-            <div class="col-5">
-              <label>Text-Eingabefeld</label>
-              <div class="border-option">
-                <div class="option mt-3">
-                  <input type="radio" value="0" v-model="layout.textInputType">
-                  <label>über Dialog</label>
-                </div>
-                <div class="option">
-                  <input type="radio" value="1" v-model="layout.textInputType">
-                  <label>unter Dialog</label>
-                </div>
+      <div class="body my-2 border-option w-100">
+        <div class="row my-2 mx-3">
+          <div class="col-6 pl-0">
+            <div class="sub-header">
+              Text-Eingabefeld
+            </div>
+            <mat-radio-group class="my-2 border-option w-100">
+
+              <mat-radio-button class="my-2 mx-3"
+                                *ngFor="let item of supportedTextInputs; let i = index"
+                                [checked]="selectedLayout.textInputType === i"
+                                [value]="item.id">
+                {{item.title}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="col-6 pr-0">
+            <div class="sub-header">Buttons</div>
+            <mat-radio-group class="my-2 border-option w-100">
+              <mat-radio-button class="my-2 mx-3"
+                                *ngFor="let item of supportedButtonType; let i = index"
+                                [checked]="selectedLayout.buttonType === i"
+                                [value]="item.id">
+                {{item.title}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div class="logo-selection my-2 mx-3">
+          <div class="sub-header">
+            Logo
+          </div>
+          <div class="border-option w-100">
+            <div class="input-group my-3 px-3">
+              <div class="custom-file">
+                <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="onFileChange($event, 0)"
+                       class="custom-file-input" id="logo-image">
+                <label class="custom-file-label" for="logo-image" aria-describedby="logo-image">
+                  Choose file
+                </label>
               </div>
             </div>
 
-            <div class="col-6">
-              <label>Buttons</label>
-              <div class="border-option">
-                <div class="option mt-3">
-                  <input type="radio" value="0" v-model="layout.buttonType">
-                  <label>Neben Eingabelfeld</label>
-                </div>
-                <div class="option">
-                  <input type="radio" value="1" v-model="layout.buttonType">
-                  <label>unter Dialog</label>
-                </div>
+            <div class="row mx-2 align-items-center justify-content-center">
+              <image-cropper
+                [hidden]="!isSelected[0]"
+                [imageChangedEvent]="imageChangedEvent[0]"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="4/ 3"
+                [resizeToWidth]="256"
+                format="png"
+                (imageCropped)="imageCropped($event, 0)"
+                (imageLoaded)="imageLoaded(0)"
+                (loadImageFailed)="loadImageFailed()">
+              </image-cropper>
+              <img [hidden]="(selectedLayout.logo && selectedLayout.logo) === '' || isSelected[0]"
+                   [src]="selectedLayout.logo"
+                   alt=""
+                   width="250"
+                   height="250">
+              <button type="button"
+                      mat-raised-button
+                      [hidden]="!isSelected[0]"
+                      (click)="cropImage($event, 0)">
+                Crop
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="background-selection my-2 mx-3">
+          <div class="sub-header">Hintergrund</div>
+          <div class="border-option w-100">
+            <mat-radio-group>
+              <mat-radio-button class="my-2 mx-3"
+                                *ngFor="let item of supportedBackgroundType; let i = index"
+                                [checked]="selectedLayout.backgroundType === i"
+                                [value]="item.id">
+                {{item.title}}
+              </mat-radio-button>
+            </mat-radio-group>
+            <div class="input-group mb-3 px-3">
+              <div class="custom-file">
+                <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="onFileChange($event, 1)"
+                       class="custom-file-input" id="background-image">
+                <label class="custom-file-label" for="background-image" aria-describedby="background-image">
+                  Choose file
+                </label>
               </div>
             </div>
-          </div>
-          <label class="mt-2">Logo</label>
-          <div class="col-11 border-option">
-            <!--<ImageUploader class="no-border my-2" :max-width="600" :max-height="200" @imageUploader="changeLogo"/>-->
-            <img v-if="logo" :src="logo" style="width: 200px; height: 150px; border: 1px solid gray">
 
-          </div>
-
-
-          <label class="mt-2">Hintergrund</label>
-          <div class="col-11 border-option">
-            <div class="row mt-2">
-              <div class="col-4">
-                <input type="radio" value="0" v-model="layout.backgroundType">
-                <label>Kacheln</label>
-              </div>
-              <div class="col-4">
-                <input type="radio" value="1" v-model="layout.backgroundType">
-                <label>ausfüllend</label>
-              </div>
+            <div class="row mx-2 align-items-center justify-content-center">
+              <image-cropper
+                [hidden]="!isSelected[1]"
+                [imageChangedEvent]="imageChangedEvent[1]"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="4/ 3"
+                [resizeToWidth]="256"
+                format="png"
+                (imageCropped)="imageCropped($event, 1)"
+                (imageLoaded)="imageLoaded(1)"
+                (loadImageFailed)="loadImageFailed()">
+              </image-cropper>
+              <img [hidden]="(selectedLayout.backgroundImg && selectedLayout.backgroundImg) === '' || isSelected[1]"
+                   [src]="selectedLayout.backgroundImg"
+                   alt=""
+                   width="250"
+                   height="250">
+              <button type="button"
+                      mat-raised-button
+                      [hidden]="!isSelected[1]"
+                      (click)="cropImage($event, 1)">
+                Crop
+              </button>
             </div>
-            <!--<ImageUploader class="no-border mb-2" :max-width="300" :max-height="300" @imageUploader="changeBackground"/>-->
-            <img v-if="backgroundImg" :src="backgroundImg"
-                 style="width: 200px; height: 150px; border: 1px solid gray">
 
           </div>
+        </div>
 
-          <label class="mt-2">Hintergrund</label>
-          <div class="col-11 border-option">
-            <div class="row">
-              <div class="col-5 my-1 vertical-align">
-                <label class="my-2 ">Schriftart</label>
-                <!--<select v-model="layout.font.fontFamily" class="ml-2 col-8">-->
-                  <!--<option v-for="(v, k) in fontFamilies" :key="k" :value="v">-->
-                    <!--{{ v }}-->
-                  <!--</option>-->
-                <!--</select>-->
+        <div class="font-selection my-2 mx-3" formGroupName="font">
+          <div class="sub-header">Hintergrund</div>
+          <div class="border-option w-100">
+            <div class="vertical-middle my-2">
+              <div class="col vertical-middle">
+                <div class="my-2 mr-3">Schriftart</div>
+                <select class='form-control'
+                        formControlName="fontFamily">
+                  <option *ngFor="let font of sampleFontFamily; let i = index" [value]="font">{{font}}</option>
+                </select>
               </div>
 
-              <div class="col-3 my-1 vertical-align">
-                <label class="my-2">Größe</label>
-                <!--<select v-model="layout.font.fontSize" class="ml-2 col-auto">-->
-                  <!--<option v-for="(v, k) in sizes" :key="k" :value="v">-->
-                    <!--{{ v }} pt-->
-                  <!--</option>-->
-                <!--</select>-->
+              <div class="col-4 vertical-middle">
+                <div class="my-2 mr-3">Größe</div>
+                <select class='form-control'
+                        formControlName="fontSize">
+                  <option *ngFor="let size of sampleFontSizes; let i = index" [value]="size">{{size}} px</option>
+                </select>
               </div>
-              <div class="col-4 my-1 text-center">
-                <!--<b-button-group class="my-2 button-group" size="sm">-->
-                <!--<b-button class="font-style"-->
-                <!--v-for="(btn, index) in buttons"-->
-                <!--:key="index"-->
-                <!--:pressed.sync="btn.state">-->
-                <!--{{ btn.caption }}-->
-                <!--</b-button>-->
-                <!--</b-button-group>-->
+              <div class="col-auto text-center">
+                <mat-button-toggle-group #group="matButtonToggleGroup"
+                                         formControlName="fontStyles"
+                                         multiple>
+                  <mat-button-toggle class="font-style-option"
+                                     [value]="item.id"
+                                     *ngFor="let item of supportedFontStyles; let i = index">
+                    <mat-icon>{{item.icon}}</mat-icon>
+                  </mat-button-toggle>
+
+                </mat-button-toggle-group>
               </div>
             </div>
           </div>
@@ -114,5 +177,9 @@
 
 
     </div>
+  </div>
+  <div class="layout-footer button-group">
+    <button mat-raised-button (click)="cancelCurrent()">Abrechen</button>
+    <button mat-raised-button (click)="submitCurrent()">Speichern</button>
   </div>
 </div>

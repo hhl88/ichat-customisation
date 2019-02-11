@@ -3,3 +3,9 @@ export interface Font {
   fontSize: number;
   fontStyles: any[];
 }
+
+export const FontDefault: Font = {
+  fontFamily: 'Arial',
+  fontSize: 10,
+  fontStyles: []
+};

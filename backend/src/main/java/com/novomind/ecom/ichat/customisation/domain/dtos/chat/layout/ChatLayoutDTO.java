@@ -8,18 +8,18 @@ public class ChatLayoutDTO {
 
     private String id;
     private String name;
-    private String displayType;
-    private String textInputType;
-    private String buttonType;
+    private LayoutDisplay displayType;
+    private TextAreaDisplay textInputType;
+    private ButtonDisplay buttonType;
     private String logo;
-    private String backgroundType;
+    private BackgroundDisplay backgroundType;
     private String backgroundImg;
     private FontDTO font;
 
     private ChatLayoutDTO() {
     }
 
-    public ChatLayoutDTO(String id, String name, String displayType, String textInputType, String buttonType, String logo, String backgroundType, String backgroundImg, FontDTO font) {
+    public ChatLayoutDTO(String id, String name, LayoutDisplay displayType, TextAreaDisplay textInputType, ButtonDisplay buttonType, String logo, BackgroundDisplay backgroundType, String backgroundImg, FontDTO font) {
         this.id = id;
         this.name = name;
         this.displayType = displayType;
@@ -39,15 +39,15 @@ public class ChatLayoutDTO {
         return name;
     }
 
-    public String getDisplayType() {
+    public LayoutDisplay getDisplayType() {
         return displayType;
     }
 
-    public String getTextInputType() {
+    public TextAreaDisplay getTextInputType() {
         return textInputType;
     }
 
-    public String getButtonType() {
+    public ButtonDisplay getButtonType() {
         return buttonType;
     }
 
@@ -55,7 +55,7 @@ public class ChatLayoutDTO {
         return logo;
     }
 
-    public String getBackgroundType() {
+    public BackgroundDisplay getBackgroundType() {
         return backgroundType;
     }
 
@@ -70,11 +70,11 @@ public class ChatLayoutDTO {
     public static ChatLayoutDTO of(ChatLayout chatLayout) {
         return new ChatLayoutDTO(chatLayout.getId(),
                 chatLayout.getName(),
-                String.valueOf(chatLayout.getDisplayType().ordinal()),
-                String.valueOf(chatLayout.getTextInputType().ordinal()),
-                String.valueOf(chatLayout.getButtonType().ordinal()),
+                chatLayout.getDisplayType(),
+                chatLayout.getTextInputType(),
+                chatLayout.getButtonType(),
                 chatLayout.getLogo(),
-                String.valueOf(chatLayout.getBackgroundType().ordinal()),
+               chatLayout.getBackgroundType(),
                 chatLayout.getBackgroundImg(),
                 FontDTO.of(chatLayout.getFont()));
     }

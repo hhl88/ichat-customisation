@@ -17,14 +17,15 @@ export class FrontendContentComponent implements OnInit, OnChanges {
   isServerValid: boolean;
   isDemandInfoListValid: boolean;
   selectedFrontend: Frontend = null;
+  switchedItem: boolean;
 
   constructor(private store: Store<fromRoot.State>,
-              private iChatService: IChatService,
-              private zone: NgZone) {
+              private iChatService: IChatService) {
 
   }
 
   ngOnInit() {
+    this.switchedItem = false;
     this._setFrontend();
   }
 
@@ -33,8 +34,10 @@ export class FrontendContentComponent implements OnInit, OnChanges {
     if (this.selectedFrontend === null || this.frontEnd.index !== this.selectedFrontend.index) {
       this.step = 0;
       this._setFrontend();
+      this.switchedItem = true;
+    } else {
+      this.switchedItem = false;
     }
-
   }
 
   private _setFrontend() {
@@ -45,9 +48,7 @@ export class FrontendContentComponent implements OnInit, OnChanges {
   }
 
   prevStep() {
-    this.zone.run(() => {
-      this.step--;
-    });
+    this.step--;
   }
 
   nextStep() {
@@ -56,16 +57,21 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
 
   demandInfoListChanged(rawValue) {
-    console.log('demandInfo', rawValue);
+
     this.selectedFrontend.demandInfo.demandInfoList = rawValue.data;
     this.isDemandInfoListValid = rawValue.isFormValid;
   }
 
   serverChanged(rawValue) {
     if (this.selectedFrontend.connectionType === ConnectionType.IAGENT_SERVER) {
-      this.selectedFrontend.iAgentServer = rawValue.data;
+      this.selectedFrontend.iAgentServer = JSON.parse(JSON.stringify(rawValue.data));
     }
+
     this.isServerValid = rawValue.isFormValid;
+  }
+
+  finishedBuild(event) {
+    this.switchedItem = false;
   }
 
   connectionTypeChanged(newType) {
@@ -74,6 +80,7 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
 
   submitCurrent() {
+    console.log('submit', this.selectedFrontend);
     if (this.selectedFrontend.id) {
       this.iChatService.updateFrontEnd(this.selectedFrontend.id, this.selectedFrontend).subscribe(res => {
         console.log('update frontend', res);

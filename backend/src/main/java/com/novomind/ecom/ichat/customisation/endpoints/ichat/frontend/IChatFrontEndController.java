@@ -139,7 +139,7 @@ public class IChatFrontEndController {
         if (chatFrontEnd.getDemandInfoId() != null)
             demandInfo = demandInfoService.findDemandInfoById(chatFrontEnd.getDemandInfoId()).get();
 
-        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName(), iAgentServer, chatFrontEnd.getUrlPath(), demandInfo, String.valueOf(chatFrontEnd.getConnectionType().ordinal()));
+        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName(), iAgentServer, chatFrontEnd.getUrlPath(), demandInfo, chatFrontEnd.getConnectionType());
 
     }
 

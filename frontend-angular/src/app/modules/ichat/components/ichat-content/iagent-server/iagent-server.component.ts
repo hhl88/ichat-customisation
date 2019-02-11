@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IAgentServerService} from 'ichat/services/iagent-server.service';
@@ -12,20 +12,11 @@ import {IAgentServerService} from 'ichat/services/iagent-server.service';
 export class IAgentServerComponent implements OnInit, OnChanges {
   formIAgentServer: FormGroup;
   @Input() iAgentServer: any;
+  @Input() switchedItem: boolean;
 
   @Output() onIAgentServerChanged = new EventEmitter();
-  servers = [
-    {
-      id: 0,
-      title: 'Eigenes iAgent System',
-      checked: false,
-    },
-    {
-      id: 1,
-      title: 'Cloud',
-      checked: false
-    }
-  ];
+  @Output() onFinishedBuild = new EventEmitter<any>();
+
   isProcessed = false;
   connected = false;
   isClicked = false;
@@ -34,7 +25,6 @@ export class IAgentServerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.initForm();
     this.reloadForm();
     this.formIAgentServer.valueChanges.subscribe(data => {
       this.isClicked = false;
@@ -42,12 +32,18 @@ export class IAgentServerComponent implements OnInit, OnChanges {
       this.isProcessed = false;
 
       this.onIAgentServerChanged.emit({
-        data: this.formIAgentServer.getRawValue(),
+        data: data,
         isFormValid: !this.formIAgentServer.invalid
       });
     });
+    this.onFinishedBuild.emit();
 
   }
+
+  ngOnChanges() {
+    this.reloadForm();
+  }
+
 
   checkServer() {
     this.isClicked = true;
@@ -87,10 +83,6 @@ export class IAgentServerComponent implements OnInit, OnChanges {
       clientId: new FormControl('', [Validators.required]),
       secret: new FormControl('', [Validators.required]),
     });
-  }
-
-  ngOnChanges() {
-    this.reloadForm();
   }
 
 }

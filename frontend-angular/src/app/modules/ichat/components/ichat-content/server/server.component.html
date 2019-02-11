@@ -1,21 +1,22 @@
 <div class="server-wrapper">
   <div class="server-body ml-3 my-3">
-    <mat-radio-button [checked]="servers[0].checked"
-                      [value]="servers[0].id"
+    <mat-radio-button [checked]="servers[iAgentServerType].checked"
+                      [value]="iAgentServerType"
                       (change)="onSelectConnectionType($event)">
-      {{servers[0].title}}
+      {{servers[iAgentServerType].title}}
     </mat-radio-button>
 
-    <div class="ml-4" *ngIf="servers[0].checked">
+    <div class="ml-4" *ngIf="servers[iAgentServerType].checked">
       <app-iagent-server [iAgentServer]="iAgentServer"
+                         [switchedItem]="switchedItem"
                          (onIAgentServerChanged)="serverChanged($event)">
       </app-iagent-server>
 
     </div>
     <div>
-      <mat-radio-button [checked]="servers[1].checked" [value]="servers[1].id"
+      <mat-radio-button [checked]="servers[cloudType].checked" [value]="cloudType"
                         (change)="onSelectConnectionType($event)">
-        {{servers[1].title}}
+        {{servers[cloudType].title}}
       </mat-radio-button>
     </div>
 

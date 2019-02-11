@@ -34,7 +34,7 @@ public class CorsFilter implements Filter {
 //            response.setHeader("Access-Control-Allow-Origin", origin);
 //        }
 
-        response.setHeader("Access-Control-Allow-Origin", "https://frontend.customisation.test:4321");
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
 

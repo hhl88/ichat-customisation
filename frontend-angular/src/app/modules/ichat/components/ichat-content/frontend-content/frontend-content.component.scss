@@ -1,3 +1,5 @@
+@import '../../../../../../assets/styles/variables';
+
 .frontend-settings {
   .body {
     margin: 1em 0;
@@ -5,14 +7,17 @@
   }
 }
 .frontend-body {
-  max-height: 490px;
+  max-height:  calc(100vh - #{$navbar_wrapper_height} - #{$footer_height} - 10px - 50px);
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .header {
   font-weight: bold;
+  font-size: 18px;
+
 }
+
 button {
   background-color: #ababab !important;
   margin-right: 40px;
