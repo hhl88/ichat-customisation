@@ -4,11 +4,7 @@ import {environment} from 'environments/environment';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {Layout} from 'core/interfaces/layout.interface';
 import {Observable} from 'rxjs';
-import {DisplayType} from 'core/enum/display-type.enum';
-import {TextInputType} from 'core/enum/text-input-type.enum';
-import {ButtonType} from 'core/enum/button-type.enum';
-import {BackgroundType} from 'core/enum/background-type.enum';
-import {FontDefault} from 'core/interfaces/font.interface';
+
 
 @Injectable()
 export class IChatService {
@@ -23,13 +19,13 @@ export class IChatService {
   createLayout(layout): Observable<HttpResponse<any>> {
     const logo = this._createImageFormData(layout.logo, 'logo');
     const backgroundImg = this._createImageFormData(layout.backgroundImg, 'backgroundImg');
-    const data = this._createFormData(layout)
+    const data = this._createFormData(layout);
 
     console.log('data', data);
 
     return this.httpClient.post(environment.iChatLayoutApi,
       data,
-      {responseType: 'text' as 'json', observe: 'response', headers: {'Content-Type': 'undefined'}});
+      {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
   }
 
   updateFrontEnd(id, chatFrontEnd): Observable<HttpResponse<any>> {

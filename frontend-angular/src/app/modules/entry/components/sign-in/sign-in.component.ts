@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'app/store/reducers';
@@ -22,7 +22,8 @@ export class SignInComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private store: Store<fromRoot.State>,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -38,6 +39,7 @@ export class SignInComponent implements OnInit {
     this.isLoggingIn = true;
     this.store.dispatch(new UserLoadingAction());
     this.authService.login(this.form.value.email, this.form.value.password).subscribe(res => {
+      console.log('res', res);
       if (res != null) {
         this.store.dispatch(new UserLoginAction(res));
         localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, res.access_token);

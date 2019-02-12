@@ -4,6 +4,7 @@ import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
@@ -45,5 +46,9 @@ public class ChatLayoutCreateDTO {
     @JsonProperty("font")
     private Font font;
 
+    @ModelAttribute("data")
+    public ChatLayoutCreateDTO getData() {
+        return new ChatLayoutCreateDTO();
+    }
 
 }

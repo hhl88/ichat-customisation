@@ -62,4 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     CorsFilter corsFilter() {
         return new CorsFilter();
     }
+
+
 }

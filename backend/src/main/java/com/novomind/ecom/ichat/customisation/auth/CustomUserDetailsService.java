@@ -12,22 +12,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-    Logger logger = LoggerFactory.getLogger("UserDetailsService");
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     IChatUserDao userDAO;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        System.out.println("12313");
         Optional<IChatUser> user = userDAO.findIChatUserByEmail(s);
-        logger.info("load user " + user.get());
         if (!user.isPresent()){
             throw new UsernameNotFoundException("username_not_found");
         }
-        logger.info("found user " + new CustomUserDetails(user.get()));
 
         return new CustomUserDetails(user.get());
     }

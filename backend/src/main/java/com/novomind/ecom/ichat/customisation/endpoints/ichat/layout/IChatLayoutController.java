@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,13 +99,15 @@ public class IChatLayoutController {
             @ApiResponse(code = 200, message = "Successfully retrieved layout"),
             @ApiResponse(code = 400, message = "Invalid arguments"),
     })
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<IdDTO> createChatLayout(@Valid @NotNull @RequestBody ChatLayoutCreateDTO dto,
-
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = {MediaType.ALL_VALUE})
+    public ResponseEntity<IdDTO> createChatLayout(@Valid @NotNull ChatLayoutCreateDTO data,
+                                                  BindingResult bindingResult,
                                                   Principal principal) throws UserNotFoundException {
+        bindingResult.getSuppressedFields();
+        log.info("binding " + bindingResult.getSuppressedFields());
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("user_not_found"));
-        String id = chatLayoutService.insertNewChatLayout(user, dto, dto.getLogo(), dto.getBackgroundImg());
+        String id = chatLayoutService.insertNewChatLayout(user, data, data.getLogo(), data.getBackgroundImg());
         return ResponseEntity.status(HttpStatus.OK).body(new IdDTO(id));
     }
 

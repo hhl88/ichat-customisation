@@ -4,6 +4,7 @@ import com.novomind.ecom.ichat.customisation.auth.CustomTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -74,6 +76,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         return new JwtTokenStore(tokenEnhancer());
     }
 
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
@@ -86,7 +89,9 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public AuthorizationServerTokenServices tokenServices() {
         final CustomTokenServices tafTokenServices = new CustomTokenServices();
         tafTokenServices.setTokenStore(tokenStore());
+        tafTokenServices.setAccessTokenValiditySeconds(900);
         tafTokenServices.setTokenEnhancer(tokenEnhancer());
+        tafTokenServices.setSupportRefreshToken(true);
         return tafTokenServices;
     }
 
@@ -104,6 +109,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .secret(passwordEncoder.encode("secret"))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(86400);
+                .accessTokenValiditySeconds(900)
+                .refreshTokenValiditySeconds(2592000);
     }
 }
