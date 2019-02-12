@@ -14,7 +14,7 @@ export class ServerComponent implements OnInit {
 
   @Output() onServerChanged = new EventEmitter();
   @Output() onConnectionTypeChanged = new EventEmitter();
-  @Output() onFinishedBuild = new EventEmitter<any>();
+  @Output() sizeFirstCol = new EventEmitter();
 
   cloudType = ConnectionType.CLOUD;
   iAgentServerType = ConnectionType.IAGENT_SERVER;
@@ -38,7 +38,7 @@ export class ServerComponent implements OnInit {
       this.connectionType = ConnectionType.IAGENT_SERVER;
     }
     this.servers[this.connectionType].checked = true;
-
+    // this.sizeFirstCol.emit()
   }
 
   onSelectConnectionType(event) {
@@ -59,10 +59,10 @@ export class ServerComponent implements OnInit {
     // }
   }
 
-  finishedBuild(event) {
-    this.onFinishedBuild.emit();
-
+  onResizeFirstCol(rawValue) {
+    this.sizeFirstCol.emit(rawValue);
   }
+
 
 
 }

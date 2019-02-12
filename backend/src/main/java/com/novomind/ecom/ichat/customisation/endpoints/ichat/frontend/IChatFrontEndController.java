@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,7 +93,7 @@ public class IChatFrontEndController {
             @ApiResponse(code = 401, message = "No Permission"),
             @ApiResponse(code = 404, message = "Frontend is not found")
     })
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> updateChatFrontEnd(@PathVariable(value = "id") String id,
                                                 @Valid @NotNull @RequestBody FrontEndUpdateDTO dto,
                                                 Principal principal) throws UserNotFoundException, ChatFrontEndNotFoundException, NoPermissionException {
@@ -107,7 +108,7 @@ public class IChatFrontEndController {
             @ApiResponse(code = 200, message = "Successfully retrieved frontend"),
             @ApiResponse(code = 400, message = "Invalid arguments"),
     })
-    @PostMapping("")
+    @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<IdDTO> createFrontEnd(@Valid @NotNull @RequestBody FrontEndCreateDTO dto, Principal principal) throws UserNotFoundException {
         log.info("createrFrontEnd " + dto);
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())

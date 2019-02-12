@@ -19,7 +19,6 @@ import {Item} from 'core/interfaces/item.interface';
 })
 export class ItemListComponent implements OnInit {
   @Input() header: ItemType;
-  @Input() hideToggle: boolean;
   @Input() itemList: any[] = [];
   @Input() isActive: boolean;
   @Output() onChangeItem = new EventEmitter();

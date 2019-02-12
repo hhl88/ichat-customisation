@@ -1,5 +1,5 @@
 <div class="sidebar-wrapper mt-3">
-  <app-item-list [header]="'Benutzerverwaltung'" [hideToggle]="true"></app-item-list>
+  <div class="header">Benutzerverwaltung</div>
   <div class="sidebar-body">
     <app-item-list [header]="layoutType"
                    [itemList]="chatLayouts"
@@ -13,6 +13,11 @@
     </app-item-list>
 
   </div>
-  <app-item-list [header]="'Passwort ändern'" [hideToggle]="true"></app-item-list>
+  <!--<app-item-list [header]="'Passwort ändern'"-->
+                 <!--[hideToggle]="true"-->
+                 <!--(click)="navigateToChangePasswordPage()">-->
+  <!--</app-item-list>-->
+  <div class="header password-navi" (click)="navigateToChangePasswordPage()">Passwort ändern</div>
+  <div class="header logout" (click)="logout()">logout</div>
 
 </div>

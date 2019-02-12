@@ -13,3 +13,25 @@ button {
 .server-unconnected {
   color: #bd2130;
 }
+.table{
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+
+  thead th {
+    border-bottom: none;
+  }
+
+  td, th {
+    vertical-align: middle !important;
+    border-top: none;
+    white-space: nowrap
+  }
+
+
+  td:last-child {
+    width: 100%;
+
+  }
+
+}

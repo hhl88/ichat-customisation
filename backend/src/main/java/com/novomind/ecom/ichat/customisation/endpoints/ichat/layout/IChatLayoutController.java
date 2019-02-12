@@ -22,8 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +84,12 @@ public class IChatLayoutController {
     })
     @PutMapping(value="/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> updateChatLayout(@PathVariable(value = "id") String id,
-                                              @Valid @RequestBody ChatLayoutUpdateDTO dto,
+                                              @Valid @RequestParam ChatLayoutUpdateDTO dto,
+                                              @RequestParam(value = "logo", required = false) MultipartFile logo,
+                                              @RequestParam(value = "backgroundImg", required = false) MultipartFile backgroundImg,
                                               Principal principal) throws UserNotFoundException, ChatLayoutNotFoundException, NoPermissionException {
         ChatLayout chatLayout = findChatLayout(principal.getName(), id);
-        chatLayoutService.updateInfo(chatLayout, dto);
+        chatLayoutService.updateInfo(chatLayout, dto, logo, backgroundImg);
         return ResponseEntity.status(HttpStatus.OK).body("Layout successfully updated");
     }
 
@@ -94,12 +98,13 @@ public class IChatLayoutController {
             @ApiResponse(code = 200, message = "Successfully retrieved layout"),
             @ApiResponse(code = 400, message = "Invalid arguments"),
     })
-    @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<IdDTO> createChatLayout(@Valid @RequestBody ChatLayoutCreateDTO dto, Principal principal) throws UserNotFoundException {
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<IdDTO> createChatLayout(@Valid @NotNull @RequestBody ChatLayoutCreateDTO dto,
+
+                                                  Principal principal) throws UserNotFoundException {
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("user_not_found"));
-        log.info("" + dto);
-        String id = chatLayoutService.insertNewChatLayout(user, dto);
+        String id = chatLayoutService.insertNewChatLayout(user, dto, dto.getLogo(), dto.getBackgroundImg());
         return ResponseEntity.status(HttpStatus.OK).body(new IdDTO(id));
     }
 

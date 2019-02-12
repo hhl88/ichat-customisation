@@ -7,10 +7,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
 
 public class CorsFilter implements Filter {
     Logger log = LoggerFactory.getLogger(CorsFilter.class);
@@ -34,7 +30,7 @@ public class CorsFilter implements Filter {
 //            response.setHeader("Access-Control-Allow-Origin", origin);
 //        }
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "https://frontend.customisation.test:4321");
 
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
 

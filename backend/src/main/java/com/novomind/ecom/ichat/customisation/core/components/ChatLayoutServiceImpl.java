@@ -29,17 +29,17 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
 
 
     @Override
-    public String insertNewChatLayout(IChatUser user, ChatLayoutCreateDTO dto) {
+    public String insertNewChatLayout(IChatUser user, ChatLayoutCreateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg) {
         ChatLayout chatLayout = ChatLayout.of(dto);
-        saveImages(chatLayout, dto);
+        saveImages(chatLayout, dto, logoImg, backgroundImg);
         chatLayout.setUserId(user.getId());
         return chatLayoutDao.insertChatLayout(chatLayout);
     }
 
     @Override
-    public void updateInfo(ChatLayout chatLayout, ChatLayoutUpdateDTO dto) {
+    public void updateInfo(ChatLayout chatLayout, ChatLayoutUpdateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg) {
         ChatLayout newChatLayout = ChatLayout.of(dto);
-        saveImages(newChatLayout, dto);
+        saveImages(newChatLayout, dto, logoImg, backgroundImg);
         newChatLayout.setId(chatLayout.getId());
         chatLayoutDao.updateChatLayout(newChatLayout);
     }
@@ -67,32 +67,32 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
     }
 
 
-    private void saveImages(ChatLayout chatLayout, ChatLayoutUpdateDTO dto) {
-        String logo = LOGO_DEFAULT;
-        String backgroundImg = BACKGROUND_DEFAULT;
+    private void saveImages(ChatLayout chatLayout, ChatLayoutUpdateDTO dto, MultipartFile logo, MultipartFile backgroundImg) {
+        String logoStoredName = LOGO_DEFAULT;
+        String backgroundStoredName = BACKGROUND_DEFAULT;
 
-        if (!dto.getLogo().isEmpty()) {
-            logo = storeService.store(dto.getLogo());
+        if (logo != null && logo.isEmpty()) {
+            logoStoredName = storeService.store(dto.getLogo());
         }
-        if (!dto.getBackgroundImg().isEmpty()) {
-            backgroundImg = storeService.store(dto.getBackgroundImg());
+        if (backgroundImg != null && !backgroundImg.isEmpty()) {
+            backgroundStoredName = storeService.store(dto.getBackgroundImg());
         }
-        chatLayout.setLogo(logo);
-        chatLayout.setBackgroundImg(backgroundImg);
+        chatLayout.setLogo(logoStoredName);
+        chatLayout.setBackgroundImg(backgroundStoredName);
     }
 
-    private void saveImages(ChatLayout chatLayout, ChatLayoutCreateDTO dto) {
-        String logo = LOGO_DEFAULT;
-        String backgroundImg = BACKGROUND_DEFAULT;
+    private void saveImages(ChatLayout chatLayout, ChatLayoutCreateDTO dto, MultipartFile logo, MultipartFile backgroundImg) {
+        String logoStoredName = LOGO_DEFAULT;
+        String backgroundStoredName = BACKGROUND_DEFAULT;
 
-        if (!dto.getLogo().isEmpty()) {
-            logo = storeService.store(dto.getLogo());
+        if (logo != null && !logo.isEmpty()) {
+            logoStoredName = storeService.store(logo);
         }
-        if (!dto.getBackgroundImg().isEmpty()) {
-            backgroundImg = storeService.store(dto.getBackgroundImg());
+        if (backgroundImg != null && !backgroundImg.isEmpty()) {
+            backgroundStoredName = storeService.store(backgroundImg);
         }
-        chatLayout.setLogo(logo);
-        chatLayout.setBackgroundImg(backgroundImg);
+        chatLayout.setLogo(logoStoredName);
+        chatLayout.setBackgroundImg(backgroundStoredName);
     }
 
 }

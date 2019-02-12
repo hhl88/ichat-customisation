@@ -8,25 +8,39 @@
           <app-server [iAgentServer]="selectedFrontend.iAgentServer"
                       [connectionType]="selectedFrontend.connectionType"
                       [switchedItem]="switchedItem"
+                      (sizeFirstCol)="onResizeFirstCol($event)"
                       (onServerChanged)="serverChanged($event)"
                       (onConnectionTypeChanged)="connectionTypeChanged($event)">
           </app-server>
         </div>
         <div class="frontend-settings">
           <div class="header">Frontend Settings</div>
-          <div class="body">
+          <div class="body col-12 col-sm-12 col-md-12 col-lg-10 col-xl-7">
             <div class="content ml-3 my-3">
               <div class="row ml-4 mx-0 mt-2 vertical-align">
-                <div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">
-                  <label class="my-auto" for="urlPath">Secret</label>
-                </div>
-                <div class="col">
-                  <input class="col-md-12 col-lg-5 "
-                         id="urlPath"
-                         type="text"
-                         placeholder="Path"
-                         [(ngModel)]="selectedFrontend.urlPath">
-                </div>
+                <table class="table" id="frontend-settings">
+                  <tr>
+                    <td class="label-url">
+                      Url path
+                    </td>
+                    <td>
+                      <input class="col"
+                             type="text"
+                             placeholder="Path"
+                             [(ngModel)]="selectedFrontend.urlPath">
+                    </td>
+                  </tr>
+                </table>
+                <!--<div class="col-xl-2 col-lg-4 col-md-5 col-sm-5 col-xs-6  align-self-center">-->
+                  <!--<label class="my-auto" for="urlPath">Url path</label>-->
+                <!--</div>-->
+                <!--<div class="col">-->
+                  <!--<input class="col-md-12 col-lg-5 "-->
+                         <!--id="urlPath"-->
+                         <!--type="text"-->
+                         <!--placeholder="Path"-->
+                         <!--[(ngModel)]="selectedFrontend.urlPath">-->
+                <!--</div>-->
               </div>
             </div>
           </div>

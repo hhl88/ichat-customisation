@@ -13,6 +13,8 @@ import {IAgentServerComponent} from 'ichat/components/ichat-content/iagent-serve
 import { ServerComponent } from './components/ichat-content/server/server.component';
 import { DemandInfoComponent } from './components/ichat-content/demand-info/demand-info.component';
 import {ImageCropperModule} from 'ngx-image-cropper';
+import { UserEditPasswordComponent } from './components/user-edit-password/user-edit-password.component';
+import {UserService} from 'core/services/user.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import {ImageCropperModule} from 'ngx-image-cropper';
     LayoutContentComponent,
     IAgentServerComponent,
     ServerComponent,
-    DemandInfoComponent
+    DemandInfoComponent,
+    UserEditPasswordComponent
   ],
   imports: [
     SharedModule,
@@ -32,7 +35,8 @@ import {ImageCropperModule} from 'ngx-image-cropper';
     ImageCropperModule
   ],
   providers: [
-    IChatService
+    IChatService,
+    UserService
   ]
 })
 export class IChatModule {

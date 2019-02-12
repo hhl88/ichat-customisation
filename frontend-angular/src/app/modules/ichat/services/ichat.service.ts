@@ -1,9 +1,14 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {environment} from 'environments/environment';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {Layout} from 'core/interfaces/layout.interface';
 import {Observable} from 'rxjs';
+import {DisplayType} from 'core/enum/display-type.enum';
+import {TextInputType} from 'core/enum/text-input-type.enum';
+import {ButtonType} from 'core/enum/button-type.enum';
+import {BackgroundType} from 'core/enum/background-type.enum';
+import {FontDefault} from 'core/interfaces/font.interface';
 
 @Injectable()
 export class IChatService {
@@ -16,8 +21,15 @@ export class IChatService {
   }
 
   createLayout(layout): Observable<HttpResponse<any>> {
-    return this.httpClient.post(environment.iChatLayoutApi, layout, {responseType: 'text' as 'json', observe: 'response'});
+    const logo = this._createImageFormData(layout.logo, 'logo');
+    const backgroundImg = this._createImageFormData(layout.backgroundImg, 'backgroundImg');
+    const data = this._createFormData(layout)
 
+    console.log('data', data);
+
+    return this.httpClient.post(environment.iChatLayoutApi,
+      data,
+      {responseType: 'text' as 'json', observe: 'response', headers: {'Content-Type': 'undefined'}});
   }
 
   updateFrontEnd(id, chatFrontEnd): Observable<HttpResponse<any>> {
@@ -27,7 +39,7 @@ export class IChatService {
     });
   }
 
-  updateLayout(id, chatLayout: Observable<HttpResponse<any>>) {
+  updateLayout(id, chatLayout): Observable<HttpResponse<any>> {
     return this.httpClient.put(`${environment.iChatFrontEndApi}/${id}/`, chatLayout, {responseType: 'text' as 'json', observe: 'response'});
 
   }
@@ -40,4 +52,26 @@ export class IChatService {
     return this.httpClient.get<Layout[]>(environment.iChatLayoutApi);
   }
 
+  private _createImageFormData(file, fileName) {
+    console.log(fileName, file);
+
+    const form = new FormData();
+    form.append(fileName, file, fileName);
+    return form;
+  }
+
+  private _createFormData(data) {
+
+    const form = new FormData();
+    Object.keys(data).forEach(key => {
+      if (key !== 'logo' && key !== 'backgroundImg') {
+        form.append(key, data[key]);
+      } else {
+        form.append(key, data[key], key);
+      }
+    });
+    console.log('logo', form.get('logo'));
+    console.log('font', form.get('font')['fontFamily']);
+    return form;
+  }
 }

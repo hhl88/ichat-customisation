@@ -37,8 +37,6 @@ export class AppComponent implements OnInit {
     } else {
       this.router.navigate(['']);
     }
-
-
   }
 
   private guardRoute(event: RoutesRecognized): void {

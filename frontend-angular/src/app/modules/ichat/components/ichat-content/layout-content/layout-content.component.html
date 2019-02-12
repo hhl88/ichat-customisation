@@ -2,7 +2,7 @@
   <div class="form-wrapper" [formGroup]="form" novalidate>
     <div class="display-type">
       <div class="header">Ercheinungsform</div>
-      <mat-radio-group class="body my-2 border-option" formControlName="displayType">
+      <mat-radio-group class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 my-2 border-option" formControlName="displayType">
 
         <mat-radio-button class="my-2 mx-3"
                           *ngFor="let item of supportedLayouts; let i = index"
@@ -15,7 +15,7 @@
 
     <div class="formation-type mt-2">
       <div class="header">Anordnung</div>
-      <div class="body my-2 border-option w-100">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 my-2 border-option">
         <div class="row my-2 mx-3">
           <div class="col-6 pl-0">
             <div class="sub-header">
@@ -55,7 +55,7 @@
                 <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="onFileChange($event, 0)"
                        class="custom-file-input" id="logo-image">
                 <label class="custom-file-label" for="logo-image" aria-describedby="logo-image">
-                  Choose file
+                  {{fileName[0] !== '' ? fileName[0] : 'Choose file'}}
                 </label>
               </div>
             </div>
@@ -72,8 +72,8 @@
                 (imageLoaded)="imageLoaded(0)"
                 (loadImageFailed)="loadImageFailed()">
               </image-cropper>
-              <img [hidden]="(selectedLayout.logo && selectedLayout.logo) === '' || isSelected[0]"
-                   [src]="selectedLayout.logo"
+              <img [hidden]="logoImg === '' || isSelected[0]"
+                   [src]="logoImg"
                    alt=""
                    width="250"
                    height="250">
@@ -102,10 +102,11 @@
             </mat-radio-group>
             <div class="input-group mb-3 px-3">
               <div class="custom-file">
-                <input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="onFileChange($event, 1)"
+                <input type="file" accept="image/x-png,image/gif,image/jpeg"
+                       (change)="onFileChange($event, 1)"
                        class="custom-file-input" id="background-image">
                 <label class="custom-file-label" for="background-image" aria-describedby="background-image">
-                  Choose file
+                  {{fileName[1] !== '' ? fileName[1] : 'Choose file'}}
                 </label>
               </div>
             </div>
@@ -122,8 +123,8 @@
                 (imageLoaded)="imageLoaded(1)"
                 (loadImageFailed)="loadImageFailed()">
               </image-cropper>
-              <img [hidden]="(selectedLayout.backgroundImg && selectedLayout.backgroundImg) === '' || isSelected[1]"
-                   [src]="selectedLayout.backgroundImg"
+              <img [hidden]="backgroundImg === '' || isSelected[1]"
+                   [src]="backgroundImg"
                    alt=""
                    width="250"
                    height="250">

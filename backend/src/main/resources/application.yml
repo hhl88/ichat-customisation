@@ -1,9 +1,15 @@
 server:
   port: 9990
   address: 0.0.0.0
-  
-debug: false
 
+debug: true
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          filter:
+            CommonsRequestLoggingFilter: DEBUG
 spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3308/test_db?useLegacyDatetimeCode=false&amp&serverTimezone=Europe/Amsterdam&amp&useSSL=false&allowPublicKeyRetrieval=true}

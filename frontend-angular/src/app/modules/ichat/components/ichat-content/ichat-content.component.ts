@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {getSelectedFrontend, getSelectedItem, getSelectedLayout} from 'store/reducers';
-import {Layout} from 'core/interfaces/layout.interface';
-import {Frontend} from 'core/interfaces/frontend.interface';
+import { getSelectedItem} from 'store/reducers';
 import {ItemType} from 'core/enum/item-type.enum';
 
 @Component({

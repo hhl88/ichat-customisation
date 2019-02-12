@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {IChatService} from 'ichat/services/ichat.service';
@@ -9,6 +11,10 @@ import {
   LayoutListLoadSuccessAction
 } from 'store/actions/ichat';
 import {ItemType} from 'core/enum/item-type.enum';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ICHAT_PAGE, PASSWORD_PAGE} from 'core/constants/routing.constants';
+import {UserService} from 'core/services/user.service';
+import {AuthService} from 'core/authentication/authentication.service';
 
 @Component({
   selector: 'app-ichat',
@@ -16,12 +22,21 @@ import {ItemType} from 'core/enum/item-type.enum';
   styleUrls: ['./ichat.component.scss']
 })
 export class IChatComponent implements OnInit {
+  isPasswordPage = false;
 
   constructor(private store: Store<fromRoot.State>,
-              private iChatService: IChatService) {
+              private iChatService: IChatService,
+              private authService: AuthService,
+              private location: Location,
+              private router: ActivatedRoute) {
   }
 
   ngOnInit() {
+    if (this.router.snapshot.pathFromRoot[1].url[0].path === PASSWORD_PAGE) {
+      this.isPasswordPage = true;
+    } else {
+      this.isPasswordPage = false;
+    }
     this.fetchChatFrontEnd();
     this.fetchChatLayout();
   }
@@ -38,7 +53,6 @@ export class IChatComponent implements OnInit {
     this.store.dispatch(new LayoutListLoadingAction());
     this.iChatService.getChatLayouts().subscribe(layouts => {
       this._modifyData(layouts, ItemType.LAYOUT);
-
       this.store.dispatch(new LayoutListLoadSuccessAction(layouts));
 
     });
@@ -50,5 +64,21 @@ export class IChatComponent implements OnInit {
       list[i]['type'] = type;
     }
   }
+
+  onNavigateToPasswordPage(isNavigatingToPasswordPage: boolean) {
+    if (!this.isPasswordPage && isNavigatingToPasswordPage) {
+      this.location.replaceState(PASSWORD_PAGE);
+    } else {
+      this.location.replaceState(ICHAT_PAGE);
+    }
+    this.isPasswordPage = isNavigatingToPasswordPage;
+
+  }
+
+  logout() {
+    this.authService.logout();
+    window.location.reload();
+  }
+
 
 }

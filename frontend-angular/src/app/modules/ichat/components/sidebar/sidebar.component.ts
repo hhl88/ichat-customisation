@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ItemType} from 'core/enum/item-type.enum';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {Layout} from 'core/interfaces/layout.interface';
@@ -8,6 +8,8 @@ import {getLoadedChatFrontEnds, getLoadedChatLayouts} from 'store/reducers';
 import {Subscription} from 'rxjs';
 import {Item} from 'core/interfaces/item.interface';
 import {CurrentItemSelectedAction} from 'store/actions/ichat';
+import {Router} from '@angular/router';
+import {PASSWORD_PAGE} from 'core/constants/routing.constants';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,8 +27,10 @@ export class SidebarComponent implements OnInit {
 
   subFrontEnd: Subscription;
   subLayout: Subscription;
+  @Output() onNavigateToPasswordPage = new EventEmitter();
+  @Output() onLogout = new EventEmitter();
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>, private router: Router) {
   }
 
   ngOnInit() {
@@ -44,7 +48,17 @@ export class SidebarComponent implements OnInit {
     if (this.currentItem === null || this.currentItem.index !== item.index || this.currentItem.type !== item.type) {
       this.currentItem = JSON.parse(JSON.stringify(item));
       this.store.dispatch(new CurrentItemSelectedAction(JSON.parse(JSON.stringify(item))));
+      this.onNavigateToPasswordPage.emit(false);
     }
+
+  }
+
+  navigateToChangePasswordPage() {
+    this.onNavigateToPasswordPage.emit(true);
+  }
+
+  logout() {
+    this.onLogout.emit();
   }
 
 }

@@ -2,8 +2,6 @@
   <div class="wrapper">
     <div class="mask"></div>
     <mat-expansion-panel #matExpansionPanel
-                         [hideToggle]="hideToggle"
-                         [disabled]="hideToggle"
                          [expanded]="expanded">
       <mat-expansion-panel-header [ngClass]="{'active': isActive && matExpansionPanel.expanded}"
                                   (click)="expandPanel(matExpansionPanel, $event)">

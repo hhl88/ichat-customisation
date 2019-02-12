@@ -57,7 +57,6 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
 
   demandInfoListChanged(rawValue) {
-
     this.selectedFrontend.demandInfo.demandInfoList = rawValue.data;
     this.isDemandInfoListValid = rawValue.isFormValid;
   }
@@ -70,8 +69,13 @@ export class FrontendContentComponent implements OnInit, OnChanges {
     this.isServerValid = rawValue.isFormValid;
   }
 
-  finishedBuild(event) {
-    this.switchedItem = false;
+  onResizeFirstCol(rawValue) {
+    console.log(rawValue);
+    const table = document.getElementById('frontend-settings');
+    for (let i = 0; i < table.rows.length; i++) {
+      const firstCol = table.rows[i].cells[0];
+      firstCol.style.width = rawValue + 'px';
+    }
   }
 
   connectionTypeChanged(newType) {

@@ -4,6 +4,7 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserM
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.user.UserPasswordUpdateDTO;
+import com.novomind.ecom.ichat.customisation.exceptions.NoPermissionException;
 import com.novomind.ecom.ichat.customisation.exceptions.UserNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,12 +67,19 @@ public class IChatUserController {
     @ApiOperation(value = "Update password", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated user"),
+            @ApiResponse(code = 401, message = "Wrong authentication"),
             @ApiResponse(code = 404, message = "User is not found")})
-    @PutMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
-            throws UserNotFoundException {
+    public ResponseEntity<?> updateUserPassword(@PathVariable String id, @Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
+            throws UserNotFoundException, NoPermissionException {
+        log.info("id " + id);
+        ;
         IChatUser user = getUserIfAccessAllowed(principal);
+        log.info("user " + user);
+        if (!id.equalsIgnoreCase(user.getId())) {
+            throw new NoPermissionException();
+        }
 
         userManagementService.updatePassword(user, userPasswordUpdateDTO.getOldPassword(),
                 userPasswordUpdateDTO.getNewPassword(), userPasswordUpdateDTO.getRetypedPassword());

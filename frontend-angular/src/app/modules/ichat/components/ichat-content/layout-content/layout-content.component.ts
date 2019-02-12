@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Layout} from 'core/interfaces/layout.interface';
 import {DisplayType} from 'core/enum/display-type.enum';
 import {TextInputType} from 'core/enum/text-input-type.enum';
@@ -6,7 +6,8 @@ import {ButtonType} from 'core/enum/button-type.enum';
 import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
+import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper/src/image-cropper.component';
+import {IChatService} from 'ichat/services/ichat.service';
 
 @Component({
   selector: 'app-layout-content',
@@ -29,10 +30,13 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   imageChangedEvent: any[] = [];
   croppedImage: any[] = new Array(2) as any[];
-
+  fileName = ['', ''];
   isSelected: boolean[] = [false, false];
 
-  constructor() {
+  logoImg = '';
+  backgroundImg = '';
+
+  constructor(private iChatService: IChatService) {
     this._createSupportedChatLayout();
     this._createSupportedTextInputs();
     this._createSupportedButtonType();
@@ -71,6 +75,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
       }
     });
     this.form.valueChanges.subscribe(data => {
+
       this.selectedLayout = data;
     });
   }
@@ -98,11 +103,13 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   onFileChange(event, index: number) {
     this.imageChangedEvent[index] = event;
+    this.fileName[index] = event.target.files[0].name;
     this.isSelected[index] = true;
   }
 
   imageCropped(event: ImageCroppedEvent, index: number) {
     this.croppedImage[index] = event;
+    console.log('event', event);
   }
 
   imageLoaded(index: number) {
@@ -117,20 +124,31 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   submitCurrent() {
-
+    console.log('layout', this.selectedLayout);
+    if (this.selectedLayout.id) {
+      this.iChatService.updateLayout(this.selectedLayout.id, this.selectedLayout).subscribe(res => {
+        console.log('update layout', res);
+      }, error1 => {
+        console.log('error update', error1);
+      });
+    } else {
+      this.iChatService.createLayout(this.selectedLayout).subscribe(res => {
+        console.log('create layout', res);
+      }, error1 => {
+        console.log('error', error1);
+      });
+    }
   }
 
   cropImage(event, index: number) {
     if (index === 1) {
       this.form.controls['backgroundImg'].setValue(this.croppedImage[1].file);
-      this.selectedLayout.backgroundImg = this.croppedImage[1].base64;
+      this.backgroundImg = this.croppedImage[1].base64;
       this.isSelected[1] = false;
-
-    } else if (index === 0) {
+    } else {
       this.form.controls['logo'].setValue(this.croppedImage[0].file);
-      this.selectedLayout.logo = this.croppedImage[0].base64;
+      this.logoImg = this.croppedImage[0].base64;
       this.isSelected[0] = false;
-
     }
   }
 

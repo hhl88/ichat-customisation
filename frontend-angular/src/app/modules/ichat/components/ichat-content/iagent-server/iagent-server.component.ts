@@ -1,4 +1,15 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output
+} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IAgentServerService} from 'ichat/services/iagent-server.service';
@@ -16,6 +27,7 @@ export class IAgentServerComponent implements OnInit, OnChanges {
 
   @Output() onIAgentServerChanged = new EventEmitter();
   @Output() onFinishedBuild = new EventEmitter<any>();
+  @Output() sizeFirstCol = new EventEmitter();
 
   isProcessed = false;
   connected = false;
@@ -37,13 +49,18 @@ export class IAgentServerComponent implements OnInit, OnChanges {
       });
     });
     this.onFinishedBuild.emit();
-
+    this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
   }
 
   ngOnChanges() {
     this.reloadForm();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
+
+  }
 
   checkServer() {
     this.isClicked = true;

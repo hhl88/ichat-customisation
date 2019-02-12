@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import 'rxjs-compat/add/operator/do';
 
 import {AuthService} from '../authentication/authentication.service';
@@ -16,16 +16,15 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
     request = request.clone({
-        headers: new HttpHeaders({
-          'Accept-Version': '1',
-          'Accept': '*/*',
-          'Access-Control-Allow-Origin': window.location.origin,
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-          'Vary': 'Accept-Encoding',
-        })
-      });
+      setHeaders: {
+        'Accept-Version': '1',
+        'Accept': '*/*',
+        'Access-Control-Allow-Origin': window.location.origin,
+        'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
+        'Vary': 'Accept-Encoding',
+      }
+    });
     if (token != null) {
       request = request.clone({
         setHeaders: {
@@ -51,6 +50,10 @@ export class TokenInterceptor implements HttpInterceptor {
       if (event instanceof HttpResponse) {
       }
     }, (err: any) => {
+      // this.authService.logout();
+      // location.reload();
+      console.log('err', err);
+      return throwError(err);
       // Observable.throw(err);
     });
     // return next.handle(request).pipe(catchError((err: HttpErrorResponse) => {

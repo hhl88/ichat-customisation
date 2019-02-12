@@ -14,35 +14,36 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class ChatLayoutCreateDTO {
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  private String name;
-  
-  @ApiModelProperty(required = true)
-  @NotNull
-  private LayoutDisplay displayType;
-  
-  @ApiModelProperty(required = true)
-  @NotNull
-  private TextAreaDisplay textInputType;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private String name;
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  private ButtonDisplay buttonType;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private LayoutDisplay displayType;
 
-  @ApiModelProperty
-  private MultipartFile logo;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private TextAreaDisplay textInputType;
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  private BackgroundDisplay backgroundType;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private ButtonDisplay buttonType;
 
-  @ApiModelProperty
-  private MultipartFile backgroundImg;
+    @ApiModelProperty
+    private MultipartFile logo;
 
-  @ApiModelProperty(required = true)
-  @NotNull
-  @JsonProperty("font")
-  private Font font;
+    @ApiModelProperty(required = true)
+    @NotNull
+    private BackgroundDisplay backgroundType;
+
+    @ApiModelProperty
+    private MultipartFile backgroundImg;
+
+    @ApiModelProperty(required = true)
+    @NotNull
+    @JsonProperty("font")
+    private Font font;
+
 
 }
