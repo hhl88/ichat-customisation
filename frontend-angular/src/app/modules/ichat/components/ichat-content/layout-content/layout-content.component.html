@@ -1,8 +1,8 @@
 <div class="layout-wrapper">
-  <div class="form-wrapper" [formGroup]="form" novalidate>
+  <div class="form-wrapper" [formGroup]="form">
     <div class="display-type">
       <div class="header">Ercheinungsform</div>
-      <mat-radio-group class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 my-2 border-option" formControlName="displayType">
+      <mat-radio-group class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 my-2 border-option" formControlName="displayType">
 
         <mat-radio-button class="my-2 mx-3"
                           *ngFor="let item of supportedLayouts; let i = index"
@@ -15,7 +15,7 @@
 
     <div class="formation-type mt-2">
       <div class="header">Anordnung</div>
-      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-7 my-2 border-option">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 my-2 border-option">
         <div class="row my-2 mx-3">
           <div class="col-6 pl-0">
             <div class="sub-header">

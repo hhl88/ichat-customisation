@@ -24,19 +24,19 @@ public class ChatLayoutRowMapper implements RowMapper<ChatLayout> {
                 .id(rs.getString("id"))
                 .userId(rs.getString("user_id"))
                 .name(rs.getString("name"))
-                .displayType(LayoutDisplay.values()[rs.getInt("display_type")])
-                .textInputType(TextAreaDisplay.values()[rs.getInt("text_input_type")])
-                .buttonType(ButtonDisplay.values()[rs.getInt("button_type")])
+                .displayType(rs.getInt("display_type"))
+                .textInputType(rs.getInt("text_input_type"))
+                .buttonType(rs.getInt("button_type"))
                 .logo(convertBlobToString(rs.getBlob("logo")))
                 .backgroundImg(convertBlobToString(rs.getBlob("background_img")))
-                .backgroundType(BackgroundDisplay.values()[rs.getInt("background_type")])
+                .backgroundType(rs.getInt("background_type"))
                 .font(new Font(rs.getString("font_family"), rs.getInt("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)))
                 .build();
 
     }
 
     private String convertBlobToString(Blob blob) throws SQLException {
-        return  new String(blob.getBytes(1l, (int) blob.length()));
+        return blob != null ? new String(blob.getBytes(1l, (int) blob.length())) : null;
     }
 
 }

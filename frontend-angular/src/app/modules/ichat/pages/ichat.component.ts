@@ -62,6 +62,8 @@ export class IChatComponent implements OnInit {
     for (let i = 0; i < list.length; i++) {
       list[i]['index'] = i;
       list[i]['type'] = type;
+      list[i]['editing'] = false;
+
     }
   }
 

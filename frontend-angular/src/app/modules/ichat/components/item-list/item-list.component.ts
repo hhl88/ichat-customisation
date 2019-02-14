@@ -4,13 +4,14 @@ import {ItemType} from 'core/enum/item-type.enum';
 import {select, Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {
-  CurrentItemSelectedAction, FrontEndListAddAction, LayoutListAddAction
+  CurrentItemSelectedAction, FrontEndListAddAction, FrontEndListUpdateAction, LayoutListAddAction, LayoutListUpdateAction
 } from 'store/actions/ichat';
 import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
 import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
 import {getSelectedItem} from 'store/reducers';
 import {Subscription} from 'rxjs';
 import {Item} from 'core/interfaces/item.interface';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-item-list',
@@ -27,10 +28,15 @@ export class ItemListComponent implements OnInit {
   selectedIndex: number;
   expanded = false;
 
+  formName: FormGroup;
+
   constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
+    this.formName = new FormGroup({
+      itemName: new FormControl('')
+    });
     if (this.header === ItemType.FRONTEND) {
       this.isFrontEnd = true;
       this.isLayout = false;
@@ -43,8 +49,29 @@ export class ItemListComponent implements OnInit {
   }
 
   selectItem(index: number, item) {
+    console.log('click');
     this.selectedIndex = index;
     this.onChangeItem.emit(item);
+  }
+
+  changeName(item) {
+    this.formName.reset();
+    this.formName.controls['itemName'].setValue(item.name);
+    this.itemList.forEach(i => i.editing = false);
+    item.editing = true;
+  }
+
+  submitNewName(item) {
+    item.name = this.formName.getRawValue().itemName;
+    item.editing = false;
+    this.formName.reset();
+    if (this.isFrontEnd) {
+      this.store.dispatch(new FrontEndListUpdateAction(JSON.parse(JSON.stringify(this.itemList))));
+
+    } else if (this.isLayout) {
+      this.store.dispatch(new LayoutListUpdateAction(JSON.parse(JSON.stringify(this.itemList))));
+    }
+
   }
 
   addItem() {
@@ -60,6 +87,8 @@ export class ItemListComponent implements OnInit {
     }
     const length = this.itemList.length;
     item['index'] = length;
+    item['editing'] = false;
+
     item['name'] = this.header + ' ' + length;
 
     this.itemList.push(JSON.parse(JSON.stringify(item)));

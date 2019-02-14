@@ -8,18 +8,18 @@ public class ChatLayoutDTO {
 
     private String id;
     private String name;
-    private LayoutDisplay displayType;
-    private TextAreaDisplay textInputType;
-    private ButtonDisplay buttonType;
+    private int displayType;
+    private int textInputType;
+    private int buttonType;
     private String logo;
-    private BackgroundDisplay backgroundType;
+    private int backgroundType;
     private String backgroundImg;
     private FontDTO font;
 
     private ChatLayoutDTO() {
     }
 
-    public ChatLayoutDTO(String id, String name, LayoutDisplay displayType, TextAreaDisplay textInputType, ButtonDisplay buttonType, String logo, BackgroundDisplay backgroundType, String backgroundImg, FontDTO font) {
+    public ChatLayoutDTO(String id, String name, int displayType, int textInputType, int buttonType, String logo, int backgroundType, String backgroundImg, FontDTO font) {
         this.id = id;
         this.name = name;
         this.displayType = displayType;
@@ -39,15 +39,15 @@ public class ChatLayoutDTO {
         return name;
     }
 
-    public LayoutDisplay getDisplayType() {
+    public int getDisplayType() {
         return displayType;
     }
 
-    public TextAreaDisplay getTextInputType() {
+    public int getTextInputType() {
         return textInputType;
     }
 
-    public ButtonDisplay getButtonType() {
+    public int getButtonType() {
         return buttonType;
     }
 
@@ -55,7 +55,7 @@ public class ChatLayoutDTO {
         return logo;
     }
 
-    public BackgroundDisplay getBackgroundType() {
+    public int getBackgroundType() {
         return backgroundType;
     }
 
@@ -74,7 +74,7 @@ public class ChatLayoutDTO {
                 chatLayout.getTextInputType(),
                 chatLayout.getButtonType(),
                 chatLayout.getLogo(),
-               chatLayout.getBackgroundType(),
+                chatLayout.getBackgroundType(),
                 chatLayout.getBackgroundImg(),
                 FontDTO.of(chatLayout.getFont()));
     }

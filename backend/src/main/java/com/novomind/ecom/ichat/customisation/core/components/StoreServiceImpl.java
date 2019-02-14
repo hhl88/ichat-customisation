@@ -8,6 +8,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -23,60 +24,52 @@ public class StoreServiceImpl implements StoreService {
 
     private final Path rootLocation = Paths.get("/tmp/storage");
 
-    public String store(MultipartFile file) {
-        String originalFileName = file.getOriginalFilename();
-        int dotSplit = originalFileName.lastIndexOf(".");
-        String ext = originalFileName.substring(dotSplit, originalFileName.length() - dotSplit);
-        String fileName = originalFileName.substring(0, dotSplit);
-        Calendar calendar = Calendar.getInstance();
-        String filePath = fileName + "_" + calendar.getTimeInMillis() + "." + ext;
-        try {
-            Files.copy(file.getInputStream(), rootLocation.resolve(filePath), StandardCopyOption.REPLACE_EXISTING);
-            log.debug("Saved an img at " + rootLocation.resolve(filePath).toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Upload failed!");
-        }
 
-        return filePath;
-    }
-
-    public Resource loadFile(String filename) {
-        try {
-            Path file = rootLocation.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Load file failed " + filename);
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Load file failed!");
-        }
-    }
-
+    @PostConstruct
     public void init() {
-        log.info("INIT STORAGE SERVICE");
         try {
             if (!Files.exists(rootLocation)) {
                 Files.createDirectory(rootLocation);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage!");
+            throw new RuntimeException("Couldn't initialize storage folder");
         }
     }
 
-    public void removeFile(String fileName) {
-        try {
-            Path file = rootLocation.resolve(fileName);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                Files.delete(file);
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Load file failed!");
-        } catch (IOException e) {
-            throw new RuntimeException("Not found");
+    @Override
+    public String store(MultipartFile file) throws IOException {
+        String originalFileName = file.getOriginalFilename();
+        int dotSplit = originalFileName.lastIndexOf(".");
+        String ext = originalFileName.substring(dotSplit + 1);
+        String fileName = originalFileName.substring(0, dotSplit);
+        Calendar calendar = Calendar.getInstance();
+        String filePath = fileName + "_" + calendar.getTimeInMillis() + "." + ext;
+        Files.copy(file.getInputStream(), rootLocation.resolve(filePath).normalize(), StandardCopyOption.REPLACE_EXISTING);
+        log.debug("Saved an img at " + rootLocation.resolve(filePath).toString());
+        return filePath;
+
+    }
+
+    @Override
+    public Resource loadFile(String filename) throws IOException, RuntimeException {
+
+        Path file = rootLocation.resolve(filename).normalize();
+        Resource resource = new UrlResource(file.toUri());
+        if (resource.exists() || resource.isReadable()) {
+            return resource;
+        } else {
+            throw new RuntimeException("Load file failed " + filename);
         }
+
+    }
+
+
+    public void removeFile(String fileName) throws IOException {
+        Path file = rootLocation.resolve(fileName).normalize();
+        Resource resource = new UrlResource(file.toUri());
+        if (resource.exists() || resource.isReadable()) {
+            Files.delete(file);
+        }
+
     }
 }

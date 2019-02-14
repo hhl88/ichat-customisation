@@ -4,13 +4,15 @@ export const FRONTEND_LIST_LOADING = 'ichat/FRONTEND_LIST_LOADING';
 export const FRONTEND_LIST_LOAD_SUCCESS = 'ichat/FRONTEND_LIST_LOAD_SUCCESS';
 export const FRONTEND_LIST_LOAD_FAILED = 'ichat/FRONTEND_LIST_LOAD_FAILED';
 export const FRONTEND_LIST_UPDATE = 'ichat/FRONTEND_LIST_UPDATE';
+export const FRONTEND_LIST_UPDATE_ITEM = 'ichat/FRONTEND_LIST_UPDATE_ITEM';
 export const FRONTEND_LIST_ADD = 'ichat/FRONTEND_LIST_ADD';
 
 
 export const LAYOUT_LIST_LOADING = 'ichat/LAYOUT_LIST_LOADING';
-export const LAYOUT_LIST_LOAD_SUCCESS = 'ichat/FRONTEND_LIST_LOAD_SUCCESS';
-export const LAYOUT_LIST_LOAD_FAILED = 'ichat/FRONTEND_LIST_LOAD_FAILED';
+export const LAYOUT_LIST_LOAD_SUCCESS = 'ichat/LAYOUT_LIST_LOAD_SUCCESS';
+export const LAYOUT_LIST_LOAD_FAILED = 'ichat/LAYOUT_LIST_LOAD_FAILED';
 export const LAYOUT_LIST_UPDATE = 'ichat/LAYOUT_LIST_UPDATE';
+export const LAYOUT_LIST_UPDATE_ITEM = 'ichat/LAYOUT_LIST_UPDATE_ITEM';
 export const LAYOUT_LIST_ADD = 'ichat/LAYOUT_LIST_ADD';
 
 export const CURRENT_FRONTEND_SELECTED = 'ichat/CURRENT_FRONTEND_SELECTED';
@@ -111,6 +113,16 @@ export class LayoutListUpdateAction implements Action {
 }
 
 /**
+ * Layout List Update (update/remove) in Action
+ */
+export class LayoutListUpdateItemAction implements Action {
+  readonly type = LAYOUT_LIST_UPDATE_ITEM;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
  * Layout List Add in Action
  */
 export class LayoutListAddAction implements Action {
@@ -163,6 +175,7 @@ export type Actions
   | LayoutListLoadFailedAction
   | LayoutListAddAction
   | LayoutListUpdateAction
+  | LayoutListUpdateItemAction
   | CurrentItemSelectedAction
   | CurrentFrontEndSelectedAction
   | CurrentLayoutSelectedAction;

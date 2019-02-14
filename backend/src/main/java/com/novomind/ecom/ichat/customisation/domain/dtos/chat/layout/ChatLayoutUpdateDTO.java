@@ -1,11 +1,13 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout;
 
 import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
+import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
@@ -31,18 +33,13 @@ public class ChatLayoutUpdateDTO {
   @NotNull
   private ButtonDisplay buttonType;
 
-  @ApiModelProperty
-  private MultipartFile logo;
-
   @ApiModelProperty(required = true)
   @NotNull
   private BackgroundDisplay backgroundType;
 
-  @ApiModelProperty
-  private MultipartFile backgroundImg;
-
   @ApiModelProperty(required = true)
   @NotNull
-  private Font font;
+  @JsonProperty("font")
+  private FontDTO font;
 
 }

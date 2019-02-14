@@ -26,6 +26,11 @@
   background: red;
 }
 
+.item-list[class*="editing"] {
+  cursor: none;
+  background: transparent;
+}
+
 .header {
   text-overflow: ellipsis;
 }

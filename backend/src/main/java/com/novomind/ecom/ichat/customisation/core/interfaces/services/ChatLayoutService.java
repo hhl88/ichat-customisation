@@ -6,18 +6,19 @@ import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutC
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public interface ChatLayoutService {
 
-    String insertNewChatLayout(IChatUser user, ChatLayoutCreateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg);
+    ChatLayout insertNewChatLayout(IChatUser user, ChatLayoutCreateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg) throws IOException;
 
-    void updateInfo(ChatLayout chatLayout, ChatLayoutUpdateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg);
-  
-  Optional<ChatLayout> findChatLayoutById(String id);
-  
-  List<ChatLayout> findChatLayoutByUserId(String userId);
+    ChatLayout updateInfo(ChatLayout chatLayout, ChatLayoutUpdateDTO dto, MultipartFile logoImg, MultipartFile backgroundImg) throws IOException;
+
+    Optional<ChatLayout> findChatLayoutById(String id);
+
+    List<ChatLayout> findChatLayoutByUserId(String userId);
 
 
 }

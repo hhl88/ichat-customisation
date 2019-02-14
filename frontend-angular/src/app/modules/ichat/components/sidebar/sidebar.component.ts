@@ -39,6 +39,7 @@ export class SidebarComponent implements OnInit {
     });
 
     this.subLayout = this.store.pipe(select(getLoadedChatLayouts)).subscribe(layouts => {
+      console.log('layouts sidebar', layouts);
       this.chatLayouts = layouts;
     });
 

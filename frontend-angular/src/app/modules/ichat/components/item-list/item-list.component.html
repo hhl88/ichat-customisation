@@ -12,7 +12,6 @@
               {{header}}
             </span>
             <button class="add-button"
-                    *ngIf="!hideToggle"
                     style="vertical-align:middle; float:right; line-height: 38px"
                     (click)="addItem()"
                     mat-icon-button>
@@ -24,10 +23,17 @@
       <div *ngIf="itemList.length > 0">
         <mat-list>
           <mat-list-item class="item-list"
-                         [ngClass]="{'active': isActive && matExpansionPanel.expanded && selectedIndex === i}"
+                         [ngClass]="{'active': isActive && matExpansionPanel.expanded && selectedIndex === i && !item.editing,
+                                    'editing': item.editing}"
                          *ngFor="let item of itemList; let i = index"
+                         (dblclick)="changeName(item)"
                          (click)="selectItem(i, item)">
-            {{item.name}}
+            <span *ngIf="!item.editing">{{item.name}}</span>
+            <form *ngIf="item.editing" [formGroup]="formName" (submit)="submitNewName(item)" novalidate>
+              <input class="col-12 " formControlName="itemName">
+
+            </form>
+
           </mat-list-item>
         </mat-list>
       </div>

@@ -79,6 +79,7 @@ export function reducer(state = initialState, action: ichat.Actions): State {
     }
 
     case ichat.LAYOUT_LIST_LOAD_SUCCESS: {
+      console.log('chatlayouts', action.payload);
       return Object.assign({}, state, {
         chatLayouts: action.payload,
         layoutsLoading: false,
@@ -105,6 +106,15 @@ export function reducer(state = initialState, action: ichat.Actions): State {
     case ichat.LAYOUT_LIST_UPDATE: {
       return Object.assign({}, state, {
         chatLayouts: action.payload,
+      });
+    }
+
+    case ichat.LAYOUT_LIST_UPDATE_ITEM: {
+      const index = action.payload.index;
+      state.chatLayouts[index] = action.payload;
+
+      return Object.assign({}, state, {
+        chatLayouts: state.chatLayouts,
       });
     }
 

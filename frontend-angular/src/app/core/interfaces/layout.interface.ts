@@ -11,8 +11,8 @@ export interface Layout {
   displayType?: DisplayType;
   textInputType?: TextInputType;
   buttonType?: ButtonType;
-  logo?: string;
-  backgroundImg?: string;
+  logo?: any;
+  backgroundImg?: any;
   backgroundType?: BackgroundType;
   font?: Font;
 }

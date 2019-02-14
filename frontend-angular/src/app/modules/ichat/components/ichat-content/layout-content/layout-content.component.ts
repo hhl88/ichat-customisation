@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Layout} from 'core/interfaces/layout.interface';
 import {DisplayType} from 'core/enum/display-type.enum';
 import {TextInputType} from 'core/enum/text-input-type.enum';
@@ -6,8 +6,9 @@ import {ButtonType} from 'core/enum/button-type.enum';
 import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper/src/image-cropper.component';
+import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
 import {IChatService} from 'ichat/services/ichat.service';
+import {environment} from 'environments/environment';
 
 @Component({
   selector: 'app-layout-content',
@@ -16,6 +17,7 @@ import {IChatService} from 'ichat/services/ichat.service';
 })
 export class LayoutContentComponent implements OnInit, OnChanges {
   @Input() layout: Layout;
+  @Output() onUpdateLayout = new EventEmitter();
   selectedLayout: Layout = null;
 
   form: FormGroup;
@@ -36,6 +38,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   logoImg = '';
   backgroundImg = '';
 
+
   constructor(private iChatService: IChatService) {
     this._createSupportedChatLayout();
     this._createSupportedTextInputs();
@@ -54,11 +57,27 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.selectedLayout === null || this.layout.index !== this.selectedLayout.index) {
       this._setLayout();
+      this._reloadForm();
     }
   }
 
   private _setLayout() {
     this.selectedLayout = JSON.parse(JSON.stringify(this.layout));
+    this._setImages(this.selectedLayout);
+  }
+
+  private _setImages(data) {
+    this.logoImg = '';
+    this.backgroundImg = '';
+
+    if (data.id !== '') {
+      if (data.logo && data.logo !== '') {
+        this.logoImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/logoImg';
+      }
+      if (data.backgroundImg && data.backgroundImg !== '') {
+        this.backgroundImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/backgroundImg';
+      }
+    }
   }
 
   private _initForm() {
@@ -81,6 +100,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   private _reloadForm() {
+    console.log('reload', this.selectedLayout);
     if (this.form) {
       this.form.reset();
     } else {
@@ -88,7 +108,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     }
 
     if (this.selectedLayout && this.selectedLayout.hasOwnProperty('name')) {
-
+      console.log('123');
       Object.keys(this.selectedLayout).forEach(key => {
         if (this.form.get(key) instanceof FormControl) {
           this.form.controls[key].setValue(this.selectedLayout[key]);
@@ -109,7 +129,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   imageCropped(event: ImageCroppedEvent, index: number) {
     this.croppedImage[index] = event;
-    console.log('event', event);
+    // console.log('event', event);
   }
 
   imageLoaded(index: number) {
@@ -124,16 +144,29 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   submitCurrent() {
-    console.log('layout', this.selectedLayout);
+    console.log(this.selectedLayout);
+    if (!(this.selectedLayout.logo instanceof Blob)) {
+      this.selectedLayout.logo = '';
+    }
+
+    if (!(this.selectedLayout.backgroundImg instanceof Blob)) {
+      this.selectedLayout.backgroundImg = '';
+    }
     if (this.selectedLayout.id) {
       this.iChatService.updateLayout(this.selectedLayout.id, this.selectedLayout).subscribe(res => {
-        console.log('update layout', res);
+        const newLayout = JSON.parse(res.body);
+        this._setImages(newLayout);
+        this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
+
       }, error1 => {
         console.log('error update', error1);
       });
     } else {
       this.iChatService.createLayout(this.selectedLayout).subscribe(res => {
-        console.log('create layout', res);
+        const newLayout = JSON.parse(res.body);
+        this._setImages(newLayout);
+        this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
+        this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
       }, error1 => {
         console.log('error', error1);
       });

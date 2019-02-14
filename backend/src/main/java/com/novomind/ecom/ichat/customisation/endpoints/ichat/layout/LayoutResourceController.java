@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -32,9 +33,9 @@ public class LayoutResourceController {
             @ApiResponse(code = 200, message = "Successfully retrieved logo"),
             @ApiResponse(code = 404, message = "Logo is not found"),
     })
-    @GetMapping( value = "/{id}/l", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/{id}/l", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Resource viewLogo(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public Resource viewLogo(@PathVariable("id") String id) throws ResourceNotFoundException, IOException {
         Optional<ChatLayout> chatLayout = chatLayoutService.findChatLayoutById(id);
         if (!chatLayout.isPresent()) throw new ResourceNotFoundException();
 
@@ -47,9 +48,9 @@ public class LayoutResourceController {
             @ApiResponse(code = 200, message = "Successfully retrieved background image"),
             @ApiResponse(code = 404, message = "Background image is not found"),
     })
-    @GetMapping( value = "/{id}/b", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/{id}/b", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public Resource viewBackgroundImage(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public Resource viewBackgroundImage(@PathVariable("id") String id) throws ResourceNotFoundException, IOException {
         Optional<ChatLayout> chatLayout = chatLayoutService.findChatLayoutById(id);
         if (!chatLayout.isPresent()) throw new ResourceNotFoundException();
 

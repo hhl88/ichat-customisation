@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {environment} from 'environments/environment';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {Layout} from 'core/interfaces/layout.interface';
@@ -17,14 +17,11 @@ export class IChatService {
   }
 
   createLayout(layout): Observable<HttpResponse<any>> {
-    const logo = this._createImageFormData(layout.logo, 'logo');
-    const backgroundImg = this._createImageFormData(layout.backgroundImg, 'backgroundImg');
-    const data = this._createFormData(layout);
+    console.log('layout', layout);
 
-    console.log('data', data);
 
     return this.httpClient.post(environment.iChatLayoutApi,
-      data,
+      this._createFormDataForLayout(layout),
       {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
   }
 
@@ -36,7 +33,10 @@ export class IChatService {
   }
 
   updateLayout(id, chatLayout): Observable<HttpResponse<any>> {
-    return this.httpClient.put(`${environment.iChatFrontEndApi}/${id}/`, chatLayout, {responseType: 'text' as 'json', observe: 'response'});
+    console.log('update', chatLayout)
+    return this.httpClient.put(`${environment.iChatLayoutApi}/${id}/`,
+      this._createFormDataForLayout(chatLayout),
+      {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
 
   }
 
@@ -48,26 +48,39 @@ export class IChatService {
     return this.httpClient.get<Layout[]>(environment.iChatLayoutApi);
   }
 
-  private _createImageFormData(file, fileName) {
-    console.log(fileName, file);
+  getLogo(chatLayoutId): Observable<any> {
+    return this.httpClient.get(`${environment.iChatLayoutApi}/${chatLayoutId}/logoImg`, {responseType: 'blob'});
+  }
+
+  getBackgroundImg(chatLayoutId): Observable<any> {
+    return this.httpClient.get(`${environment.iChatLayoutApi}/${chatLayoutId}/backgroundImg`, {responseType: 'blob'});
+  }
+
+
+  private _createFormDataForLayout(layout) {
 
     const form = new FormData();
-    form.append(fileName, file, fileName);
+    const chatLayoutCreateDTO = new Blob([JSON.stringify(this._createCloneJson(layout))], {type: 'application/json'});
+
+    form.append('layoutDto', chatLayoutCreateDTO, 'layoutDto');
+    if (layout.logo && layout.logo !== '' ) {
+      console.log('logo');
+      form.append('logo', layout.logo, 'logo.png');
+    }
+    if (layout.backgroundImg && layout.backgroundImg !== '' ) {
+      form.append('backgroundImg', layout.backgroundImg, 'backgroundImg.png');
+    }
     return form;
   }
 
-  private _createFormData(data) {
-
-    const form = new FormData();
+  private _createCloneJson(data) {
+    const newData = {};
     Object.keys(data).forEach(key => {
       if (key !== 'logo' && key !== 'backgroundImg') {
-        form.append(key, data[key]);
-      } else {
-        form.append(key, data[key], key);
+        newData[key] = data[key];
       }
     });
-    console.log('logo', form.get('logo'));
-    console.log('font', form.get('font')['fontFamily']);
-    return form;
+    return newData;
   }
+
 }

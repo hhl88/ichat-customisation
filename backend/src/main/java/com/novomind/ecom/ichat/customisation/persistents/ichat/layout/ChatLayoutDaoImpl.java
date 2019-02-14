@@ -32,8 +32,8 @@ public class ChatLayoutDaoImpl extends BaseDao implements ChatLayoutDao {
                 + " ?, ?, ?)";
         getJdbcTemplate()
                 .update(query,
-                        generatedId, chatLayout.getUserId(), chatLayout.getName(), chatLayout.getDisplayType().ordinal(), chatLayout.getTextInputType().ordinal(),
-                        chatLayout.getButtonType().ordinal(), chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType().ordinal(),
+                        generatedId, chatLayout.getUserId(), chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(),
+                        chatLayout.getButtonType(), chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
                         font.getFontFamily(), font.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(font.getFontStyles())));
         return generatedId;
 
@@ -47,12 +47,10 @@ public class ChatLayoutDaoImpl extends BaseDao implements ChatLayoutDao {
                 + " font_family = ?, font_size = ?, font_styles = ? "
                 + " WHERE id = ?";
         Font font = chatLayout.getFont();
-        logger.info("font " + font);
-        logger.info("fontStyles " + FontStyleConverter.fontStylesToBit(font.getFontStyles()));
 
         getJdbcTemplate().update(query,
-                chatLayout.getName(), chatLayout.getDisplayType().ordinal(), chatLayout.getTextInputType().ordinal(), chatLayout.getButtonType().ordinal(),
-                chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType().ordinal(),
+                chatLayout.getName(), chatLayout.getDisplayType(), chatLayout.getTextInputType(), chatLayout.getButtonType(),
+                chatLayout.getLogo(), chatLayout.getBackgroundImg(), chatLayout.getBackgroundType(),
                 font.getFontFamily(), font.getFontSize(), Integer.valueOf(FontStyleConverter.fontStylesToBit(font.getFontStyles())),
                 chatLayout.getId());
     }

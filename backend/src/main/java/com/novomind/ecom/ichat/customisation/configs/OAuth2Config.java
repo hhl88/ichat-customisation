@@ -89,7 +89,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     public AuthorizationServerTokenServices tokenServices() {
         final CustomTokenServices tafTokenServices = new CustomTokenServices();
         tafTokenServices.setTokenStore(tokenStore());
-        tafTokenServices.setAccessTokenValiditySeconds(900);
+        tafTokenServices.setAccessTokenValiditySeconds(9000);
         tafTokenServices.setTokenEnhancer(tokenEnhancer());
         tafTokenServices.setSupportRefreshToken(true);
         return tafTokenServices;
@@ -109,7 +109,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .secret(passwordEncoder.encode("secret"))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(900)
+                .accessTokenValiditySeconds(9000)
                 .refreshTokenValiditySeconds(2592000);
     }
 }

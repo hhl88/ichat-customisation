@@ -4,13 +4,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.core.io.Resource;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 public interface StoreService {
 
-    void init();
+    String store(MultipartFile file) throws IOException;
 
-    String store(MultipartFile file);
+    Resource loadFile(String filename) throws IOException, RuntimeException;
 
-    Resource loadFile(String filename);
-
-    void removeFile(String fileName);
+    void removeFile(String fileName) throws IOException;
 }

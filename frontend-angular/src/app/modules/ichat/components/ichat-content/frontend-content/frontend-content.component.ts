@@ -71,7 +71,7 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
   onResizeFirstCol(rawValue) {
     console.log(rawValue);
-    const table = document.getElementById('frontend-settings');
+    const table = document.getElementById('frontend-settings') as HTMLTableElement;
     for (let i = 0; i < table.rows.length; i++) {
       const firstCol = table.rows[i].cells[0];
       firstCol.style.width = rawValue + 'px';
