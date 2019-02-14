@@ -7,7 +7,9 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-public interface StoreService {
+public interface StorageService {
+
+    void init();
 
     String store(MultipartFile file) throws IOException;
 

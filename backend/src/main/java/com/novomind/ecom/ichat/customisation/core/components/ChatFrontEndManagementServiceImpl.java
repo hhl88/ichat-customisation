@@ -92,7 +92,7 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
 
         chatFrontEnd.setUrlPath(dto.getUrlPath());
         chatFrontEnd.setName(dto.getName());
-        chatFrontEnd.setConnectionType(dto.getConnectionType());
+        chatFrontEnd.setConnectionType(dto.getConnectionType().ordinal());
         chatFrontEndDao.updateChatFrontEnd(chatFrontEnd);
     }
 

@@ -13,8 +13,7 @@ import {AuthService} from 'core/authentication/authentication.service';
 export class AuthGuard implements CanActivate, CanLoad {
 
   constructor(private store: Store<fromRoot.State>,
-              private auth: AuthService,
-  ) {
+              private auth: AuthService) {
 
   }
 

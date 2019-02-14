@@ -1,17 +1,17 @@
--- DROP TABLE IF EXISTS choose_chat_ui;
--- DROP TABLE IF EXISTS choose_layout;
--- DROP TABLE IF EXISTS ichat_ui;
--- DROP TABLE IF EXISTS chat_layout;
--- DROP TABLE IF EXISTS demand_info;
--- DROP TABLE IF EXISTS iagent_server;
--- DROP TABLE IF EXISTS ichat_user;
+/*DROP TABLE IF EXISTS choose_chat_ui;
+DROP TABLE IF EXISTS choose_layout;
+DROP TABLE IF EXISTS ichat_ui;
+DROP TABLE IF EXISTS chat_layout;
+DROP TABLE IF EXISTS demand_info;
+DROP TABLE IF EXISTS iagent_server;
+DROP TABLE IF EXISTS ichat_user;*/
 
 
 CREATE TABLE IF NOT EXISTS ichat_user
 (
   id       VARCHAR(10)  NOT NULL,
   email    VARCHAR(128) NOT NULL,
-  password VARCHAR(64),
+  password VARCHAR(64)  NOT NULL,
   locked   CHAR(1),
   deleted  CHAR(1),
   CONSTRAINT ichat_user_pk_id PRIMARY KEY (id),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS iagent_server
   id        VARCHAR(10)  NOT NULL,
   address   VARCHAR(128) NOT NULL,
   user_api  VARCHAR(100) NOT NULL,
-  password  VARCHAR(64),
+  password  VARCHAR(64)  NOT NULL,
   client_id VARCHAR(128) NOT NULL,
   secret    VARCHAR(128) NOT NULL,
   locked    CHAR(1),
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS ichat_ui
   cloud_id         VARCHAR(10),
   url_path         VARCHAR(128) NOT NULL,
   demand_info_id   VARCHAR(10),
-  connection_type  VARCHAR(64)  NOT NULL,
+  connection_type  TINYINT  NOT NULL,
 
   CONSTRAINT ichat_ui_pk_id PRIMARY KEY (id),
   CONSTRAINT ichat_ui_fk_usr_id FOREIGN KEY (user_id) REFERENCES ichat_user (id),

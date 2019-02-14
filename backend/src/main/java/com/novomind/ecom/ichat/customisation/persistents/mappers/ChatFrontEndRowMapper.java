@@ -20,7 +20,7 @@ public class ChatFrontEndRowMapper implements RowMapper<ChatFrontEnd> {
                 .cloudId(rs.getString("cloud_id"))
                 .urlPath(rs.getString("url_path"))
                 .demandInfoId(rs.getString("demand_info_id"))
-                .connectionType(Connection.valueOf(rs.getString("connection_type")))
+                .connectionType(rs.getInt("connection_type"))
                 .build();
     }
 

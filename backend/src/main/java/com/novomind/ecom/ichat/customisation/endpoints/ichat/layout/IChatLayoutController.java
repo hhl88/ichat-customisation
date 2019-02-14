@@ -3,9 +3,8 @@ package com.novomind.ecom.ichat.customisation.endpoints.ichat.layout;
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.StoreService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.StorageService;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
-import com.novomind.ecom.ichat.customisation.domain.dtos.IdDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
@@ -20,21 +19,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -51,7 +45,7 @@ public class IChatLayoutController {
     ChatLayoutService chatLayoutService;
 
     @Autowired
-    StoreService storeService;
+    StorageService storageService;
 
     @ApiOperation(value = "Get a layout by Id", response = ChatLayout.class)
     @ApiResponses(value = {
@@ -130,7 +124,7 @@ public class IChatLayoutController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(new InputStreamResource(storeService.loadFile(chatLayout.getLogo()).getInputStream()));
+                .body(new InputStreamResource(storageService.loadFile(chatLayout.getLogo()).getInputStream()));
     }
 
     @ApiOperation(value = "Get a background image by chat layout Id", response = ResponseEntity.class)
@@ -146,7 +140,7 @@ public class IChatLayoutController {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(new InputStreamResource(storeService.loadFile(chatLayout.getBackgroundImg()).getInputStream()));
+                .body(new InputStreamResource(storageService.loadFile(chatLayout.getBackgroundImg()).getInputStream()));
     }
 
 

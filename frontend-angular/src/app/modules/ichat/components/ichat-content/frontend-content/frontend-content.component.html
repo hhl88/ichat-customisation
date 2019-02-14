@@ -65,6 +65,6 @@
     <button mat-raised-button (click)="cancelCurrent()">Abrechen</button>
     <button mat-raised-button *ngIf="step === 0" (click)="nextStep()">Weiter</button>
     <button mat-raised-button *ngIf="step === 1" (click)="prevStep()">Zurück</button>
-    <button mat-raised-button (click)="submitCurrent()">Speichern</button>
+    <button mat-raised-button [disabled]="!isServerValid || !isDemandInfoListValid" (click)="submitCurrent()">Speichern</button>
   </div>
 </div>

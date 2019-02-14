@@ -1,6 +1,6 @@
 package com.novomind.ecom.ichat.customisation.core.components;
 
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.StoreService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -9,31 +9,50 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 
-@Service("storeService")
-public class StoreServiceImpl implements StoreService {
+@Service
+public class StorageServiceImpl implements StorageService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final Path rootLocation = Paths.get("/tmp/storage");
+    private final String ROOT_PATH = "/tmp/storage";
+    private File dir = new File(ROOT_PATH);
+
+
+    private final Path rootLocation = Paths.get(dir.getAbsolutePath());
+
 
 
     @PostConstruct
     public void init() {
-        try {
-            if (!Files.exists(rootLocation)) {
-                Files.createDirectory(rootLocation);
+//        try {
+            log.info("Try init storage");
+            if(!Files.exists(rootLocation)) {
+                log.info("Target file \"" + ROOT_PATH + "\" will be created.");;
+                try {
+                    Files.createDirectories(Paths.get(dir.getAbsolutePath()));
+                    log.info("exists 1: " + Files.exists(rootLocation));
+                    log.info("exists 2: " + dir.exists() + " --- " + dir.getAbsolutePath());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (IOException e) {
+
+
+            /*if (!Files.exists(rootLocation)) {
+                Files.createDirectory(rootLocation);
+            }*/
+       /* } catch (IOException e) {
             throw new RuntimeException("Couldn't initialize storage folder");
-        }
+        }*/
     }
 
     @Override

@@ -19,7 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
       setHeaders: {
         'Accept-Version': '1',
         'Accept': '*/*',
-        'Access-Control-Allow-Origin': window.location.origin,
+        'Access-Control-Allow-Origin':'*',
         'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
         'Vary': 'Accept-Encoding',

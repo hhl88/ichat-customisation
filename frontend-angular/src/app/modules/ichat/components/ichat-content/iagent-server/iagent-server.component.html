@@ -1,6 +1,6 @@
-<form class="mb-5" [formGroup]="formIAgentServer" novalidate>
+<div class="iagent-server-wrapper">
 
-  <table class="table" style="width: 100%">
+  <table class="table" [formGroup]="formIAgentServer" style="width: 100%">
     <tbody>
     <tr>
       <td class="first-col">iAgent URL (Chat API)</td>
@@ -88,11 +88,11 @@
   <!--<input class="col-md-12 col-lg-5 " id="secret" type="text" formControlName="secret" placeholder="CHAT">-->
   <!--</div>-->
   <!--</div>-->
-  <div class="row mx-0 pl-0 mt-3 vertical-middle">
+<!--  <div class="row mx-0 pl-0 mt-3 vertical-middle">
     <button mat-raised-button (click)="checkServer()">Testen</button>
     <div *ngIf="isProcessed">
       <div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>
       <div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>
     </div>
-  </div>
-</form>
+  </div>-->
+</div>

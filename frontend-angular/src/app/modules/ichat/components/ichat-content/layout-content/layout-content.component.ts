@@ -9,6 +9,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
 import {IChatService} from 'ichat/services/ichat.service';
 import {environment} from 'environments/environment';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-layout-content',
@@ -37,7 +38,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   logoImg = '';
   backgroundImg = '';
-
 
   constructor(private iChatService: IChatService) {
     this._createSupportedChatLayout();
@@ -94,31 +94,33 @@ export class LayoutContentComponent implements OnInit, OnChanges {
       }
     });
     this.form.valueChanges.subscribe(data => {
-
       this.selectedLayout = data;
     });
   }
 
   private _reloadForm() {
-    console.log('reload', this.selectedLayout);
+    console.log('reload 1', this.selectedLayout);
     if (this.form) {
       this.form.reset();
     } else {
       this._initForm();
     }
-
-    if (this.selectedLayout && this.selectedLayout.hasOwnProperty('name')) {
+    const originalLayout = JSON.parse(JSON.stringify(this.layout));
+    if (originalLayout && originalLayout.hasOwnProperty('name')) {
       console.log('123');
-      Object.keys(this.selectedLayout).forEach(key => {
+      Object.keys(originalLayout).forEach(key => {
         if (this.form.get(key) instanceof FormControl) {
-          this.form.controls[key].setValue(this.selectedLayout[key]);
+          this.form.controls[key].setValue(originalLayout[key]);
         } else if (this.form.get(key) instanceof FormGroup) {
-          Object.keys(this.selectedLayout[key]).forEach(subKey => {
-            (<FormGroup>this.form.controls[key]).controls[subKey].setValue(this.selectedLayout[key][subKey]);
+          Object.keys(originalLayout[key]).forEach(subKey => {
+            (<FormGroup>this.form.controls[key]).controls[subKey].setValue(originalLayout[key][subKey]);
           });
         }
       });
     }
+
+    console.log('reload 2', this.selectedLayout);
+
   }
 
   onFileChange(event, index: number) {

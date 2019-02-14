@@ -14,8 +14,8 @@ import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
 export class FrontendContentComponent implements OnInit, OnChanges {
   @Input() frontEnd: Frontend;
   step = 0;
-  isServerValid: boolean;
-  isDemandInfoListValid: boolean;
+  isServerValid = false;
+  isDemandInfoListValid = true;
   selectedFrontend: Frontend = null;
   switchedItem: boolean;
 

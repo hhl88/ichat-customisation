@@ -1,11 +1,15 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
+import {IAgentServer} from 'core/interfaces/iagent-server.interface';
+import {IAgentServerService} from 'ichat/services/iagent-server.service';
 
 @Component({
   selector: 'app-server',
   templateUrl: './server.component.html',
-  styleUrls: ['./server.component.scss']
+  styleUrls: ['./server.component.scss'],
+  providers: [IAgentServerService]
+
 })
 export class ServerComponent implements OnInit {
   @Input() iAgentServer: any;
@@ -21,7 +25,13 @@ export class ServerComponent implements OnInit {
 
   servers: any = {};
 
-  constructor() {
+  isProcessed = false;
+  connected = false;
+  isClicked = false;
+
+  currentIAgentServer: IAgentServer = null;
+
+  constructor(private iAgentService: IAgentServerService) {
     this.servers[this.iAgentServerType] = {
       title: 'Eigenes iAgent System',
       checked: false
@@ -55,6 +65,7 @@ export class ServerComponent implements OnInit {
 
   serverChanged(rawValue) {
     // if (!this.switchedItem) {
+    this.currentIAgentServer = JSON.parse(JSON.stringify(rawValue.data));
     this.onServerChanged.emit(rawValue);
     // }
   }
@@ -63,6 +74,20 @@ export class ServerComponent implements OnInit {
     this.sizeFirstCol.emit(rawValue);
   }
 
+  checkServer() {
+    this.isClicked = true;
+    this.connected = false;
+    this.isProcessed = false;
+    if (this.currentIAgentServer) {
+      this.iAgentService.fetchServer(this.currentIAgentServer).subscribe(res => {
+        this.isProcessed = true;
+        if (res && res.hasOwnProperty('access_token')) {
+          this.connected = true;
+        }
+      }, error1 => this.isProcessed = true);
+    }
+
+  }
 
 
 }

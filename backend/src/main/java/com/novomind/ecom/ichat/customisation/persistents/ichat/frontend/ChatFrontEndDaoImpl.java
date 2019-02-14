@@ -37,7 +37,7 @@ public class ChatFrontEndDaoImpl extends BaseDao implements ChatFrontEndDao {
         getJdbcTemplate().update(query,
                 generatedId, chatFrontEnd.getUserId(), chatFrontEnd.getName(), chatFrontEnd.getIAgentServerId(),
                 chatFrontEnd.getCloudId(), chatFrontEnd.getUrlPath(), chatFrontEnd.getDemandInfoId(),
-                chatFrontEnd.getConnectionType().toString());
+                chatFrontEnd.getConnectionType());
         return generatedId;
 
     }
@@ -50,7 +50,7 @@ public class ChatFrontEndDaoImpl extends BaseDao implements ChatFrontEndDao {
                 "           cloud_id = ?, iagent_server_id = ?, demand_info_id = ?" +
                 "       WHERE id = ?";
         getJdbcTemplate().update(query,
-                chatFrontEnd.getName(), chatFrontEnd.getUrlPath(), chatFrontEnd.getConnectionType().toString(),
+                chatFrontEnd.getName(), chatFrontEnd.getUrlPath(), chatFrontEnd.getConnectionType(),
                 chatFrontEnd.getCloudId(), chatFrontEnd.getIAgentServerId(), chatFrontEnd.getDemandInfoId(),
                 chatFrontEnd.getId());
     }

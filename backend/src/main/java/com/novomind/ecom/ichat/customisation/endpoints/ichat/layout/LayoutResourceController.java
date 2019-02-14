@@ -2,8 +2,7 @@ package com.novomind.ecom.ichat.customisation.endpoints.ichat.layout;
 
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.StoreService;
-import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutDTO;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.StorageService;
 import com.novomind.ecom.ichat.customisation.exceptions.ResourceNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +24,7 @@ public class LayoutResourceController {
     @Autowired
     ChatLayoutService chatLayoutService;
     @Autowired
-    StoreService storeService;
+    StorageService storageService;
 
 
     @ApiOperation(value = "Get a logo of layout", response = Resource.class)
@@ -39,7 +38,7 @@ public class LayoutResourceController {
         Optional<ChatLayout> chatLayout = chatLayoutService.findChatLayoutById(id);
         if (!chatLayout.isPresent()) throw new ResourceNotFoundException();
 
-        return storeService.loadFile(chatLayout.get().getLogo());
+        return storageService.loadFile(chatLayout.get().getLogo());
     }
 
 
@@ -54,7 +53,7 @@ public class LayoutResourceController {
         Optional<ChatLayout> chatLayout = chatLayoutService.findChatLayoutById(id);
         if (!chatLayout.isPresent()) throw new ResourceNotFoundException();
 
-        return storeService.loadFile(chatLayout.get().getBackgroundImg());
+        return storageService.loadFile(chatLayout.get().getBackgroundImg());
     }
 
 }

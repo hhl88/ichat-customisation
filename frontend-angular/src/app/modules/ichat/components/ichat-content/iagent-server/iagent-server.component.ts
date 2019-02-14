@@ -29,31 +29,33 @@ export class IAgentServerComponent implements OnInit, OnChanges {
   @Output() onFinishedBuild = new EventEmitter<any>();
   @Output() sizeFirstCol = new EventEmitter();
 
-  isProcessed = false;
+ /* isProcessed = false;
   connected = false;
   isClicked = false;
-
+*/
   constructor(private iAgentService: IAgentServerService) {
   }
 
   ngOnInit() {
-    this.reloadForm();
+    this._reloadForm();
     this.formIAgentServer.valueChanges.subscribe(data => {
-      this.isClicked = false;
+  /*    this.isClicked = false;
       this.connected = false;
-      this.isProcessed = false;
+      this.isProcessed = false;*/
+      if (this.isFormValid()) {
+        this.onIAgentServerChanged.emit({
+          data: data,
+          isFormValid: this.isFormValid()
+        });
+      }
 
-      this.onIAgentServerChanged.emit({
-        data: data,
-        isFormValid: !this.formIAgentServer.invalid
-      });
     });
     this.onFinishedBuild.emit();
     this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
   }
 
   ngOnChanges() {
-    this.reloadForm();
+    this._reloadForm();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -62,7 +64,11 @@ export class IAgentServerComponent implements OnInit, OnChanges {
 
   }
 
-  checkServer() {
+  isFormValid() {
+    return !this.formIAgentServer.invalid;
+  }
+
+  /*checkServer() {
     this.isClicked = true;
     this.connected = false;
     this.iAgentService.fetchServer(this.formIAgentServer.getRawValue()).subscribe(res => {
@@ -70,16 +76,15 @@ export class IAgentServerComponent implements OnInit, OnChanges {
       if (res && res.hasOwnProperty('access_token')) {
         this.connected = true;
       }
-      console.log('connected', this.connected);
-
     }, error1 => this.isProcessed = true);
-  }
+  }*/
 
-  reloadForm() {
+  private _reloadForm() {
+    console.log('reload');
     if (this.formIAgentServer) {
       this.formIAgentServer.reset();
     } else {
-      this.initForm();
+      this._initForm();
     }
 
     if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
@@ -92,7 +97,7 @@ export class IAgentServerComponent implements OnInit, OnChanges {
     }
   }
 
-  initForm() {
+  private _initForm() {
     this.formIAgentServer = new FormGroup({
       address: new FormControl('', [Validators.required]),
       userAPI: new FormControl('', [Validators.required]),

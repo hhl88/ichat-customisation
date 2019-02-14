@@ -11,9 +11,8 @@ import {
   LayoutListLoadSuccessAction
 } from 'store/actions/ichat';
 import {ItemType} from 'core/enum/item-type.enum';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {ICHAT_PAGE, PASSWORD_PAGE} from 'core/constants/routing.constants';
-import {UserService} from 'core/services/user.service';
 import {AuthService} from 'core/authentication/authentication.service';
 
 @Component({

@@ -31,13 +31,13 @@ public class ChatFrontEnd implements Serializable {
 
     private String demandInfoId;
 
-    private Connection connectionType;
+    private int connectionType;
 
     public static ChatFrontEnd of(FrontEndCreateDTO dto) {
 
         return ChatFrontEnd.builder()
                 .name(dto.getName())
-                .connectionType(dto.getConnectionType())
+                .connectionType(dto.getConnectionType().ordinal())
                 .urlPath(dto.getUrlPath())
                 .build();
     }
@@ -46,7 +46,7 @@ public class ChatFrontEnd implements Serializable {
 
         return ChatFrontEnd.builder()
                 .name(dto.getName())
-                .connectionType(dto.getConnectionType())
+                .connectionType(dto.getConnectionType().ordinal())
                 .urlPath(dto.getUrlPath())
                 .build();
     }

@@ -8,6 +8,7 @@ import com.novomind.ecom.ichat.customisation.core.interfaces.services.IAgentServ
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
 import com.novomind.ecom.ichat.customisation.domain.dtos.IdDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend.FrontEndDTO;
@@ -52,38 +53,37 @@ public class IChatFrontEndController {
     @Autowired
     DemandInfoService demandInfoService;
 
-    @ApiOperation(value = "Get a frontend by Id", response = FrontEndDTO.class)
+    @ApiOperation(value = "Get a frontend by Id", response = ChatFrontEnd.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved frontend"),
             @ApiResponse(code = 404, message = "frontend is not found"),
     })
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FrontEndDTO getFrontEndById(@PathVariable String id) throws  ChatFrontEndNotFoundException {
-        ChatFrontEnd chatFrontEnd =  chatFrontEndManagementService.findChatFrontEndById(id)
+    public ChatFrontEnd getFrontEndById(@PathVariable String id) throws  ChatFrontEndNotFoundException {
+        return chatFrontEndManagementService.findChatFrontEndById(id)
                 .orElseThrow(() -> new ChatFrontEndNotFoundException(id));
-        return convertToFrontEndDTO(chatFrontEnd);
     }
 
 
-    @ApiOperation(value = "Get frontends", response = FrontEndDTO.class, responseContainer = "List")
+    @ApiOperation(value = "Get frontends", response = ChatFrontEnd.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved frontends"),
     })
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public List<FrontEndDTO> getFrontEnds(Principal principal) throws UserNotFoundException {
+    public List<ChatFrontEnd> getFrontEnds(Principal principal) throws UserNotFoundException {
         IChatUser user = userManagementService.findIChatUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException(principal.getName()));
-        List<ChatFrontEnd> chatFrontEnds = chatFrontEndManagementService.findChatFrontEndByUserId(user.getId());
-        List<FrontEndDTO> frontEndDTOS = new ArrayList<>();
+        return chatFrontEndManagementService.findChatFrontEndByUserId(user.getId());
+        /*List<FrontEndDTO> frontEndDTOS = new ArrayList<>();
         chatFrontEnds
                 .forEach(chatFrontEnd -> {
                     FrontEndDTO dto = convertToFrontEndDTO(chatFrontEnd);
                     log.info("dto " +  dto);
                     frontEndDTOS.add(convertToFrontEndDTO(chatFrontEnd));
                 });
-        return frontEndDTOS;
+        return frontEndDTOS;*/
     }
 
 
@@ -140,7 +140,7 @@ public class IChatFrontEndController {
         if (chatFrontEnd.getDemandInfoId() != null)
             demandInfo = demandInfoService.findDemandInfoById(chatFrontEnd.getDemandInfoId()).get();
 
-        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName(), iAgentServer, chatFrontEnd.getUrlPath(), demandInfo, chatFrontEnd.getConnectionType());
+        return new FrontEndDTO(chatFrontEnd.getId(), chatFrontEnd.getName(), iAgentServer, chatFrontEnd.getUrlPath(), demandInfo, Connection.values()[chatFrontEnd.getConnectionType()]);
 
     }
 

@@ -3,14 +3,13 @@ package com.novomind.ecom.ichat.customisation.core.components;
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChatLayoutDao;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
-import com.novomind.ecom.ichat.customisation.core.interfaces.services.StoreService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.StorageService;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +26,7 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
     ChatLayoutDao chatLayoutDao;
 
     @Autowired
-    StoreService storeService;
+    StorageService storageService;
 
 
     @Override
@@ -71,7 +70,7 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
 
         if (image != null && !image.isEmpty()) {
             log.info("image " + image.getOriginalFilename() + " - - - " + image.getSize());
-            imageStoredName = storeService.store(image);
+            imageStoredName = storageService.store(image);
         }
         return imageStoredName;
     }
@@ -84,7 +83,7 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
 
             if (chatLayout.getLogo() != null) {
                 log.info("remove logo");
-                storeService.removeFile(chatLayout.getLogo());
+                storageService.removeFile(chatLayout.getLogo());
             }
             chatLayout.setLogo(newLogoStoredName);
             log.info("set new logo " + chatLayout);
@@ -96,7 +95,7 @@ public class ChatLayoutServiceImpl implements ChatLayoutService {
 
             if (chatLayout.getBackgroundImg() != null) {
                 log.info("remove background");
-                storeService.removeFile(chatLayout.getBackgroundImg());
+                storageService.removeFile(chatLayout.getBackgroundImg());
             }
             chatLayout.setBackgroundImg(newBackgroundImgStoredName);
             log.info("set new background " + chatLayout);

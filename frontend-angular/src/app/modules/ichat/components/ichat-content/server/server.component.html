@@ -6,12 +6,19 @@
       {{servers[iAgentServerType].title}}
     </mat-radio-button>
 
-    <div class="ml-4" *ngIf="servers[iAgentServerType].checked">
+    <div class="ml-4 mb-5" *ngIf="servers[iAgentServerType].checked">
       <app-iagent-server [iAgentServer]="iAgentServer"
                          [switchedItem]="switchedItem"
                          (sizeFirstCol)="onResizeFirstCol($event)"
                          (onIAgentServerChanged)="serverChanged($event)">
       </app-iagent-server>
+      <div class="row mx-0 pl-0 vertical-middle">
+        <button mat-raised-button [disabled]="!currentIAgentServer" (click)="checkServer()">Testen</button>
+        <div *ngIf="isProcessed">
+          <div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>
+          <div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>
+        </div>
+      </div>
 
     </div>
     <div>

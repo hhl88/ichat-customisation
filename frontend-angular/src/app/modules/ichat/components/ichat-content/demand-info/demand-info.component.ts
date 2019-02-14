@@ -18,6 +18,7 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor() {
+    console.log('123');
   }
 
   ngOnInit() {
@@ -45,10 +46,14 @@ export class DemandInfoComponent implements OnInit, OnChanges {
       }
     }
     this.form.controls['demandInfoList'].valueChanges.subscribe(data => {
+        const isFormValid = this._isFormValid();
+        //if (isFormValid) {
         this.onDemandInfoListChanged.emit({
           data: this.getList().getRawValue(),
-          isFormValid: this.isFormValid()
+          isFormValid: isFormValid
         });
+        //}
+
       }
     );
   }
@@ -61,14 +66,14 @@ export class DemandInfoComponent implements OnInit, OnChanges {
 
   addDemandInfo() {
     console.log('213123', this.form.getRawValue());
-    this.getList().push(this.initDemandInfo());
+    this.getList().push(this._initDemandInfo());
   }
 
-  initDemandInfo() {
+  private _initDemandInfo() {
     return new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(1)]),
       example: new FormControl('', [Validators.required, Validators.minLength(1)]),
-      required: new FormControl(false)
+      required: new FormControl(false, [Validators.required])
     }, {
       updateOn: 'blur'
     });
@@ -76,7 +81,7 @@ export class DemandInfoComponent implements OnInit, OnChanges {
 
   removeDemandInfo(event, i: number) {
     const list = this.getList();
-    if (list.length > 1) {
+    if (list.length > 0) {
       this.getFormGroup(i).clearValidators();
       list.removeAt(i);
       event.stopPropagation();
@@ -91,7 +96,7 @@ export class DemandInfoComponent implements OnInit, OnChanges {
     return (<FormGroup>(<FormArray>this.form.get('demandInfoList')).controls[index]);
   }
 
-  isFormValid() {
+  private _isFormValid() {
     const valid = this.getList().controls.findIndex(form => form.invalid);
     return valid === -1;
   }

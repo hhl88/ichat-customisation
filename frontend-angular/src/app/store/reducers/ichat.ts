@@ -79,7 +79,6 @@ export function reducer(state = initialState, action: ichat.Actions): State {
     }
 
     case ichat.LAYOUT_LIST_LOAD_SUCCESS: {
-      console.log('chatlayouts', action.payload);
       return Object.assign({}, state, {
         chatLayouts: action.payload,
         layoutsLoading: false,
