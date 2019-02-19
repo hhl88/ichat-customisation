@@ -1,0 +1,37 @@
+<div class="chat-window-wrapper" *ngIf="!isLoading">
+  <div class="logo-chat" id="logoChat">
+  </div>
+  <div class="messenger-wrapper">
+    <div class="messenger-body pt-3" id="messengerBody"
+         [style.order]="chatLayout.textInputType === 0 ? 2 : 1">
+    </div>
+    <div class="input-area row mx-0 vertical-align"
+         [ngClass]="{'in-row': chatLayout.buttonType === 0,
+                            'in-column': chatLayout.buttonType === 1}"
+         id="messengerFooter"
+         [style.order]="chatLayout.textInputType === 1 ? 1 : 2">
+        <textarea class="input-text"
+                  [ngClass]="{'by-row': chatLayout.buttonType === 0,
+                            'by-side': chatLayout.buttonType === 1}"
+                  placeholder="Write something..."
+                  type="text">
+        </textarea>
+      <div class="button-group"
+           [ngClass]="{'by-row': chatLayout.buttonType === 0,
+                            'by-side': chatLayout.buttonType === 1}">
+        <button class="send-message-button"
+                [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                (click)="sendMessage()">
+          Send
+        </button>
+        <button class="close-message-button"
+                [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                (click)="closeChat()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

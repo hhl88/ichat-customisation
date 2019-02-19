@@ -56,6 +56,9 @@ public class ChatFrontEndManagementServiceImpl implements ChatFrontEndManagement
         return chatFrontEndDao.insertChatFrontEnd(chatFrontEnd);
     }
 
+
+
+
     @Override
     public void update(ChatFrontEnd chatFrontEnd, FrontEndUpdateDTO dto) {
         log.info("dto " + dto);

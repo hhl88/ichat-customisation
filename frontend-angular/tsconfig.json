@@ -38,6 +38,9 @@
       ],
       "ichat/*": [
         "app/modules/ichat/*"
+      ],
+      "preview/*": [
+        "app/modules/preview/*"
       ]
     }
   },

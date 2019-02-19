@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/r/ichats/layouts")
-@Api(value = "/r/ichats/layouts", tags = "Layout resource")
+@RequestMapping(value = "/r/layouts")
+@Api(value = "/r/layouts", tags = "Layout resource")
 public class LayoutResourceController {
     @Autowired
     ChatLayoutService chatLayoutService;

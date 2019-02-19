@@ -2,6 +2,7 @@ package com.novomind.ecom.ichat.customisation.endpoints.ichat.layout;
 
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChatLayoutService;
+import com.novomind.ecom.ichat.customisation.core.interfaces.services.ChooseLayoutService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.IChatUserManagementService;
 import com.novomind.ecom.ichat.customisation.core.interfaces.services.StorageService;
 import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
@@ -32,8 +33,8 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/ichats/layouts")
-@Api(value = "/api/v1/ichats/layouts", tags = "IChat Layout")
+@RequestMapping("/api/v1/layouts")
+@Api(value = "/api/v1/layouts", tags = "IChat Layout")
 public class IChatLayoutController {
 
     Logger log = LoggerFactory.getLogger(getClass());
@@ -45,22 +46,10 @@ public class IChatLayoutController {
     ChatLayoutService chatLayoutService;
 
     @Autowired
+    ChooseLayoutService chooseLayoutService;
+
+    @Autowired
     StorageService storageService;
-
-    @ApiOperation(value = "Get a layout by Id", response = ChatLayout.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved layout"),
-            @ApiResponse(code = 404, message = "Layout is not found"),
-    })
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ChatLayout getChatLayoutById(@PathVariable String id) throws ChatLayoutNotFoundException {
-        log.info("getChatlayout " + id);
-        ChatLayout chatLayout = chatLayoutService.findChatLayoutById(id).orElseThrow(() -> new ChatLayoutNotFoundException(id));
-        log.info("chatlayout " + chatLayout);
-
-        return chatLayout;
-    }
 
 
     @ApiOperation(value = "Get layouts", response = ChatLayout.class, responseContainer = "List")
@@ -141,6 +130,21 @@ public class IChatLayoutController {
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(new InputStreamResource(storageService.loadFile(chatLayout.getBackgroundImg()).getInputStream()));
+    }
+
+
+    @ApiOperation(value = "set a default frontend", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Frontend successfully set as default"),
+            @ApiResponse(code = 401, message = "No Permission"),
+            @ApiResponse(code = 404, message = "Frontend is not found")
+    })
+    @PutMapping(value = "/{id}/default",produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @ResponseStatus(HttpStatus.OK)
+    public  ResponseEntity setDefaultFrontEnd(@PathVariable String id, Principal principal) throws ChatLayoutNotFoundException, UserNotFoundException, NoPermissionException{
+        ChatLayout chatLayout = findChatLayout(principal.getName(), id);
+        chooseLayoutService.setAsDefault(chatLayout);
+        return  ResponseEntity.status(HttpStatus.OK).build();
     }
 
 

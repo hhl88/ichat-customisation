@@ -9,13 +9,6 @@
   left: 15px;
 }
 
-.mat-expansion-panel-header[aria-disabled=true] {
-  color: #000000;
-
-  :hover {
-    cursor: pointer;
-  }
-}
 
 .spacer {
   flex: 1 1 auto;
@@ -23,7 +16,9 @@
 
 .item-list:hover {
   cursor: pointer;
-  background: red;
+  color: orangered;
+  text-decoration: underline;
+
 }
 
 .item-list[class*="editing"] {
@@ -34,18 +29,27 @@
 .header {
   text-overflow: ellipsis;
 }
+
 .mat-expansion-panel-header[class*="active"] {
-  background-color: red !important;
+  background-color: #ababab !important;
+
   .panel-title-wrapper {
-    color: white !important;
     font-weight: bold;
   }
-  &:hover {
-    background-color: transparent !important;
-    .panel-title-wrapper {
-      color: black !important;;
+
+
+}
+
+.mat-expansion-panel-header:hover {
+  .panel-title-wrapper {
+    .header {
+      color: orangered !important;
     }
   }
+}
+
+.add-button:hover {
+  color: orangered !important;
 }
 
 .panel-title-wrapper {
@@ -74,11 +78,12 @@
   }
 
 }
+
 .mat-list .mat-list-item {
   font-size: 1em;
   height: 35px !important;
 }
+
 mat-list-item[class*="active"] {
-  background: red;
-  color: white;
+  background: #ababab;
 }

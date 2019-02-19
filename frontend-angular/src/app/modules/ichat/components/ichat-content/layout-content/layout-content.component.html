@@ -182,5 +182,7 @@
   <div class="layout-footer button-group">
     <button mat-raised-button (click)="cancelCurrent()">Abrechen</button>
     <button mat-raised-button (click)="submitCurrent()">Speichern</button>
+    <button mat-raised-button [disabled]="selectedLayout.id === ''" (click)="setAsDefault()">als Standard</button>
+
   </div>
 </div>

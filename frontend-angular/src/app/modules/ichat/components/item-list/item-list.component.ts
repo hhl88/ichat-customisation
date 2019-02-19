@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {MatExpansionPanel} from '@angular/material';
 import {ItemType} from 'core/enum/item-type.enum';
 import {select, Store} from '@ngrx/store';
@@ -48,8 +48,9 @@ export class ItemListComponent implements OnInit {
     }
   }
 
-  selectItem(index: number, item) {
+  selectItem(index: number, item, event) {
     console.log('click');
+    event.stopPropagation();
     this.selectedIndex = index;
     this.onChangeItem.emit(item);
   }
@@ -115,5 +116,9 @@ export class ItemListComponent implements OnInit {
     return (target.classList && (target.classList.contains(addButton) || target.classList.contains(addIcon)));
   }
 
+  @HostListener('document:click', ['$event']) clickout(event) {
+    console.log('clickout side');
+    this.itemList.forEach(i => i.editing = false);
+  }
 
 }

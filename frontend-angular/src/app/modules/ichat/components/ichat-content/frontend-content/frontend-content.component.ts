@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {AfterContentChecked, AfterViewInit, Component, Input, NgZone, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {ConnectionType} from 'core/enum/connection-type.enum';
-import {IChatService} from 'ichat/services/ichat.service';
+import {IChatService} from '../../../../../core/services/ichat.service';
 import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
 
 @Component({
@@ -11,24 +11,23 @@ import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
   templateUrl: './frontend-content.component.html',
   styleUrls: ['./frontend-content.component.scss']
 })
-export class FrontendContentComponent implements OnInit, OnChanges {
+export class FrontendContentComponent implements OnInit, OnChanges, AfterContentChecked {
   @Input() frontEnd: Frontend;
   step = 0;
-  isServerValid = false;
+  isServerValid = true;
   isDemandInfoListValid = true;
+  isValid = false;
   selectedFrontend: Frontend = null;
   switchedItem: boolean;
 
   constructor(private store: Store<fromRoot.State>,
               private iChatService: IChatService) {
-
   }
 
   ngOnInit() {
     this.switchedItem = false;
     this._setFrontend();
   }
-
 
   ngOnChanges() {
     if (this.selectedFrontend === null || this.frontEnd.index !== this.selectedFrontend.index) {
@@ -38,7 +37,13 @@ export class FrontendContentComponent implements OnInit, OnChanges {
     } else {
       this.switchedItem = false;
     }
+
   }
+
+  ngAfterContentChecked(): void {
+    this.isValid = this.isServerValid && this.isDemandInfoListValid;
+  }
+
 
   private _setFrontend() {
     this.selectedFrontend = JSON.parse(JSON.stringify(this.frontEnd));
@@ -46,6 +51,7 @@ export class FrontendContentComponent implements OnInit, OnChanges {
       this.selectedFrontend.demandInfo = DefaultDemandInfo;
     }
   }
+
 
   prevStep() {
     this.step--;
@@ -55,22 +61,20 @@ export class FrontendContentComponent implements OnInit, OnChanges {
     this.step++;
   }
 
-
   demandInfoListChanged(rawValue) {
     this.selectedFrontend.demandInfo.demandInfoList = rawValue.data;
     this.isDemandInfoListValid = rawValue.isFormValid;
+
   }
 
   serverChanged(rawValue) {
     if (this.selectedFrontend.connectionType === ConnectionType.IAGENT_SERVER) {
       this.selectedFrontend.iAgentServer = JSON.parse(JSON.stringify(rawValue.data));
     }
-
     this.isServerValid = rawValue.isFormValid;
   }
 
   onResizeFirstCol(rawValue) {
-    console.log(rawValue);
     const table = document.getElementById('frontend-settings') as HTMLTableElement;
     for (let i = 0; i < table.rows.length; i++) {
       const firstCol = table.rows[i].cells[0];
@@ -102,6 +106,14 @@ export class FrontendContentComponent implements OnInit, OnChanges {
 
   cancelCurrent() {
 
+  }
+
+  setAsDefault() {
+    if (this.selectedFrontend.id) {
+      this.iChatService.setAsDefaultFrontend(this.selectedFrontend.id).subscribe(res => {
+        console.log('res', res);
+      });
+    }
   }
 
 

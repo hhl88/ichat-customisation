@@ -7,7 +7,7 @@ import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
-import {IChatService} from 'ichat/services/ichat.service';
+import {IChatService} from '../../../../../core/services/ichat.service';
 import {environment} from 'environments/environment';
 import {Subscription} from 'rxjs';
 
@@ -99,7 +99,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   private _reloadForm() {
-    console.log('reload 1', this.selectedLayout);
     if (this.form) {
       this.form.reset();
     } else {
@@ -119,7 +118,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
       });
     }
 
-    console.log('reload 2', this.selectedLayout);
 
   }
 
@@ -171,6 +169,14 @@ export class LayoutContentComponent implements OnInit, OnChanges {
         this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
       }, error1 => {
         console.log('error', error1);
+      });
+    }
+  }
+
+  setAsDefault() {
+    if (this.selectedLayout.id) {
+      this.iChatService.setAsDefaultLayout(this.selectedLayout.id).subscribe(res => {
+        console.log('res', res);
       });
     }
   }

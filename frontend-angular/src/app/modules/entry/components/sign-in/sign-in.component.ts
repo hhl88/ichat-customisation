@@ -36,13 +36,17 @@ export class SignInComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    console.log('signinnnn', this.form.getRawValue());
     this.isLoggingIn = true;
     this.store.dispatch(new UserLoadingAction());
     this.authService.login(this.form.value.email, this.form.value.password).subscribe(res => {
-      console.log('res', res);
       if (res != null) {
-        this.store.dispatch(new UserLoginAction(res));
-        localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, res.access_token);
+        const newRes = JSON.parse(JSON.stringify(res));
+        console.log(newRes);
+        console.log('access_token', newRes.access_token);
+
+        this.store.dispatch(new UserLoginAction(newRes));
+        localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, newRes.access_token);
 
         this.router.navigate([ICHAT_PAGE]);
       } else {

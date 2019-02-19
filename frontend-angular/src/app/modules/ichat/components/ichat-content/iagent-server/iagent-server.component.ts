@@ -1,7 +1,5 @@
 import {
-  AfterContentInit,
-  AfterViewInit,
-  ChangeDetectorRef,
+
   Component,
   EventEmitter,
   HostListener,
@@ -11,8 +9,8 @@ import {
   Output
 } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ConnectionType} from 'core/enum/connection-type.enum';
-import {IAgentServerService} from 'ichat/services/iagent-server.service';
+import {Subscription} from 'rxjs';
+import {IAgentServerService} from 'core/services/iagent-server.service';
 
 @Component({
   selector: 'app-iagent-server',
@@ -26,36 +24,26 @@ export class IAgentServerComponent implements OnInit, OnChanges {
   @Input() switchedItem: boolean;
 
   @Output() onIAgentServerChanged = new EventEmitter();
-  @Output() onFinishedBuild = new EventEmitter<any>();
   @Output() sizeFirstCol = new EventEmitter();
 
- /* isProcessed = false;
-  connected = false;
-  isClicked = false;
-*/
+  sub: Subscription;
+  isReloadingForm = false;
+
   constructor(private iAgentService: IAgentServerService) {
   }
 
   ngOnInit() {
+    this.isReloadingForm = false;
     this._reloadForm();
-    this.formIAgentServer.valueChanges.subscribe(data => {
-  /*    this.isClicked = false;
-      this.connected = false;
-      this.isProcessed = false;*/
-      if (this.isFormValid()) {
-        this.onIAgentServerChanged.emit({
-          data: data,
-          isFormValid: this.isFormValid()
-        });
-      }
-
-    });
-    this.onFinishedBuild.emit();
+    this._subscribe();
     this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
   }
 
   ngOnChanges() {
-    this._reloadForm();
+    if (!this.isReloadingForm) {
+      this._reloadForm();
+      this._subscribe();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -80,20 +68,28 @@ export class IAgentServerComponent implements OnInit, OnChanges {
   }*/
 
   private _reloadForm() {
-    console.log('reload');
-    if (this.formIAgentServer) {
-      this.formIAgentServer.reset();
-    } else {
-      this._initForm();
-    }
+    if (!this.isReloadingForm) {
+      this.isReloadingForm = true;
+      if (this.formIAgentServer) {
+        this.sub.unsubscribe();
+        this.formIAgentServer.reset();
+      } else {
+        this._initForm();
+      }
 
-    if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
+      if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
 
-      Object.keys(this.iAgentServer).forEach(key => {
-        if (this.formIAgentServer.get(key)) {
-          this.formIAgentServer.controls[key].setValue(this.iAgentServer[key]);
-        }
+        Object.keys(this.iAgentServer).forEach(key => {
+          if (this.formIAgentServer.get(key)) {
+            this.formIAgentServer.controls[key].setValue(this.iAgentServer[key]);
+          }
+        });
+      }
+      this.onIAgentServerChanged.emit({
+        data: this.formIAgentServer.getRawValue(),
+        isFormValid: this.isFormValid()
       });
+      this.isReloadingForm = false;
     }
   }
 
@@ -106,5 +102,20 @@ export class IAgentServerComponent implements OnInit, OnChanges {
       secret: new FormControl('', [Validators.required]),
     });
   }
+
+  private _subscribe() {
+    this.sub = this.formIAgentServer.valueChanges.subscribe(data => {
+      /*    this.isClicked = false;
+          this.connected = false;
+          this.isProcessed = false;*/
+      if (this.isFormValid()) {
+        this.onIAgentServerChanged.emit({
+          data: data,
+          isFormValid: this.isFormValid()
+        });
+      }
+    });
+  }
+
 
 }

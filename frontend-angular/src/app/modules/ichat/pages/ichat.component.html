@@ -4,6 +4,6 @@
                (onNavigateToPasswordPage)="onNavigateToPasswordPage($event)"
                (onLogout)="logout()">
   </app-sidebar>
-  <app-ichat-content class="ichat-content col-8" *ngIf="!isPasswordPage"></app-ichat-content>
-  <app-user-edit-password class="ichat-content col-8" *ngIf="isPasswordPage"></app-user-edit-password>
+  <app-ichat-content class="ichat-content col-9" *ngIf="!isPasswordPage"></app-ichat-content>
+  <app-user-edit-password class="ichat-content col-9" *ngIf="isPasswordPage"></app-user-edit-password>
 </div>

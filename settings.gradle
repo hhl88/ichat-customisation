@@ -19,3 +19,4 @@ rootProject.name = 'ichat-customisation'
 
 include 'backend'
 include 'frontend'
+include 'frontend-angular'

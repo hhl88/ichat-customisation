@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Data
-@SuppressWarnings("serial")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -19,10 +19,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/", "/csrf", "/v2/api-docs", "/swagger-resources/configuration/ui", "/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 // GET CURRENT LOGGED IN USER
                 .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/ichats/frontends").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/v1/ichats/layouts").authenticated()
-                .antMatchers(HttpMethod.GET, "/api/v1/ichats/layouts/*/backgroundImg").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/v1/ichats/layouts/*/logoImg").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/ichats/*").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/v1/frontends").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/v1/layouts").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/v1/layouts/*/backgroundImg").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/layouts/*/logoImg").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/v1/users/*").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/v1/auth/me").authenticated()
                 // ...

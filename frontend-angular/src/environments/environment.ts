@@ -14,8 +14,8 @@ export const environment: any = {
   tokenApi: serverUrl + '/oauth/token',
   userApi: apiServerUrl + '/users',
   iChatApi: apiServerUrl + '/ichats',
-  iChatFrontEndApi: apiServerUrl + '/ichats/frontends',
-  iChatLayoutApi: apiServerUrl + '/ichats/layouts',
+  iChatFrontEndApi: apiServerUrl + '/frontends',
+  iChatLayoutApi: apiServerUrl + '/layouts',
 };
 
 /*

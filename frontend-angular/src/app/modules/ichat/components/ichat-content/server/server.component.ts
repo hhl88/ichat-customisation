@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IAgentServer} from 'core/interfaces/iagent-server.interface';
-import {IAgentServerService} from 'ichat/services/iagent-server.service';
+import {IAgentServerService} from '../../../../../core/services/iagent-server.service';
 
 @Component({
   selector: 'app-server',
@@ -43,7 +43,6 @@ export class ServerComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('servers', this.servers);
     if (this.connectionType === null || this.connectionType === undefined) {
       this.connectionType = ConnectionType.IAGENT_SERVER;
     }

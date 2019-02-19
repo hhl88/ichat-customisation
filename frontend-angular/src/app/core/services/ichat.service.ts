@@ -32,12 +32,26 @@ export class IChatService {
     });
   }
 
+  setAsDefaultFrontend(chatFrontendId): Observable<HttpResponse<any>> {
+    return this.httpClient.put(`${environment.iChatFrontEndApi}/${chatFrontendId}/default`, null, {
+      responseType: 'text' as 'json',
+      observe: 'response'
+    });
+  }
+
   updateLayout(id, chatLayout): Observable<HttpResponse<any>> {
-    console.log('update', chatLayout)
+    console.log('update', chatLayout);
     return this.httpClient.put(`${environment.iChatLayoutApi}/${id}/`,
       this._createFormDataForLayout(chatLayout),
       {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
 
+  }
+
+  setAsDefaultLayout(chatLayoutId): Observable<HttpResponse<any>> {
+    return this.httpClient.put(`${environment.iChatLayoutApi}/${chatLayoutId}/default`, null, {
+      responseType: 'text' as 'json',
+      observe: 'response'
+    });
   }
 
   getChatFrontends(): Observable<Frontend[]> {
@@ -63,11 +77,11 @@ export class IChatService {
     const chatLayoutCreateDTO = new Blob([JSON.stringify(this._createCloneJson(layout))], {type: 'application/json'});
 
     form.append('layoutDto', chatLayoutCreateDTO, 'layoutDto');
-    if (layout.logo && layout.logo !== '' ) {
+    if (layout.logo && layout.logo !== '') {
       console.log('logo');
       form.append('logo', layout.logo, 'logo.png');
     }
-    if (layout.backgroundImg && layout.backgroundImg !== '' ) {
+    if (layout.backgroundImg && layout.backgroundImg !== '') {
       form.append('backgroundImg', layout.backgroundImg, 'backgroundImg.png');
     }
     return form;

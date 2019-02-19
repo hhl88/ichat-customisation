@@ -5,7 +5,7 @@ import * as fromRoot from 'store/reducers';
 import {Observable, of} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError, map, tap, timeout} from 'rxjs/operators';
 import {USER_LOGOUT, UserLoginAction, UserLogoutAction} from 'store/actions/entry';
 import {LOCAL_STORAGE_AUTH_TOKEN} from 'core/constants/storage.constants';
 import {Router} from '@angular/router';
@@ -23,6 +23,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
+    console.log('login');
     return this.httpClient.post<any>(`${environment.tokenApi}`, null, {
       params: new HttpParams()
         .set('username', email)

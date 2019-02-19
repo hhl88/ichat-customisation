@@ -4,6 +4,7 @@ import {Observable, throwError} from 'rxjs';
 import 'rxjs-compat/add/operator/do';
 
 import {AuthService} from '../authentication/authentication.service';
+import 'rxjs-compat/add/operator/timeout';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -19,7 +20,7 @@ export class TokenInterceptor implements HttpInterceptor {
       setHeaders: {
         'Accept-Version': '1',
         'Accept': '*/*',
-        'Access-Control-Allow-Origin':'*',
+        'Access-Control-Allow-Origin': window.location.origin,
         'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers, Origin, Accept, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
         'Vary': 'Accept-Encoding',
@@ -32,7 +33,7 @@ export class TokenInterceptor implements HttpInterceptor {
         }
       });
     }
-    //
+
     // return next.handle(request)
     //   .catch(error => {
     //     if (error instanceof HttpErrorResponse) {
@@ -46,13 +47,14 @@ export class TokenInterceptor implements HttpInterceptor {
     //       return Observable.throw(error);
     //     }
     //   });
-    return next.handle(request).do((event: HttpEvent<any>) => {
+    return next.handle(request).timeout(5000).do((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
       }
     }, (err: any) => {
+      console.log('err', err);
       // this.authService.logout();
       // location.reload();
-      console.log('err', err);
+      // console.log('err', err);
       return throwError(err);
       // Observable.throw(err);
     });
