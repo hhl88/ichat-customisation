@@ -1,10 +1,12 @@
-<div class="chat-window-wrapper" *ngIf="!isLoading">
-  <div class="logo-chat" id="logoChat">
-  </div>
+<div class="chat-window-wrapper" id="chatWindowWrapper" *ngIf="chatId && !isLoading; else newConversation">
+  <img class="logo-chat" id="logoChat"/>
   <div class="messenger-wrapper">
-    <div class="messenger-body pt-3" id="messengerBody"
+    <div class=" messenger-body pt-3" id="messengerBody"
          [style.order]="chatLayout.textInputType === 0 ? 2 : 1">
+      <app-single-message *ngFor="let message of messages" [msg]="message"
+                          [partnerName]="'123'"></app-single-message>
     </div>
+
     <div class="input-area row mx-0 vertical-align"
          [ngClass]="{'in-row': chatLayout.buttonType === 0,
                             'in-column': chatLayout.buttonType === 1}"
@@ -31,7 +33,18 @@
                 (click)="closeChat()">
           Close
         </button>
+        <button class="close-message-button"
+                [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                (click)="detectMessengerChanges()">
+          pulling
+        </button>
       </div>
     </div>
+
   </div>
 </div>
+
+<ng-template #newConversation>
+  <button (click)="startNewChat()">start new chat</button>
+</ng-template>

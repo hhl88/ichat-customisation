@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {IChatService} from '../../../core/services/ichat.service';
+import {IChatService} from 'ichat/services/ichat.service';
 import {
   FrontEndListLoadingAction,
   FrontEndListLoadSuccessAction,
@@ -28,6 +28,7 @@ export class IChatComponent implements OnInit {
               private authService: AuthService,
               private location: Location,
               private router: ActivatedRoute) {
+    console.log('ichat Page');
   }
 
   ngOnInit() {

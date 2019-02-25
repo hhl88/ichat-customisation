@@ -1,0 +1,134 @@
+.chat-window-wrapper {
+  border: 1px solid black !important;
+  border-radius: 5px;
+  resize: both;
+  overflow: hidden;
+  min-width: 300px;
+  min-height: 350px;
+  max-height: 100vh;
+}
+.messenger-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-right: -30px;
+  padding-right: 30px;
+}
+
+
+.input-area {
+  height: 80px;
+  textarea{
+    &:focus{
+      border: none;
+      overflow: auto;
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+}
+
+
+.messenger-body {
+  position: relative;
+  overflow-y: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.send-message-button {
+  border: none;
+  border-radius: 0;
+}
+
+.input-text{
+  border: none;
+  resize: none;
+}
+
+.input-text:focus {
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+textarea[class*="by-row"] {
+  width: 100% !important;
+}
+
+textarea[class*="by-side"] {
+  width: 70% !important;
+  //height: 95% !important;
+  border-width: 1px 1px 0 0 !important;
+  border-style: solid solid solid solid !important;
+  box-sizing: border-box;
+  border-radius: 0 0 0 5px;
+}
+
+.logo-chat {
+  width: 100%;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #FFF;
+  border-bottom: 1px solid;
+  position: sticky;
+  z-index: 2;
+  margin: 0 auto;
+  right: 0;
+  border-radius: 5px 5px 0 0;
+}
+
+.send-message-button:hover {
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+}
+
+div[class*="by-row"] {
+  width: 100%;
+  margin: 10px 0;
+}
+
+div[class*="by-side"] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 30%;
+  align-items: center;
+}
+
+button {
+  background-color: orangered;
+  color: white;
+  border: none;
+  border-radius: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+
+button[class*="by-side"] {
+  width: 100px;
+  height: 35px;
+}
+
+button[class*="by-row"] {
+  width: 80px;
+  height: 27px;
+}
+
+.in-column {
+  height: 80px;
+  padding-top: 10px;
+}

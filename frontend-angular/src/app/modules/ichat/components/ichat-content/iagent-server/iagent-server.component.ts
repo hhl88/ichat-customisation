@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
-import {IAgentServerService} from 'core/services/iagent-server.service';
+import {IAgentServerService} from 'ichat/services/iagent-server.service';
 
 @Component({
   selector: 'app-iagent-server',

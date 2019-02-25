@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-single-message',
@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./single-message.component.scss']
 })
 export class SingleMessageComponent implements OnInit {
+  @Input() msg: any;
+  @Input() partnerName: string;
+  subject: string;
 
   constructor() { }
 
   ngOnInit() {
+    this.subject = this.msg.from_me ? 'You' : this.partnerName;
+
   }
 
 }

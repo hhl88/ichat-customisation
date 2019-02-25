@@ -7,7 +7,7 @@ import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
-import {IChatService} from '../../../../../core/services/ichat.service';
+import {IChatService} from '../../../services/ichat.service';
 import {environment} from 'environments/environment';
 import {Subscription} from 'rxjs';
 

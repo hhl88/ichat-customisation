@@ -26,26 +26,22 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.authService.getToken()) {
-      this.router.events.subscribe(event => {
-        if (event instanceof RoutesRecognized) {
-          if (event.url !== ('/' + PREVIEW_PAGE)) {
-            this.guardRoute(event);
-          }
+    this.router.events.subscribe(event => {
+      if (event instanceof RoutesRecognized) {
+        if (event.url !== ('/' + PREVIEW_PAGE)) {
+          this.guardRoute(event);
         }
-      });
-    } else {
-      this.router.navigate(['']);
-    }
+      }
+    });
   }
 
-  private guardRoute(event: RoutesRecognized): void {
+  private guardRoute(event: RoutesRecognized): boolean {
     if (this.isPublic(event)) {
-      return;
+      return ;
     }
 
     if (!this.callCanActivate(event, this.authGuard)) {
-      return;
+      return ;
     }
   }
 

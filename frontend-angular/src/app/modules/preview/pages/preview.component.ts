@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class PreviewComponent implements OnInit {
 
   constructor() {
-    console.log('preview')
   }
 
   ngOnInit() {

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IchatComponent } from './ichat.component';
+import { IChatComponent } from './ichat.component';
 
-describe('IchatComponent', () => {
-  let component: IchatComponent;
-  let fixture: ComponentFixture<IchatComponent>;
+describe('IChatComponent', () => {
+  let component: IChatComponent;
+  let fixture: ComponentFixture<IChatComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IchatComponent ]
+      declarations: [ IChatComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IchatComponent);
+    fixture = TestBed.createComponent(IChatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -14,7 +14,7 @@ import { DemandInfoComponent } from './components/ichat-content/demand-info/dema
 import {ImageCropperModule} from 'ngx-image-cropper';
 import { UserEditPasswordComponent } from './components/user-edit-password/user-edit-password.component';
 import {UserService} from 'core/services/user.service';
-import {IChatService} from 'core/services/ichat.service';
+import {IChatService} from 'ichat/services/ichat.service';
 
 @NgModule({
   declarations: [

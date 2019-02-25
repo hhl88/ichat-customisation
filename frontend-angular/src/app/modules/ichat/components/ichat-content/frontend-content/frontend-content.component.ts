@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {ConnectionType} from 'core/enum/connection-type.enum';
-import {IChatService} from '../../../../../core/services/ichat.service';
+import {IChatService} from '../../../services/ichat.service';
 import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
 
 @Component({
