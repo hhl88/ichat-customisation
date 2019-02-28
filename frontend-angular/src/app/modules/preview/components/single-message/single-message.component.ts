@@ -7,14 +7,11 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class SingleMessageComponent implements OnInit {
   @Input() msg: any;
-  @Input() partnerName: string;
-  subject: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.subject = this.msg.from_me ? 'You' : this.partnerName;
-
   }
 
 }

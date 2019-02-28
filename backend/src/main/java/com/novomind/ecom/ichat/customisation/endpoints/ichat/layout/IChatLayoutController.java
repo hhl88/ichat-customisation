@@ -80,6 +80,7 @@ public class IChatLayoutController {
                                        @RequestPart(value = "logo", required = false) MultipartFile logo,
                                        @RequestPart(value = "backgroundImg", required = false) MultipartFile backgroundImg,
                                        Principal principal) throws UserNotFoundException, ChatLayoutNotFoundException, NoPermissionException, IOException {
+        log.info("update " + chatLayoutUpdateDTO);
         ChatLayout chatLayout = findChatLayout(principal.getName(), id);
         return chatLayoutService.updateInfo(chatLayout, chatLayoutUpdateDTO, logo, backgroundImg);
     }

@@ -1,13 +1,15 @@
 package com.novomind.ecom.ichat.customisation.core.chat.layout;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.*;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Bubble;
+import com.novomind.ecom.ichat.customisation.domain.datatypes.Font;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.chat.layout.ChatLayoutUpdateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontDTO;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Map;
 
 @Data
 @Builder
@@ -27,6 +29,7 @@ public class ChatLayout implements Serializable {
     private String backgroundImg;
     private int backgroundType;
     private Font font;
+    private Map<String, Bubble> bubbleStyle;
 
 
     public static ChatLayout of(ChatLayoutCreateDTO dto) {
@@ -38,6 +41,7 @@ public class ChatLayout implements Serializable {
                 .buttonType(dto.getButtonType().ordinal())
                 .backgroundType(dto.getBackgroundType().ordinal())
                 .font(Font.of(fontDTO.getFontFamily(), fontDTO.getFontSize(), fontDTO.getFontStyles()))
+                .bubbleStyle(dto.getBubbleStyle())
                 .build();
     }
 
@@ -51,6 +55,7 @@ public class ChatLayout implements Serializable {
                 .backgroundType(dto.getBackgroundType().ordinal())
                 .backgroundType(dto.getBackgroundType().ordinal())
                 .font(Font.of(fontDTO.getFontFamily(), fontDTO.getFontSize(), fontDTO.getFontStyles()))
+                .bubbleStyle(dto.getBubbleStyle())
                 .build();
     }
 

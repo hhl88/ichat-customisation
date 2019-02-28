@@ -1,21 +1,14 @@
 package com.novomind.ecom.ichat.customisation.persistents.ichat.frontend;
 
 
-import com.novomind.ecom.ichat.customisation.constants.Constants;
 import com.novomind.ecom.ichat.customisation.core.chat.frontend.ChatFrontEnd;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChooseChatFrontEndDao;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
-import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatFrontEndRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 import static com.novomind.ecom.ichat.customisation.constants.Constants.CHOOSE_CHAT_UI_TABLE;
-import static com.novomind.ecom.ichat.customisation.constants.Constants.ICHAT_UI_TABLE;
 
 @Repository
 public class ChooseChatFrontEndDaoImpl extends BaseDao implements ChooseChatFrontEndDao {
@@ -70,7 +63,11 @@ public class ChooseChatFrontEndDaoImpl extends BaseDao implements ChooseChatFron
     @Override
     public String findChatFrontEndIdByUserId(String userId) {
         String query = "SELECT ichat_ui_id FROM " + CHOOSE_CHAT_UI_TABLE + " WHERE user_id = ?";
-        return getJdbcTemplate().queryForObject(query, new Object[]{userId}, String.class);
+        try {
+            return getJdbcTemplate().queryForObject(query, new Object[]{userId}, String.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

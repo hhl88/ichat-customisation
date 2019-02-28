@@ -1,0 +1,20 @@
+.form-chat {
+  max-width: 500px;
+
+  input, select {
+    height: 35px;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid black !important;
+    font-size: 1em;
+    line-height: normal;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+  }
+  select {
+    padding-right: 15px;
+    padding-left: 15px;
+    cursor:pointer;
+  }
+
+}

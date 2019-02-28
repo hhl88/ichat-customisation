@@ -1,10 +1,9 @@
 import {
-
   Component,
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   OnInit,
   Output
 } from '@angular/core';
@@ -18,7 +17,7 @@ import {IAgentServerService} from 'ichat/services/iagent-server.service';
   styleUrls: ['./iagent-server.component.scss'],
   providers: [IAgentServerService]
 })
-export class IAgentServerComponent implements OnInit, OnChanges {
+export class IAgentServerComponent implements OnInit, OnChanges, OnDestroy {
   formIAgentServer: FormGroup;
   @Input() iAgentServer: any;
   @Input() switchedItem: boolean;
@@ -43,6 +42,12 @@ export class IAgentServerComponent implements OnInit, OnChanges {
     if (!this.isReloadingForm) {
       this._reloadForm();
       this._subscribe();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
     }
   }
 

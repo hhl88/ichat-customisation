@@ -69,17 +69,12 @@ public class IChatUserController {
             @ApiResponse(code = 200, message = "Successfully updated user"),
             @ApiResponse(code = 401, message = "Wrong authentication"),
             @ApiResponse(code = 404, message = "User is not found")})
-    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
+    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> updateUserPassword(@PathVariable String id, @Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
+    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
             throws UserNotFoundException, NoPermissionException {
-        log.info("id " + id);
-        ;
+        log.info("principal " + principal + "  " + principal.getName());
         IChatUser user = getUserIfAccessAllowed(principal);
-        log.info("user " + user);
-        if (!id.equalsIgnoreCase(user.getId())) {
-            throw new NoPermissionException();
-        }
 
         userManagementService.updatePassword(user, userPasswordUpdateDTO.getOldPassword(),
                 userPasswordUpdateDTO.getNewPassword(), userPasswordUpdateDTO.getRetypedPassword());

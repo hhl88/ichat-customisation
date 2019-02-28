@@ -6,6 +6,8 @@ import {SweetAlert2Module} from '@toverux/ngx-sweetalert2';
 import {CustomMaterialModule} from 'shared/material/custom-material.module';
 import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spinner.component';
 import {ImageCropperModule} from 'ngx-image-cropper';
+import {AutoScrollDirective} from 'shared/directives/auto-scroll.directive';
+import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 
 @NgModule({
   imports: [
@@ -18,7 +20,9 @@ import {ImageCropperModule} from 'ngx-image-cropper';
     ImageCropperModule
   ],
   declarations: [
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ImageUploadComponent,
+    AutoScrollDirective,
   ],
   exports: [
     CommonModule,
@@ -30,6 +34,8 @@ import {ImageCropperModule} from 'ngx-image-cropper';
     ImageCropperModule,
 
     LoadingSpinnerComponent,
+    ImageUploadComponent,
+    AutoScrollDirective
   ],
 
 })

@@ -1,0 +1,73 @@
+<div class="chat-window-wrapper"
+     [ngClass]="{'is-fixed': chatLayout.displayType}"
+     id="chatWindowWrapper"
+     #chatWindowWrapper
+     *ngIf="!isLoading">
+  <img class="logo-chat"
+       id="logoChat"
+       #logoChat/>
+  <div class="conversation-wrapper"
+       id="conversationWrapper"
+       #conversationWrapper>
+    <div appAutoScroll class="conversation-body pt-3 order-2"
+         #conversationBody
+         id="conversationBody"
+         [style.order]="chatLayout.textInputType === 0 ? 2 : 1">
+      <app-single-message *ngFor="let message of messages"
+                          [msg]="message"
+      >
+      </app-single-message>
+    </div>
+
+    <form class="input-area row mx-0 vertical-align order-1"
+          [formGroup]="formMessage" novalidate
+          [ngClass]="{'in-row': chatLayout.buttonType === 0,
+                            'in-column': chatLayout.buttonType === 1}"
+          id="conversationFooter"
+          [style.order]="chatLayout.textInputType === 1 ? 2 : 1">
+        <textarea class="input-text"
+                  formControlName="message"
+                  [ngClass]="{'by-row': chatLayout.buttonType === 0,
+                            'by-side': chatLayout.buttonType === 1}"
+                  placeholder="Write something..."
+                  type="text">
+        </textarea>
+      <div class="button-group"
+           *ngIf="!chatStopped; else stopChat"
+           [ngClass]="{'by-row': chatLayout.buttonType === 0,
+                            'by-side': chatLayout.buttonType === 1}">
+        <button class="send-message-button"
+                [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                (click)="sendMessage()">
+          Send
+        </button>
+        <button class="close-message-button"
+                [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                (click)="closeChat()">
+          Close
+        </button>
+      </div>
+      <ng-template #stopChat>
+        <div class="button-group"
+             [ngClass]="{'by-row': chatLayout.buttonType === 0,
+                            'by-side': chatLayout.buttonType === 1}">
+          <button class="send-message-button"
+                  [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                  (click)="saveMessage()">
+            Save Message
+          </button>
+          <button class="close-message-button"
+                  [ngClass]="{'by-row': chatLayout.buttonType === 1,
+                            'by-side': chatLayout.buttonType === 0}"
+                  (click)="closeConversation()">
+            Close Conversation
+          </button>
+        </div>
+      </ng-template>
+    </form>
+
+  </div>
+</div>

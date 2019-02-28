@@ -5,12 +5,9 @@ import com.novomind.ecom.ichat.customisation.domain.dtos.font.FontDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -48,5 +45,11 @@ public class ChatLayoutCreateDTO {
     @NotNull
     @JsonProperty("font")
     private FontDTO font;
+
+
+    @ApiModelProperty(required = true)
+    @NotNull
+    @JsonProperty("bubbleStyle")
+    private Map<String, Bubble> bubbleStyle;
 
 }

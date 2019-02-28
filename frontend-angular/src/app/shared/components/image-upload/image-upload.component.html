@@ -1,0 +1,21 @@
+<div class="image-uploader-wrapper">
+  <div class="custom-file" id="customFile">
+    <input #imageInput
+           type="file"
+           accept="image/*"
+           (change)="processFile(imageInput)"
+           class="custom-file-input"
+           id="exampleInputFile"
+           aria-describedby="fileHelp">
+    <label class="custom-file-label" for="exampleInputFile">
+      {{fileName}}
+    </label>
+  </div>
+
+  <div *ngIf="selectedImage" class="img-preview-container row mx-0 my-3 align-items-center justify-content-center">
+    <img class="img-preview" src="{{selectedImage}}">
+
+  </div>
+
+</div>
+

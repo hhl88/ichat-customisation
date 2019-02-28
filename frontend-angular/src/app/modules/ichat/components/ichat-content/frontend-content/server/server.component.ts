@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IAgentServer} from 'core/interfaces/iagent-server.interface';
-import {IAgentServerService} from '../../../services/iagent-server.service';
+import {IAgentServerService} from '../../../../services/iagent-server.service';
 
 @Component({
   selector: 'app-server',

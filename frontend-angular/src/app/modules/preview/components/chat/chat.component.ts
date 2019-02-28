@@ -1,4 +1,15 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver, ComponentRef,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild, ViewContainerRef
+} from '@angular/core';
 import {Layout} from 'core/interfaces/layout.interface';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {IChatSettingsService} from 'preview/services/ichat-settings.service';
@@ -8,6 +19,8 @@ import {Frontend} from 'core/interfaces/frontend.interface';
 import {Observable, Subscription} from 'rxjs';
 import 'rxjs-compat/add/observable/interval';
 import 'rxjs-compat/add/operator/takeWhile';
+import {el} from '@angular/platform-browser/testing/src/browser_util';
+import {MessengerComponent} from 'preview/components/messenger/messenger.component';
 
 @Component({
   selector: 'app-chat',
@@ -20,157 +33,196 @@ export class ChatComponent implements OnInit {
 
   chatLayout: Layout;
   chatFrontend: Frontend;
-  form: FormGroup;
+  customer: any;
   isLoading = false;
-  messages: any[] = [];
-  mouseMoveListener: Function;
+  isLoadingSetting = false;
+  isConnected = false;
+  isConnecting = false;
 
   chatId: number = null;
 
-  sub: Subscription;
+  subConnection: Subscription;
+  subPolling: Subscription;
+
+  chatStopped: boolean;
+  server: string;
+  windowReference: any;
+
+  isFormChatValid = false;
+  isPopUp = false;
+  token: string;
 
   constructor(private iChatSettingsService: IChatSettingsService,
               private iChatService: IChatService,
               private cd: ChangeDetectorRef,
-              private renderer: Renderer2) {
+              private r: ComponentFactoryResolver,
+              private viewContainerRef: ViewContainerRef) {
   }
 
   ngOnInit() {
+    this.isLoadingSetting = true;
+    this.isConnected = false;
+    this.chatStopped = false;
     this.isLoading = true;
-    this.form = new FormGroup({
-      message: new FormControl('', [Validators.required])
-    });
+    this.isConnecting = false;
     this.getSettings();
+
+
   }
 
   private getSettings() {
+    this.isLoadingSetting = true;
     this.iChatSettingsService.getSettings(this.id).subscribe(settings => {
       this.chatLayout = settings.layout;
       this.chatFrontend = settings.frontend;
       this.chatLayout.logo = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/logoImg';
       this.chatLayout.backgroundImg = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/backgroundImg';
-      this.isLoading = false;
-
-
+      // this._setFormChat();
+      this.isPopUp = this.chatLayout.displayType === 2;
+      this.server = this._findServer(this.chatFrontend.iAgentServer.address);
+      this.iChatService.setServer(this._findServer(this.chatFrontend.iAgentServer.address));
+      this.isLoadingSetting = false;
       this.cd.detectChanges();
-
-
-      console.log('https', this._getServerIChat(this.chatFrontend.iAgentServer.address));
-      this.iChatService.setServer('https://showroom-bridges.novomind.com/sr04_iagent_chat_p01');
     });
+  }
 
-
+  onFormChatChanged(rawValue) {
+    this.customer = rawValue.data;
+    this.isFormChatValid = rawValue.isFormValid;
   }
 
   startNewChat() {
+    this._setSubConnection();
 
-    const body = {
-      category: 'Zahlungsart',
-      nickname: 'John Doe'
+    this.isConnected = false;
+    this.isLoading = true;
+    this.customer['info'] = {
+      ...this.customer
     };
-    this.iChatService.setServer('https://showroom-bridges.novomind.com/sr04_iagent_chat_p01');
 
-    this.iChatService.createNewChat(body).subscribe(res => {
-      console.log('res', res);
+    this.iChatService.createNewChat(this.customer).subscribe(res => {
       if (res) {
+        this.isConnecting = true;
+        this.isLoading = false;
         this.chatId = res.chatId;
-        this.cd.detectChanges();
-
-        this.setLogo('logoChat');
-        this.setBackground('messengerBody');
-        this._setHeightMessengerBody(document.getElementById('chatWindowWrapper').offsetHeight);
-        // this.detectMessengerChanges();
+        this._detectMessengerChanges();
+        // if (this.isPopUp) {
+        //   this.initPopupChat();
+        // }
       }
-
     });
   }
 
-  sendMessage() {
-
+  onConversation(isChatting: boolean) {
+    this.isConnected = isChatting;
+    if (!isChatting) {
+      this.isConnected = false;
+      this.chatStopped = true;
+      this.isLoading = true;
+      this.isConnecting = false;
+    }
   }
 
-  closeChat() {
+  initPopupChat() {
+    this.windowReference = window.open('', '_blank', 'toolbar=0,width=800,height=400');
+    setTimeout(() => {
+      const factory = this.r.resolveComponentFactory(MessengerComponent);
+      const comp: ComponentRef<MessengerComponent> = this.viewContainerRef.createComponent(factory);
 
+      // in case you also need to inject an input to the child,
+      // like the windows reference
+      comp.instance.chatLayout = this.chatLayout;
+      comp.instance.chatFrontend = this.chatFrontend;
+
+      comp.instance.chatId = this.chatId;
+      comp.instance.token = this.token;
+      comp.instance.server = this.server;
+      comp.instance.customer = this.customer;
+      console.log('window', this.windowReference);
+      // this.windowReference.onload = function() {
+      //   comp.instance.ref = this.windowReference.document.getElementById('chatWindowWrapper');
+      // },
+      comp.instance.ref = this.windowReference;
+
+      // add you freshly baked component on the windows
+      this.windowReference.document.body.appendChild(comp.location.nativeElement);
+
+
+    });
+    // create the component dynamically
   }
 
-
-  setLogo(id: string) {
-    (document.getElementById(id) as HTMLImageElement).src = this.chatLayout.logo;
-  }
-
-  setBackground(id: string) {
-    const ele = document.getElementById(id);
-    ele.style.backgroundImage = 'url(' + this.chatLayout.backgroundImg + ')';
-  }
-
-  @HostListener('mousedown', ['$event.target'])
-  onMouseDown(chatWindowWrapper) {
-    if (chatWindowWrapper.id && chatWindowWrapper.id === 'chatWindowWrapper') {
-      console.log('id', chatWindowWrapper.id);
-      const width = chatWindowWrapper.offsetWidth;
-      const height = chatWindowWrapper.offsetHeight;
-
-      this.mouseMoveListener = this.renderer.listen('document', 'mousemove', () => {
-        if (width !== chatWindowWrapper.offsetWidth || height !== chatWindowWrapper.offsetHeight) {
-          this._setHeightMessengerBody(chatWindowWrapper.offsetHeight);
+  private _handleMessageResponse(res) {
+    if (!!res && !!res.type) {
+      if (res.type === 'ChatChangeChatstep') {
+        if (!!res.origin && res.origin.substr(0, res.origin.indexOf('.')) === 'agent') {
+          this.iChatService.setConnection(true);
         }
-      });
-    }
-
-  }
-
-  @HostListener('document:mouseup')
-  onMouseUp(el) {
-    this.destroy();
-  }
-
-  destroy() {
-    if (this.mouseMoveListener) {
-      this.mouseMoveListener();
+      }
     }
   }
 
-  private _setHeightMessengerBody(chatWindowWrapperHeight: number) {
-    const logoHeight = document.getElementById('logoChat').clientHeight;
-    const messengerFooter = document.getElementById('messengerFooter').clientHeight;
-    document.getElementById('messengerBody').style.height = (chatWindowWrapperHeight - logoHeight - messengerFooter) + 'px';
-  }
-
-  private _getPaddingTopMessengerBody() {
-    const style = window.getComputedStyle(document.getElementById('messengerBody'));
-    return +style.paddingTop.replace('px', '');
-  }
-
-  detectMessengerChanges() {
+  private _detectMessengerChanges() {
     if (this.chatId) {
-      // this.sub = Observable
-      //   .interval(1000)
-      //   .takeWhile(() => true)
-      //   .subscribe(() => {
-      //       setTimeout(() => {
-              this.iChatService.pollingMessenger(this.chatId).subscribe(changes => {
-                console.log('changes', changes);
-                if (changes) {
-                  if (changes[0].chatId && changes[0].chatId > 0) {
-                    this.chatId = changes[0].chatId;
-                    console.log('chatId', changes[0].chatId > 0);
-                    this.iChatService.setToken(changes[0].token);
+      this.subPolling = Observable
+        .interval(1000)
+        .takeWhile(() => true)
+        .subscribe(() => {
+            setTimeout(() => {
+              this.iChatService.pollingMessenger(this.chatId).subscribe(res => {
+                if (res && res.changes) {
+                  for (const change of res.changes) {
+                    if (change.chatId && change.chatId > 0) {
+                      this.chatId = change.chatId;
+                      this.iChatService.setToken(change.token);
+                      this.token = change.token;
+                    }
+                    this._handleMessageResponse(change);
                   }
                 }
               }, error => {
                 console.log('polling error', error);
               });
-        //     }, 500);
-        //   }
-        // );
+            }, 500);
+          }
+        );
     }
+  }
+
+  private _setSubConnection() {
+    this.subConnection = this.iChatService.checkConnection().subscribe(isConnected => {
+      if (isConnected) {
+        this.subPolling.unsubscribe();
+        this.subConnection.unsubscribe();
+        this.isConnected = true;
+        if (this.isPopUp) {
+          this.initPopupChat();
+        }
+      }
+    });
+  }
+
+  private _findServer(serverAddress: string) {
+    if (!this._isShowroom(serverAddress)) {
+      return serverAddress;
+    }
+    const addressArr = serverAddress.split(/(https|http):\/\/|:|\//);
+    const address = addressArr[2];
+    return 'https://showroom-bridges.novomind.com/sr' + this._whichServer(address) + '_iagent_chat_p01';
 
   }
 
-  private _getServerIChat(iAgentServerAddress: string) {
-    const isHttps = iAgentServerAddress.indexOf('https');
-    return isHttps;
+  private _whichServer(address) {
+    if (address.includes('showroom2')) {
+      return '03';
+    } else if (address.includes('showroom3')) {
+      return '04';
+    }
+    return '01';
+  }
 
+  private _isShowroom(address) {
+    return address.includes('showroom');
   }
 
 

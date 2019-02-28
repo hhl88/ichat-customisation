@@ -2,15 +2,10 @@ package com.novomind.ecom.ichat.customisation.persistents.ichat.layout;
 
 import com.novomind.ecom.ichat.customisation.core.chat.layout.ChatLayout;
 import com.novomind.ecom.ichat.customisation.core.interfaces.dao.ChooseLayoutDao;
-import com.novomind.ecom.ichat.customisation.core.users.IChatUser;
 import com.novomind.ecom.ichat.customisation.persistents.base.BaseDao;
-import com.novomind.ecom.ichat.customisation.persistents.mappers.ChatLayoutRowMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 import static com.novomind.ecom.ichat.customisation.constants.Constants.CHOOSE_LAYOUT_TABLE;
 
@@ -47,7 +42,11 @@ public class ChooseLayoutDaoImpl extends BaseDao implements ChooseLayoutDao {
     @Override
     public String findChatLayoutIdByUserId(String userId) {
         String query = "SELECT chat_layout_id FROM " + CHOOSE_LAYOUT_TABLE + " WHERE user_id = ?";
-        return getJdbcTemplate().queryForObject(query, new Object[]{userId}, String.class);
+        try {
+            return getJdbcTemplate().queryForObject(query, new Object[]{userId}, String.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -41,5 +41,10 @@ public class ChatLayoutUpdateDTO {
   @NotNull
   @JsonProperty("font")
   private FontDTO font;
+
+    @ApiModelProperty(required = true)
+    @NotNull
+    @JsonProperty("bubbleStyle")
+    private Map<String, Bubble> bubbleStyle;
 
 }

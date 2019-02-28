@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS chat_layout
   font_family     VARCHAR(50),
   font_size       TINYINT,
   font_styles     BIT(4),
+  bubble_style    JSON,
   locked          CHAR(1),
   deleted         CHAR(1),
   CONSTRAINT chat_layout_pk_id PRIMARY KEY (id),

@@ -1,0 +1,20 @@
+.custom-file-label {
+  border: 1px solid black;
+}
+.custom-file-label::after {
+
+  color: #000000;
+  background-color: #ababab;
+  border-left: 1px solid #000000;
+}
+.custom-file-label:hover {
+  cursor: pointer !important;
+}
+
+.custom-file-label:hover::after {
+  background-color: #8a8a8a !important;
+}
+
+.custom-file-input {
+  cursor: pointer;
+}

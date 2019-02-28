@@ -14,8 +14,8 @@ export class UserService {
     return this.httpClient.post(environment.userApi, { 'email': email}, {responseType: 'text' as 'json', observe: 'response'});
   }
 
-  changePassword (userId, data): Observable<HttpResponse<any>> {
-    return this.httpClient.put(`${environment.userApi}/${userId}`, data, {responseType: 'text' as 'json', observe: 'response'});
+  changePassword (data): Observable<HttpResponse<any>> {
+    return this.httpClient.put(environment.userApi, data, {responseType: 'text' as 'json', observe: 'response'});
   }
 
 }

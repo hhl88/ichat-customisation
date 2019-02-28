@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.router.events.subscribe(event => {
       if (event instanceof RoutesRecognized) {
         if (event.url !== ('/' + PREVIEW_PAGE)) {

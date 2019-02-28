@@ -25,7 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/layouts").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/v1/layouts/*/backgroundImg").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/layouts/*/logoImg").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/v1/users/*").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/v1/users").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/v1/auth/me").authenticated()
                 // ...
                 .anyRequest().permitAll();

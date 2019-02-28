@@ -7,9 +7,13 @@ import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
-import {IChatService} from '../../../services/ichat.service';
+import {IChatService} from 'ichat/services/ichat.service';
 import {environment} from 'environments/environment';
 import {Subscription} from 'rxjs';
+import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
+import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
+import {BubbleStyleDefault} from 'core/interfaces/bubble-style.interface';
+import {MyBubbleDefault, SystemBubbleDefault, TheirBubbleDefault} from 'core/interfaces/bubble.interface';
 
 @Component({
   selector: 'app-layout-content',
@@ -36,8 +40,9 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   fileName = ['', ''];
   isSelected: boolean[] = [false, false];
 
-  logoImg = '';
-  backgroundImg = '';
+  logoImg: File;
+  backgroundImg: File;
+  isLoading = true;
 
   constructor(private iChatService: IChatService) {
     this._createSupportedChatLayout();
@@ -50,6 +55,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     this._setLayout();
     this._reloadForm();
   }
@@ -63,22 +69,26 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   private _setLayout() {
     this.selectedLayout = JSON.parse(JSON.stringify(this.layout));
-    this._setImages(this.selectedLayout);
-  }
-
-  private _setImages(data) {
-    this.logoImg = '';
-    this.backgroundImg = '';
-
-    if (data.id !== '') {
-      if (data.logo && data.logo !== '') {
-        this.logoImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/logoImg';
-      }
-      if (data.backgroundImg && data.backgroundImg !== '') {
-        this.backgroundImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/backgroundImg';
-      }
+    if (!this.selectedLayout.bubbleStyle) {
+      this.selectedLayout.bubbleStyle = BubbleStyleDefault;
     }
+    console.log(this.selectedLayout);
+    // this._setImages(this.selectedLayout);
   }
+
+  // private _setImages(data) {
+  //   this.logoImg = '';
+  //   this.backgroundImg = '';
+  //
+  //   if (data.id !== '') {
+  //     if (data.logo && data.logo !== '') {
+  //       this.logoImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/logoImg';
+  //     }
+  //     if (data.backgroundImg && data.backgroundImg !== '') {
+  //       this.backgroundImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/backgroundImg';
+  //     }
+  //   }
+  // }
 
   private _initForm() {
     this.form = new FormGroup({});
@@ -94,7 +104,8 @@ export class LayoutContentComponent implements OnInit, OnChanges {
       }
     });
     this.form.valueChanges.subscribe(data => {
-      this.selectedLayout = data;
+      console.log('data', data);
+      this.selectedLayout = {...this.selectedLayout, ...data};
     });
   }
 
@@ -106,7 +117,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     }
     const originalLayout = JSON.parse(JSON.stringify(this.layout));
     if (originalLayout && originalLayout.hasOwnProperty('name')) {
-      console.log('123');
       Object.keys(originalLayout).forEach(key => {
         if (this.form.get(key) instanceof FormControl) {
           this.form.controls[key].setValue(originalLayout[key]);
@@ -117,7 +127,18 @@ export class LayoutContentComponent implements OnInit, OnChanges {
         }
       });
     }
+    this.isLoading = false;
 
+  }
+
+  onLogoChanged(rawValue) {
+    this.logoImg = rawValue.image;
+    this.form.controls['logo'].setValue(rawValue.image);
+
+  }
+
+  onBackgroundChanged(rawValue) {
+    this.form.controls['backgroundImg'].setValue(rawValue.image);
 
   }
 
@@ -143,6 +164,14 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
   }
 
+  onMyBubbleStyleChanged(rawValue) {
+    this.selectedLayout.bubbleStyle.myBubble = rawValue.data;
+  }
+
+  onTheirBubbleStyleChanged(rawValue) {
+    this.selectedLayout.bubbleStyle.theirBubble = rawValue.data;
+  }
+
   submitCurrent() {
     console.log(this.selectedLayout);
     if (!(this.selectedLayout.logo instanceof Blob)) {
@@ -155,7 +184,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     if (this.selectedLayout.id) {
       this.iChatService.updateLayout(this.selectedLayout.id, this.selectedLayout).subscribe(res => {
         const newLayout = JSON.parse(res.body);
-        this._setImages(newLayout);
+        // this._setImages(newLayout);
         this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
 
       }, error1 => {
@@ -164,7 +193,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     } else {
       this.iChatService.createLayout(this.selectedLayout).subscribe(res => {
         const newLayout = JSON.parse(res.body);
-        this._setImages(newLayout);
+        // this._setImages(newLayout);
         this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
         this.onUpdateLayout.emit({old: this.selectedLayout, new: newLayout});
       }, error1 => {

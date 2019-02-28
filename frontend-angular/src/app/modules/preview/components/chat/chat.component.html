@@ -1,50 +1,32 @@
-<div class="chat-window-wrapper" id="chatWindowWrapper" *ngIf="chatId && !isLoading; else newConversation">
-  <img class="logo-chat" id="logoChat"/>
-  <div class="messenger-wrapper">
-    <div class=" messenger-body pt-3" id="messengerBody"
-         [style.order]="chatLayout.textInputType === 0 ? 2 : 1">
-      <app-single-message *ngFor="let message of messages" [msg]="message"
-                          [partnerName]="'123'"></app-single-message>
-    </div>
-
-    <div class="input-area row mx-0 vertical-align"
-         [ngClass]="{'in-row': chatLayout.buttonType === 0,
-                            'in-column': chatLayout.buttonType === 1}"
-         id="messengerFooter"
-         [style.order]="chatLayout.textInputType === 1 ? 1 : 2">
-        <textarea class="input-text"
-                  [ngClass]="{'by-row': chatLayout.buttonType === 0,
-                            'by-side': chatLayout.buttonType === 1}"
-                  placeholder="Write something..."
-                  type="text">
-        </textarea>
-      <div class="button-group"
-           [ngClass]="{'by-row': chatLayout.buttonType === 0,
-                            'by-side': chatLayout.buttonType === 1}">
-        <button class="send-message-button"
-                [ngClass]="{'by-row': chatLayout.buttonType === 1,
-                            'by-side': chatLayout.buttonType === 0}"
-                (click)="sendMessage()">
-          Send
-        </button>
-        <button class="close-message-button"
-                [ngClass]="{'by-row': chatLayout.buttonType === 1,
-                            'by-side': chatLayout.buttonType === 0}"
-                (click)="closeChat()">
-          Close
-        </button>
-        <button class="close-message-button"
-                [ngClass]="{'by-row': chatLayout.buttonType === 1,
-                            'by-side': chatLayout.buttonType === 0}"
-                (click)="detectMessengerChanges()">
-          pulling
-        </button>
-      </div>
-    </div>
-
-  </div>
+<div *ngIf="isConnected; else newConversation">
+  <app-messenger class="app-messenger"
+                 *ngIf="!isPopUp"
+                 [chatLayout]="chatLayout"
+                 [chatFrontend]="chatFrontend"
+                 [chatId]="chatId"
+                 [token]="token"
+                 [server]="server"
+                 [customer]="customer"
+                 (onConversation)="onConversation($event)"
+  >
+  </app-messenger>
 </div>
 
 <ng-template #newConversation>
-  <button (click)="startNewChat()">start new chat</button>
+  <div *ngIf="!isLoadingSetting">
+    <app-form-chat
+      [demandInfoList]="chatFrontend.demandInfo.demandInfoList"
+      [isConnecting]="isConnecting"
+      (onFormChatChanged)="onFormChatChanged($event)"
+    >
+    </app-form-chat>
+    <button class="my-3" [disabled]="!isFormChatValid" (click)="startNewChat()">
+      <span *ngIf="isLoading && !isConnected; else tryToConnect">start new chat</span>
+      <ng-template #tryToConnect>
+        <app-loading-spinner></app-loading-spinner>
+      </ng-template>
+    </button>
+  </div>
+
+
 </ng-template>

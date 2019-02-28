@@ -1,7 +1,11 @@
-<div class="row mx-0 my-1"
-     [ngClass]="{'justify-content-start' : !msg.isSystem && !msg.isAgent, 'justify-content-end': !msg.isSystem && msg.isAgent, 'justify-content-center': msg.isSystem}">
+<div class="messenger-wrapper row mx-2 my-1"
+     [ngClass]="{'justify-content-end' : !msg.isSystem && !msg.isAgent,
+     'justify-content-start': !msg.isSystem && msg.isAgent,
+     'justify-content-center': msg.isSystem}">
   <div class="col-auto msg-bubble"
-       [ngClass]="{'my-msg' : !msg.isSystem && msg.isAgent, 'their-msg': !msg.isSystem && !msg.isAgent, 'system-msg': msg.isSystem}">
+       [ngClass]="{'my-msg' : !msg.isSystem && !msg.isAgent,
+       'their-msg': !msg.isSystem && msg.isAgent,
+       'system-msg': msg.isSystem}">
     <div class="row" *ngIf="!msg.isSystem">
       <div class="col-auto">{{ msg.name }}</div>
       <div class="col text-right">{{ msg.email }}</div>
@@ -10,7 +14,7 @@
     <div class="message my-2 vertical-align">
         <span *ngIf="msg.isSystem">
         </span>
-      {{ msg.message }} {{ msg.isSystem }}
+      <span [innerHTML]="msg.message"></span>
     </div>
     <div class="row">
       <div class="col-auto" *ngIf="!msg.isSystem">{{ msg.tel }}</div>
