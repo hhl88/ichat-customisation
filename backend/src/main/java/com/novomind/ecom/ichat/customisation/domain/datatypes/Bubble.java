@@ -12,12 +12,12 @@ public class Bubble {
     private String backgroundColor;
     private String borderColor;
     private String borderRadius;
-    private String fontColor;
+    private String color;
 
-    public Bubble(String backgroundColor, String borderColor, String borderRadius, String fontColor) {
+    public Bubble(String backgroundColor, String borderColor, String borderRadius, String color) {
         this.backgroundColor = backgroundColor;
         this.borderColor = borderColor;
         this.borderRadius = borderRadius;
-        this.fontColor = fontColor;
+        this.color = color;
     }
 }

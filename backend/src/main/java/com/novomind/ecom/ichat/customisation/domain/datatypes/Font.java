@@ -16,16 +16,16 @@ import java.util.Set;
 public class Font {
 
     private String fontFamily;
-    private int fontSize;
+    private String fontSize;
     private Set<Integer> fontStyles;
 
-    public Font(String fontFamily, int fontSize, Set<Integer> fontStyles) {
+    public Font(String fontFamily, String fontSize, Set<Integer> fontStyles) {
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.fontStyles = fontStyles;
     }
 
-    public static Font of(String fontFamily, int fontSize, Set<FontStyle> fontStyles) {
+    public static Font of(String fontFamily, String fontSize, Set<FontStyle> fontStyles) {
         return new Font(fontFamily, fontSize, FontStyleConverter.frontStylesToInt(fontStyles));
     }
 

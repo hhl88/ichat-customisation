@@ -1,11 +1,11 @@
 export interface Font {
   fontFamily: string;
-  fontSize: number;
+  fontSize: string;
   fontStyles: any[];
 }
 
 export const FontDefault: Font = {
   fontFamily: 'Arial',
-  fontSize: 10,
+  fontSize: '10px',
   fontStyles: []
 };

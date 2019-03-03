@@ -1,0 +1,18 @@
+<div class="radio-selection-wrapper">
+  <mat-radio-group
+    class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8"
+    [ngClass]="{'row-content': !displayAsColumn}"
+    (change)="onChangeSelection($event)">
+    <mat-radio-button
+      class="my-2"
+      [ngClass]="{'mx-3': displayAsColumn}"
+      *ngFor="let option of options; let i = index"
+      [checked]="selectedItemIndex === i"
+      [value]="option.id"
+    >
+      <span class="wrap-mat-radio-label">
+        {{option.title}}
+      </span>
+    </mat-radio-button>
+  </mat-radio-group>
+</div>

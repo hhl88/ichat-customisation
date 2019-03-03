@@ -111,7 +111,7 @@ export class FrontendContentComponent implements OnInit, OnChanges, AfterContent
   setAsDefault() {
     if (this.selectedFrontend.id) {
       this.iChatService.setAsDefaultFrontend(this.selectedFrontend.id).subscribe(res => {
-        console.log('res', res);
+        // console.log('res', res);
       });
     }
   }

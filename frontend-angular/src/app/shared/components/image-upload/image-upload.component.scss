@@ -1,5 +1,8 @@
 .custom-file-label {
   border: 1px solid black;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .custom-file-label::after {
 
@@ -17,4 +20,8 @@
 
 .custom-file-input {
   cursor: pointer;
+}
+.img-preview {
+  max-width: 300px;
+  max-height: 200px;
 }

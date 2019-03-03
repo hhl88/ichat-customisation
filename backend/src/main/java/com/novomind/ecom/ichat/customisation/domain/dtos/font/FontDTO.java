@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class FontDTO {
 
     private String fontFamily;
-    private int fontSize;
+    private String fontSize;
     private Set<FontStyle> fontStyles;
 
     private FontDTO() {}
 
-    public FontDTO(String fontFamily, int fontSize, Set<FontStyle> fontStyles) {
+    public FontDTO(String fontFamily, String fontSize, Set<FontStyle> fontStyles) {
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.fontStyles = fontStyles;
@@ -32,7 +32,7 @@ public class FontDTO {
         return fontFamily;
     }
 
-    public int getFontSize() {
+    public String getFontSize() {
         return fontSize;
     }
 

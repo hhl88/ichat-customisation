@@ -8,6 +8,9 @@ import {LoadingSpinnerComponent} from './components/loading-spinner/loading-spin
 import {ImageCropperModule} from 'ngx-image-cropper';
 import {AutoScrollDirective} from 'shared/directives/auto-scroll.directive';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { RadioSelectionComponent } from './components/radio-selection/radio-selection.component';
+import { EditableSelectionComponent } from './components/editable-selection/editable-selection.component';
+import { ToggleOptionComponent } from './components/toggle-option/toggle-option.component';
 
 @NgModule({
   imports: [
@@ -23,6 +26,9 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
     LoadingSpinnerComponent,
     ImageUploadComponent,
     AutoScrollDirective,
+    RadioSelectionComponent,
+    EditableSelectionComponent,
+    ToggleOptionComponent,
   ],
   exports: [
     CommonModule,
@@ -35,6 +41,9 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
 
     LoadingSpinnerComponent,
     ImageUploadComponent,
+    RadioSelectionComponent,
+    EditableSelectionComponent,
+    ToggleOptionComponent,
     AutoScrollDirective
   ],
 

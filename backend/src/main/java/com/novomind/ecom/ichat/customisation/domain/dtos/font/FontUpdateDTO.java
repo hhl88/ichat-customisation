@@ -18,7 +18,7 @@ public class FontUpdateDTO {
   
   @ApiModelProperty(required = true)
   @NotNull
-  private int fontSize;
+  private String fontSize;
   
   private List<FontStyle> fontStyles;
 }

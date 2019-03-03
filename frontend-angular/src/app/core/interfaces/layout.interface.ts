@@ -3,7 +3,6 @@ import {TextInputType} from 'core/enum/text-input-type.enum';
 import {ButtonType} from 'core/enum/button-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
 import {Font, FontDefault} from 'core/interfaces/font.interface';
-import {MyBubbleDefault, SystemBubbleDefault, TheirBubbleDefault} from 'core/interfaces/bubble.interface';
 import {BubbleStyle, BubbleStyleDefault} from 'core/interfaces/bubble-style.interface';
 
 export interface Layout {

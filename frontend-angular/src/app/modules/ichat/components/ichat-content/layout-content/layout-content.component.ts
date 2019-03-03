@@ -25,7 +25,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   @Output() onUpdateLayout = new EventEmitter();
   selectedLayout: Layout = null;
 
-  form: FormGroup;
+  // form: FormGroup;
 
   supportedLayouts: any[];
   supportedTextInputs: any[];
@@ -40,8 +40,8 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   fileName = ['', ''];
   isSelected: boolean[] = [false, false];
 
-  logoImg: File;
-  backgroundImg: File;
+  logoImg: string;
+  backgroundImg: string;
   isLoading = true;
 
   constructor(private iChatService: IChatService) {
@@ -57,13 +57,13 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.isLoading = true;
     this._setLayout();
-    this._reloadForm();
+    // this._reloadForm();
   }
 
   ngOnChanges() {
     if (this.selectedLayout === null || this.layout.index !== this.selectedLayout.index) {
       this._setLayout();
-      this._reloadForm();
+      // this._reloadForm();
     }
   }
 
@@ -72,73 +72,34 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     if (!this.selectedLayout.bubbleStyle) {
       this.selectedLayout.bubbleStyle = BubbleStyleDefault;
     }
-    console.log(this.selectedLayout);
-    // this._setImages(this.selectedLayout);
+    // console.log(this.selectedLayout);
+    this._setImages(this.selectedLayout);
+    console.log('newLayout', this.selectedLayout);
+
   }
 
-  // private _setImages(data) {
-  //   this.logoImg = '';
-  //   this.backgroundImg = '';
-  //
-  //   if (data.id !== '') {
-  //     if (data.logo && data.logo !== '') {
-  //       this.logoImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/logoImg';
-  //     }
-  //     if (data.backgroundImg && data.backgroundImg !== '') {
-  //       this.backgroundImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/backgroundImg';
-  //     }
-  //   }
-  // }
+  private _setImages(data) {
 
-  private _initForm() {
-    this.form = new FormGroup({});
-    Object.keys(this.selectedLayout).forEach(key => {
-      if (key !== 'font') {
-        this.form.addControl(key, new FormControl(this.selectedLayout[key], [Validators.required]));
-      } else {
-        const font = new FormGroup({});
-        Object.keys(this.selectedLayout.font).forEach(subKey => {
-          font.addControl(subKey, new FormControl(this.selectedLayout[key][subKey], [Validators.required]));
-        });
-        this.form.addControl(key, font);
+    if (data.id !== '') {
+      if (data.logo && data.logo !== '') {
+        this.logoImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/logoImg';
       }
-    });
-    this.form.valueChanges.subscribe(data => {
-      console.log('data', data);
-      this.selectedLayout = {...this.selectedLayout, ...data};
-    });
+      if (data.backgroundImg && data.backgroundImg !== '') {
+        this.backgroundImg = environment.iChatLayoutApi + '/' + this.selectedLayout.id + '/backgroundImg';
+      }
+    }
   }
 
-  private _reloadForm() {
-    if (this.form) {
-      this.form.reset();
-    } else {
-      this._initForm();
-    }
-    const originalLayout = JSON.parse(JSON.stringify(this.layout));
-    if (originalLayout && originalLayout.hasOwnProperty('name')) {
-      Object.keys(originalLayout).forEach(key => {
-        if (this.form.get(key) instanceof FormControl) {
-          this.form.controls[key].setValue(originalLayout[key]);
-        } else if (this.form.get(key) instanceof FormGroup) {
-          Object.keys(originalLayout[key]).forEach(subKey => {
-            (<FormGroup>this.form.controls[key]).controls[subKey].setValue(originalLayout[key][subKey]);
-          });
-        }
-      });
-    }
-    this.isLoading = false;
-
-  }
 
   onLogoChanged(rawValue) {
     this.logoImg = rawValue.image;
-    this.form.controls['logo'].setValue(rawValue.image);
+    // this.form.controls['logo'].setValue(rawValue.image);
+    this.selectedLayout.logo = rawValue.image;
 
   }
 
   onBackgroundChanged(rawValue) {
-    this.form.controls['backgroundImg'].setValue(rawValue.image);
+    this.selectedLayout.backgroundImg = rawValue.image;
 
   }
 
@@ -161,6 +122,35 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   cancelCurrent() {
+
+  }
+
+  onDisplayTypeChanged(rawValue) {
+    this.selectedLayout.displayType = rawValue.newSelection;
+  }
+
+  onTextInputTypeChanged(rawValue) {
+    this.selectedLayout.textInputType = rawValue.newSelection;
+  }
+
+  onButtonTypeChanged(rawValue) {
+    this.selectedLayout.buttonType = rawValue.newSelection;
+  }
+
+  onBackgroundTypeChanged(rawValue) {
+    this.selectedLayout.backgroundType = rawValue.newSelection;
+  }
+
+  onFontFamilyChanged(rawValue) {
+    this.selectedLayout.font.fontFamily = rawValue.newSelection;
+  }
+
+  onFontSizeChanged(rawValue) {
+    this.selectedLayout.font.fontSize = rawValue.newSelection;
+  }
+
+  onFontStyleChanged(rawValue) {
+    this.selectedLayout.font.fontStyles = rawValue.selectedItems;
 
   }
 
@@ -205,24 +195,25 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   setAsDefault() {
     if (this.selectedLayout.id) {
       this.iChatService.setAsDefaultLayout(this.selectedLayout.id).subscribe(res => {
-        console.log('res', res);
+        // console.log('res', res);
       });
     }
   }
 
-  cropImage(event, index: number) {
-    if (index === 1) {
-      this.form.controls['backgroundImg'].setValue(this.croppedImage[1].file);
-      this.backgroundImg = this.croppedImage[1].base64;
-      this.isSelected[1] = false;
-    } else {
-      this.form.controls['logo'].setValue(this.croppedImage[0].file);
-      this.logoImg = this.croppedImage[0].base64;
-      this.isSelected[0] = false;
-    }
-  }
+  // cropImage(event, index: number) {
+  //   if (index === 1) {
+  //     this.form.controls['backgroundImg'].setValue(this.croppedImage[1].file);
+  //     this.backgroundImg = this.croppedImage[1].base64;
+  //     this.isSelected[1] = false;
+  //   } else {
+  //     this.form.controls['logo'].setValue(this.croppedImage[0].file);
+  //     this.logoImg = this.croppedImage[0].base64;
+  //     this.isSelected[0] = false;
+  //   }
+  // }
 
   private _createSupportedChatLayout() {
+
     this.supportedLayouts = [
       {
         id: DisplayType.BESIDE_PAGE,

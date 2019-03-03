@@ -39,7 +39,7 @@ public class ChatLayoutRowMapper implements RowMapper<ChatLayout> {
                 .logo(convertBlobToString(rs.getBlob("logo")))
                 .backgroundImg(convertBlobToString(rs.getBlob("background_img")))
                 .backgroundType(rs.getInt("background_type"))
-                .font(new Font(rs.getString("font_family"), rs.getInt("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)))
+                .font(new Font(rs.getString("font_family"), rs.getString("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)))
                 .bubbleStyle(new Gson().fromJson(rs.getString("bubble_style"), new TypeToken<HashMap<String, Bubble>>() {
                 }.getType()))
                 .build();

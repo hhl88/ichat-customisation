@@ -1,0 +1,13 @@
+<div class="toggle-option-wrapper">
+  <mat-button-toggle-group
+    [multiple]="isMultiple"
+    (change)="onChangeOption($event)"
+  >
+    <mat-button-toggle class="font-style-option"
+                       [value]="option.id"
+                       *ngFor="let option of options; let i = index">
+      <mat-icon>{{option.icon}}</mat-icon>
+    </mat-button-toggle>
+
+  </mat-button-toggle-group>
+</div>

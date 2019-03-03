@@ -1,6 +1,8 @@
 export enum DisplayType {
   BESIDE_PAGE,
-  INTEGRATED,
+  INTEGRATED ,
   POPUP,
 }
+
+
 

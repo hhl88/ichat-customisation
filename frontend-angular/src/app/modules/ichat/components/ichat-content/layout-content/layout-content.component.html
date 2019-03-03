@@ -1,16 +1,16 @@
-<div class="layout-wrapper" *ngIf="!isLoading">
-  <div class="form-wrapper" [formGroup]="form">
+<div class="layout-wrapper">
+  <div class="form-wrapper">
     <div class="display-type">
       <div class="header">Ercheinungsform</div>
-      <mat-radio-group class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 my-2 border-option" formControlName="displayType">
-
-        <mat-radio-button class="my-2 mx-3"
-                          *ngFor="let item of supportedLayouts; let i = index"
-                          [checked]="selectedLayout.displayType === i"
-                          [value]="item.id">
-          {{item.title}}
-        </mat-radio-button>
-      </mat-radio-group>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8 my-2 border-option">
+        <app-radio-selection
+          class="mx-3"
+          [options]="supportedLayouts"
+          [selectedItemIndex]="selectedLayout.displayType"
+          (onSelectionChanged)="onDisplayTypeChanged($event)"
+        >
+        </app-radio-selection>
+      </div>
     </div>
 
     <div class="formation-type mt-2">
@@ -21,27 +21,26 @@
             <div class="sub-header">
               Text-Eingabefeld
             </div>
-            <mat-radio-group class="my-2 border-option w-100">
-
-              <mat-radio-button class="my-2 mx-3"
-                                *ngFor="let item of supportedTextInputs; let i = index"
-                                [checked]="selectedLayout.textInputType === i"
-                                [value]="item.id">
-                {{item.title}}
-              </mat-radio-button>
-            </mat-radio-group>
+            <div class="border-option">
+              <app-radio-selection
+                [options]="supportedTextInputs"
+                [selectedItemIndex]="selectedLayout.textInputType"
+                (onSelectionChanged)="onTextInputTypeChanged($event)"
+              >
+              </app-radio-selection>
+            </div>
           </div>
 
           <div class="col-6 pr-0">
             <div class="sub-header">Buttons</div>
-            <mat-radio-group class="my-2 border-option w-100">
-              <mat-radio-button class="my-2 mx-3"
-                                *ngFor="let item of supportedButtonType; let i = index"
-                                [checked]="selectedLayout.buttonType === i"
-                                [value]="item.id">
-                {{item.title}}
-              </mat-radio-button>
-            </mat-radio-group>
+            <div class="border-option">
+              <app-radio-selection
+                [options]="supportedButtonType"
+                [selectedItemIndex]="selectedLayout.buttonType"
+                (onSelectionChanged)="onButtonTypeChanged($event)"
+              >
+              </app-radio-selection>
+            </div>
           </div>
         </div>
 
@@ -50,42 +49,13 @@
             Logo
           </div>
           <div class="border-option w-100">
-            <div class="input-group my-3">
-              <app-image-upload class="col-12" (onImageChanged)="onLogoChanged($event)"></app-image-upload>
-              <!--<div class="custom-file">-->
-                <!--<input type="file" accept="image/x-png,image/gif,image/jpeg" (change)="onFileChange($event, 0)"-->
-                       <!--class="custom-file-input" id="logo-image">-->
-                <!--<label class="custom-file-label" for="logo-image" aria-describedby="logo-image">-->
-                  <!--{{fileName[0] !== '' ? fileName[0] : 'Choose file'}}-->
-                <!--</label>-->
-              <!--</div>-->
+            <div class="input-group mb-3 my-3 px-3">
+              <app-image-upload
+                class="col-12"
+                [selectedImage]="logoImg"
+                (onImageChanged)="onLogoChanged($event)"
+              ></app-image-upload>
             </div>
-
-            <!--<div class="row mx-2 align-items-center justify-content-center">-->
-              <!--<image-cropper-->
-                <!--[hidden]="!isSelected[0]"-->
-                <!--[imageChangedEvent]="imageChangedEvent[0]"-->
-                <!--[maintainAspectRatio]="true"-->
-                <!--[aspectRatio]="4/ 3"-->
-                <!--[resizeToWidth]="256"-->
-                <!--format="png"-->
-                <!--(imageCropped)="imageCropped($event, 0)"-->
-                <!--(imageLoaded)="imageLoaded(0)"-->
-                <!--(loadImageFailed)="loadImageFailed()">-->
-              <!--</image-cropper>-->
-              <!--<img [hidden]="logoImg === '' || isSelected[0]"-->
-                   <!--[src]="logoImg"-->
-                   <!--alt=""-->
-                   <!--width="250"-->
-                   <!--height="250">-->
-              <!--<button type="button"-->
-                      <!--mat-raised-button-->
-                      <!--[hidden]="!isSelected[0]"-->
-                      <!--(click)="cropImage($event, 0)">-->
-                <!--Crop-->
-              <!--</button>-->
-            <!--</div>-->
-
           </div>
         </div>
 
@@ -93,82 +63,50 @@
         <div class="background-selection my-2 mx-3">
           <div class="sub-header">Hintergrund</div>
           <div class="border-option w-100">
-            <mat-radio-group>
-              <mat-radio-button class="my-2 mx-3"
-                                *ngFor="let item of supportedBackgroundType; let i = index"
-                                [checked]="selectedLayout.backgroundType === i"
-                                [value]="item.id">
-                {{item.title}}
-              </mat-radio-button>
-            </mat-radio-group>
+            <app-radio-selection
+              [options]="supportedBackgroundType"
+              [selectedItemIndex]="selectedLayout.backgroundType"
+              [displayAsColumn]="true"
+              (onSelectionChanged)="onBackgroundTypeChanged($event)"
+            >
+            </app-radio-selection>
             <div class="input-group mb-3 px-3">
-              <div class="custom-file">
-                <app-image-upload class="col-12" (onImageChanged)="onBackgroundChanged($event)"></app-image-upload>
-
-                <!--<input type="file" accept="image/x-png,image/gif,image/jpeg"-->
-                       <!--(change)="onFileChange($event, 1)"-->
-                       <!--class="custom-file-input" id="background-image">-->
-                <!--<label class="custom-file-label" for="background-image" aria-describedby="background-image">-->
-                  <!--{{fileName[1] !== '' ? fileName[1] : 'Choose file'}}-->
-                <!--</label>-->
-              </div>
+              <app-image-upload class="col-12" (onImageChanged)="onBackgroundChanged($event)"></app-image-upload>
             </div>
-
-            <!--<div class="row mx-2 align-items-center justify-content-center">-->
-              <!--<image-cropper-->
-                <!--[hidden]="!isSelected[1]"-->
-                <!--[imageChangedEvent]="imageChangedEvent[1]"-->
-                <!--format="png"-->
-                <!--(imageCropped)="imageCropped($event, 1)"-->
-                <!--(imageLoaded)="imageLoaded(1)"-->
-                <!--(loadImageFailed)="loadImageFailed()">-->
-              <!--</image-cropper>-->
-              <!--<img [hidden]="backgroundImg === '' || isSelected[1]"-->
-                   <!--[src]="backgroundImg"-->
-                   <!--alt=""-->
-                   <!--width="250"-->
-                   <!--height="250">-->
-              <!--<button type="button"-->
-                      <!--mat-raised-button-->
-                      <!--[hidden]="!isSelected[1]"-->
-                      <!--(click)="cropImage($event, 1)">-->
-                <!--Crop-->
-              <!--</button>-->
-            <!--</div>-->
-
           </div>
         </div>
 
-        <div class="font-selection my-2 mx-3" formGroupName="font">
+        <div class="font-selection my-2 mx-3">
           <div class="sub-header">Hintergrund</div>
           <div class="border-option w-100">
             <div class="vertical-middle my-2">
               <div class="col vertical-middle">
                 <div class="my-2 mr-3">Schriftart</div>
-                <select class='form-control'
-                        formControlName="fontFamily">
-                  <option *ngFor="let font of sampleFontFamily; let i = index" [value]="font">{{font}}</option>
-                </select>
+                <app-editable-selection
+                  [options]="sampleFontFamily"
+                  [selectedOption]="selectedLayout.font.fontFamily"
+                  (onSelectionChanged)="onFontFamilyChanged($event)"
+                >
+                </app-editable-selection>
               </div>
 
               <div class="col-4 vertical-middle">
                 <div class="my-2 mr-3">Größe</div>
-                <select class='form-control'
-                        formControlName="fontSize">
-                  <option *ngFor="let size of sampleFontSizes; let i = index" [value]="size">{{size}} px</option>
-                </select>
+                <app-editable-selection
+                  [options]="sampleFontSizes"
+                  [selectedOption]="selectedLayout.font.fontSize"
+                  (onSelectionChanged)="onFontSizeChanged($event)"
+                >
+                </app-editable-selection>
               </div>
               <div class="col-auto text-center">
-                <mat-button-toggle-group #group="matButtonToggleGroup"
-                                         formControlName="fontStyles"
-                                         multiple>
-                  <mat-button-toggle class="font-style-option"
-                                     [value]="item.id"
-                                     *ngFor="let item of supportedFontStyles; let i = index">
-                    <mat-icon>{{item.icon}}</mat-icon>
-                  </mat-button-toggle>
-
-                </mat-button-toggle-group>
+                <app-toggle-option
+                  [isMultiple]="true"
+                  [options]="supportedFontStyles"
+                  [selectedIndexItems]="selectedLayout.font.fontStyles"
+                  (onOptionsChanged)="onFontStyleChanged($event)"
+                >
+                </app-toggle-option>
               </div>
             </div>
           </div>
@@ -177,7 +115,7 @@
           <div class="col-6 pl-0">
             <app-message-bubble [id]="'myMessage'"
                                 [subHeader]="'My Message'"
-                                [bubbleStyle]="selectedLayout"
+                                [bubbleStyle]="selectedLayout.bubbleStyle.myBubble"
                                 (onBubbleStyleChanged)="onMyBubbleStyleChanged($event)"
             >
             </app-message-bubble>
@@ -188,7 +126,7 @@
             <app-message-bubble
               [id]="'theirMessage'"
               [subHeader]="'Their Message'"
-              [bubbleStyle]="selectedLayout"
+              [bubbleStyle]="selectedLayout.bubbleStyle.theirBubble"
               (onBubbleStyleChanged)="onTheirBubbleStyleChanged($event)"
             >
 

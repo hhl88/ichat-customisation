@@ -1,0 +1,14 @@
+<div class="select-editable vertical-middle">
+  <select class="form-control" (change)="onChangeSelection($event)">
+    <option value=""></option>
+    <option
+      *ngFor="let option of options; let i = index"
+      [value]="option"
+    >
+      {{option}}
+    </option>
+  </select>
+  <input type="text"
+         (change)="onTyping($event)"
+         [value]="selectedOption"/>
+</div>

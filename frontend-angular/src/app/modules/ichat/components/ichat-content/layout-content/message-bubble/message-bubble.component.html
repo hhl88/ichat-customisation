@@ -10,25 +10,12 @@
     </div>
     <div class="col-6">
       <input
+        *ngFor="let key of keys"
         class="col my-2"
         type="text"
-        formControlName="backgroundColor"
-        placeholder="background color">
-      <input
-        class="col my-2"
-        type="text"
-        formControlName="borderColor"
-        placeholder="border color">
-      <input
-        class="col my-2"
-        type="text"
-        formControlName="borderRadius"
-        placeholder="border radius">
-      <input
-        class="col my-2"
-        type="text"
-        formControlName="fontColor"
-        placeholder="font color">
+        [formControlName]="key"
+        [placeholder]="key"
+      >
     </div>
   </div>
 </div>

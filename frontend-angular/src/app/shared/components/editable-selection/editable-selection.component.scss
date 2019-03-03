@@ -1,0 +1,27 @@
+.select-editable {
+  position: relative;
+  background-color: white;
+  border: solid black 1px;
+  width: 120px;
+  height: 38px;
+  border-radius: 3px;
+}
+
+.select-editable select {
+  position: absolute;
+  border: none;
+  width: 118px;
+  margin: 0;
+  height: 36px;
+}
+
+.select-editable input {
+  position: absolute;
+  width: 100px;
+  border: none !important;
+  padding-left: 1rem;
+}
+
+.select-editable select:focus, .select-editable input:focus {
+  outline: none;
+}
