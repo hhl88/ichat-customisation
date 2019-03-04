@@ -28,7 +28,6 @@ export class IChatComponent implements OnInit {
               private authService: AuthService,
               private location: Location,
               private router: ActivatedRoute) {
-    console.log('ichat Page');
   }
 
   ngOnInit() {

@@ -4,6 +4,7 @@
     (change)="onChangeOption($event)"
   >
     <mat-button-toggle class="font-style-option"
+                       [checked]="selectedIndexItems.indexOf(option.id) > -1"
                        [value]="option.id"
                        *ngFor="let option of options; let i = index">
       <mat-icon>{{option.icon}}</mat-icon>

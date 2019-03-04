@@ -1,16 +1,11 @@
-import {ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {MatExpansionPanel} from '@angular/material';
 import {ItemType} from 'core/enum/item-type.enum';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {
-  CurrentItemSelectedAction, FrontEndListAddAction, FrontEndListUpdateAction, LayoutListAddAction, LayoutListUpdateAction
-} from 'store/actions/ichat';
+import {FrontEndListAddAction, FrontEndListUpdateAction, LayoutListAddAction, LayoutListUpdateAction} from 'store/actions/ichat';
 import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
 import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
-import {getSelectedItem} from 'store/reducers';
-import {Subscription} from 'rxjs';
-import {Item} from 'core/interfaces/item.interface';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
@@ -49,7 +44,6 @@ export class ItemListComponent implements OnInit {
   }
 
   selectItem(index: number, item, event) {
-    console.log('click');
     event.stopPropagation();
     this.selectedIndex = index;
     this.onChangeItem.emit(item);
@@ -82,7 +76,6 @@ export class ItemListComponent implements OnInit {
       item.type = ItemType.FRONTEND;
     } else if (this.isLayout) {
       item = LayoutDefault;
-      console.log('item', item);
       item.type = ItemType.LAYOUT;
 
     }
@@ -117,7 +110,6 @@ export class ItemListComponent implements OnInit {
   }
 
   @HostListener('document:click', ['$event']) clickout(event) {
-    console.log('clickout side');
     this.itemList.forEach(i => i.editing = false);
   }
 

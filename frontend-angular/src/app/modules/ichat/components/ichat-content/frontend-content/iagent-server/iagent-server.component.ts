@@ -1,13 +1,5 @@
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnChanges, OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {IAgentServerService} from 'ichat/services/iagent-server.service';
 
@@ -20,28 +12,29 @@ import {IAgentServerService} from 'ichat/services/iagent-server.service';
 export class IAgentServerComponent implements OnInit, OnChanges, OnDestroy {
   formIAgentServer: FormGroup;
   @Input() iAgentServer: any;
+  @Input() oldIAgentServer: any;
   @Input() switchedItem: boolean;
+
 
   @Output() onIAgentServerChanged = new EventEmitter();
   @Output() sizeFirstCol = new EventEmitter();
 
   sub: Subscription;
-  isReloadingForm = false;
 
-  constructor(private iAgentService: IAgentServerService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.isReloadingForm = false;
     this._reloadForm();
-    this._subscribe();
     this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
   }
 
   ngOnChanges() {
-    if (!this.isReloadingForm) {
-      this._reloadForm();
-      this._subscribe();
+    if (!!this.oldIAgentServer && !!this.iAgentServer) {
+      const t = Object.keys(this.oldIAgentServer).filter(key => this.oldIAgentServer[key] !== this.iAgentServer[key]);
+      if (Object.keys(this.oldIAgentServer).filter(key => this.iAgentServer[key] !== this.oldIAgentServer[key]).length > 0) {
+        this._reloadForm();
+      }
     }
   }
 
@@ -54,73 +47,29 @@ export class IAgentServerComponent implements OnInit, OnChanges, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.sizeFirstCol.emit(document.getElementsByClassName('first-col')[0].clientWidth);
-
   }
 
   isFormValid() {
     return !this.formIAgentServer.invalid;
   }
 
-  /*checkServer() {
-    this.isClicked = true;
-    this.connected = false;
-    this.iAgentService.fetchServer(this.formIAgentServer.getRawValue()).subscribe(res => {
-      this.isProcessed = true;
-      if (res && res.hasOwnProperty('access_token')) {
-        this.connected = true;
-      }
-    }, error1 => this.isProcessed = true);
-  }*/
-
   private _reloadForm() {
-    if (!this.isReloadingForm) {
-      this.isReloadingForm = true;
-      if (this.formIAgentServer) {
-        this.sub.unsubscribe();
-        this.formIAgentServer.reset();
-      } else {
-        this._initForm();
-      }
+    if (this.formIAgentServer) {
+      this.sub.unsubscribe();
+    }
+    this.formIAgentServer = new FormGroup({});
+    if (!!this.iAgentServer) {
+      this.oldIAgentServer = JSON.parse(JSON.stringify(this.iAgentServer));
+      Object.keys(this.iAgentServer).forEach(key => {
+        this.formIAgentServer.addControl(key, new FormControl(this.iAgentServer[key]));
+      });
 
-      if (this.iAgentServer && this.iAgentServer.hasOwnProperty('address')) {
-
-        Object.keys(this.iAgentServer).forEach(key => {
-          if (this.formIAgentServer.get(key)) {
-            this.formIAgentServer.controls[key].setValue(this.iAgentServer[key]);
-          }
-        });
-      }
+    }
+    this.sub = this.formIAgentServer.valueChanges.subscribe(data => {
       this.onIAgentServerChanged.emit({
-        data: this.formIAgentServer.getRawValue(),
+        data: data,
         isFormValid: this.isFormValid()
       });
-      this.isReloadingForm = false;
-    }
-  }
-
-  private _initForm() {
-    this.formIAgentServer = new FormGroup({
-      address: new FormControl('', [Validators.required]),
-      userAPI: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      clientId: new FormControl('', [Validators.required]),
-      secret: new FormControl('', [Validators.required]),
     });
   }
-
-  private _subscribe() {
-    this.sub = this.formIAgentServer.valueChanges.subscribe(data => {
-      /*    this.isClicked = false;
-          this.connected = false;
-          this.isProcessed = false;*/
-      if (this.isFormValid()) {
-        this.onIAgentServerChanged.emit({
-          data: data,
-          isFormValid: this.isFormValid()
-        });
-      }
-    });
-  }
-
-
 }

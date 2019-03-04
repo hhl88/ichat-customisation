@@ -5,15 +5,10 @@ import {TextInputType} from 'core/enum/text-input-type.enum';
 import {ButtonType} from 'core/enum/button-type.enum';
 import {FontType} from 'core/enum/font-type.enum';
 import {BackgroundType} from 'core/enum/background-type.enum';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ImageCroppedEvent} from 'ngx-image-cropper/src/image-cropper.component';
 import {IChatService} from 'ichat/services/ichat.service';
 import {environment} from 'environments/environment';
-import {Subscription} from 'rxjs';
-import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
-import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
 import {BubbleStyleDefault} from 'core/interfaces/bubble-style.interface';
-import {MyBubbleDefault, SystemBubbleDefault, TheirBubbleDefault} from 'core/interfaces/bubble.interface';
 
 @Component({
   selector: 'app-layout-content',
@@ -32,7 +27,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   supportedButtonType: any[];
   supportedBackgroundType: any[];
   sampleFontFamily: string[];
-  sampleFontSizes: number[];
+  sampleFontSizes: string[];
   supportedFontStyles: any[];
 
   imageChangedEvent: any[] = [];
@@ -74,7 +69,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
     }
     // console.log(this.selectedLayout);
     this._setImages(this.selectedLayout);
-    console.log('newLayout', this.selectedLayout);
 
   }
 
@@ -92,13 +86,15 @@ export class LayoutContentComponent implements OnInit, OnChanges {
 
 
   onLogoChanged(rawValue) {
-    this.logoImg = rawValue.image;
+    this.logoImg = rawValue.src;
     // this.form.controls['logo'].setValue(rawValue.image);
     this.selectedLayout.logo = rawValue.image;
 
   }
 
   onBackgroundChanged(rawValue) {
+    this.backgroundImg = rawValue.src;
+
     this.selectedLayout.backgroundImg = rawValue.image;
 
   }
@@ -163,7 +159,6 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   }
 
   submitCurrent() {
-    console.log(this.selectedLayout);
     if (!(this.selectedLayout.logo instanceof Blob)) {
       this.selectedLayout.logo = '';
     }
@@ -281,7 +276,7 @@ export class LayoutContentComponent implements OnInit, OnChanges {
   private _createSampleFontSizes() {
     this.sampleFontSizes = [];
     for (let i = 4; i < 20; i = i + 2) {
-      this.sampleFontSizes.push(i);
+      this.sampleFontSizes.push(i + 'px');
     }
   }
 

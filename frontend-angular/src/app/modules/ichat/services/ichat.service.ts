@@ -17,9 +17,6 @@ export class IChatService {
   }
 
   createLayout(layout): Observable<HttpResponse<any>> {
-    console.log('layout', layout);
-
-
     return this.httpClient.post(environment.iChatLayoutApi,
       this._createFormDataForLayout(layout),
       {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
@@ -40,7 +37,6 @@ export class IChatService {
   }
 
   updateLayout(id, chatLayout): Observable<HttpResponse<any>> {
-    console.log('update', chatLayout);
     return this.httpClient.put(`${environment.iChatLayoutApi}/${id}/`,
       this._createFormDataForLayout(chatLayout),
       {responseType: 'text' as 'json', observe: 'response', headers: {'Accept': 'application/json'}});
@@ -78,7 +74,6 @@ export class IChatService {
 
     form.append('layoutDto', chatLayoutCreateDTO, 'layoutDto');
     if (layout.logo && layout.logo !== '') {
-      console.log('logo');
       form.append('logo', layout.logo, 'logo.png');
     }
     if (layout.backgroundImg && layout.backgroundImg !== '') {

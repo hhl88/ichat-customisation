@@ -1,17 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver, ComponentRef,
-  ElementRef,
-  HostListener,
-  Input,
-  OnInit,
-  Renderer2,
-  ViewChild, ViewContainerRef
-} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewContainerRef} from '@angular/core';
 import {Layout} from 'core/interfaces/layout.interface';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {IChatSettingsService} from 'preview/services/ichat-settings.service';
 import {environment} from 'environments/environment';
 import {IChatService} from 'preview/services/ichat.service';
@@ -19,8 +7,15 @@ import {Frontend} from 'core/interfaces/frontend.interface';
 import {Observable, Subscription} from 'rxjs';
 import 'rxjs-compat/add/observable/interval';
 import 'rxjs-compat/add/operator/takeWhile';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {MessengerComponent} from 'preview/components/messenger/messenger.component';
+import {BubbleStyle} from 'core/interfaces/bubble-style.interface';
+import {Bubble} from 'core/interfaces/bubble.interface';
+
+declare const require;
+
+const cssMessenger = require('../messenger/messenger.component.css');
+const cssSingleMessage = require('../single-message/single-message.component.css');
+const cssButtonGroupChat = require('../button-group-chat/button-group-chat.component.css');
 
 @Component({
   selector: 'app-chat',
@@ -52,6 +47,7 @@ export class ChatComponent implements OnInit {
   isPopUp = false;
   token: string;
 
+
   constructor(private iChatSettingsService: IChatSettingsService,
               private iChatService: IChatService,
               private cd: ChangeDetectorRef,
@@ -67,21 +63,22 @@ export class ChatComponent implements OnInit {
     this.isConnecting = false;
     this.getSettings();
 
-
   }
 
   private getSettings() {
     this.isLoadingSetting = true;
     this.iChatSettingsService.getSettings(this.id).subscribe(settings => {
+      console.log('settings', settings);
       this.chatLayout = settings.layout;
       this.chatFrontend = settings.frontend;
       this.chatLayout.logo = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/logoImg';
       this.chatLayout.backgroundImg = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/backgroundImg';
-      // this._setFormChat();
       this.isPopUp = this.chatLayout.displayType === 2;
       this.server = this._findServer(this.chatFrontend.iAgentServer.address);
       this.iChatService.setServer(this._findServer(this.chatFrontend.iAgentServer.address));
       this.isLoadingSetting = false;
+      this._saveNewBubbleSettings(this.chatLayout.bubbleStyle);
+
       this.cd.detectChanges();
     });
   }
@@ -106,9 +103,6 @@ export class ChatComponent implements OnInit {
         this.isLoading = false;
         this.chatId = res.chatId;
         this._detectMessengerChanges();
-        // if (this.isPopUp) {
-        //   this.initPopupChat();
-        // }
       }
     });
   }
@@ -129,8 +123,6 @@ export class ChatComponent implements OnInit {
       const factory = this.r.resolveComponentFactory(MessengerComponent);
       const comp: ComponentRef<MessengerComponent> = this.viewContainerRef.createComponent(factory);
 
-      // in case you also need to inject an input to the child,
-      // like the windows reference
       comp.instance.chatLayout = this.chatLayout;
       comp.instance.chatFrontend = this.chatFrontend;
 
@@ -138,15 +130,21 @@ export class ChatComponent implements OnInit {
       comp.instance.token = this.token;
       comp.instance.server = this.server;
       comp.instance.customer = this.customer;
-      console.log('window', this.windowReference);
-      // this.windowReference.onload = function() {
-      //   comp.instance.ref = this.windowReference.document.getElementById('chatWindowWrapper');
-      // },
+
       comp.instance.ref = this.windowReference;
 
       // add you freshly baked component on the windows
-      this.windowReference.document.body.appendChild(comp.location.nativeElement);
+      const title = document.createElement('title');
+      title.text = 'Chat';
+      this.windowReference.document.head.appendChild(title);
 
+      const style = document.createElement('style');
+      style.innerHTML = cssMessenger;
+      style.innerHTML += cssSingleMessage;
+      style.innerHTML += cssButtonGroupChat;
+
+      this.windowReference.document.body.appendChild(style);
+      this.windowReference.document.body.appendChild(comp.location.nativeElement);
 
     });
     // create the component dynamically
@@ -225,5 +223,20 @@ export class ChatComponent implements OnInit {
     return address.includes('showroom');
   }
 
+
+  private _saveNewBubbleSettings(bubbleStyle: BubbleStyle) {
+    Object.keys(bubbleStyle).forEach(key => this._convertToJson(key, bubbleStyle[key]));
+  }
+
+  private _convertToJson(className: string, bubble: Bubble) {
+    const newSetting = {};
+    newSetting['.' + className] = Object.keys(bubble).forEach(key => {
+      const newKey = key.replace(/([A-Z])/g, (v) => {
+        return '-' + v.toLowerCase();
+      });
+      return {newKey: bubble[key]};
+    });
+    console.log('newSetting', newSetting);
+  }
 
 }

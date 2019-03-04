@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Info} from 'core/interfaces/info.interface';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DemandInfo} from 'core/interfaces/demand-info.interface';
@@ -18,7 +18,6 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   constructor() {
-    console.log('123');
   }
 
   ngOnInit() {
@@ -65,7 +64,6 @@ export class DemandInfoComponent implements OnInit, OnChanges {
   }
 
   addDemandInfo() {
-    console.log('213123', this.form.getRawValue());
     this.getList().push(this._initDemandInfo());
   }
 

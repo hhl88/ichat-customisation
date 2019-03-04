@@ -1,4 +1,4 @@
-import {AfterContentChecked,  Component, Input,  OnChanges, OnInit} from '@angular/core';
+import {AfterContentChecked, Component, Input, OnChanges, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
@@ -88,7 +88,6 @@ export class FrontendContentComponent implements OnInit, OnChanges, AfterContent
 
 
   submitCurrent() {
-    console.log('submit', this.selectedFrontend);
     if (this.selectedFrontend.id) {
       this.iChatService.updateFrontEnd(this.selectedFrontend.id, this.selectedFrontend).subscribe(res => {
         console.log('update frontend', res);

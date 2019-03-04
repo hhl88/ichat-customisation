@@ -9,7 +9,7 @@
   max-width: 100%;
 }
 
-.is-fixed {
+div[class*="is-fixed"] {
   z-index: 9;
   max-width: 450px !important;
   max-height: 600px !important;
@@ -26,42 +26,30 @@
   flex-flow: column;
 }
 
-
-.input-area {
-  height: 80px;
-  background-color: white;
-
-}
-
-textarea:focus {
-  border: none;
-  overflow: auto;
-  outline: none;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-.conversation-body {
+#conversationBody {
   position: relative;
   overflow-y: auto;
   background-position: center center;
   background-repeat: no-repeat;
   background-color: white;
-
+  padding-top: 10px;
 }
 
-.send-message-button {
+
+#conversationFooter {
+  height: 80px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+}
+
+.input-area.above {
+  border-width: 0 0 1px 0 !important;
+  border-style: solid solid solid solid !important;
+}
+
+#inputText:focus {
   border: none;
-  border-radius: 0;
-}
-
-.input-text {
-  border: none;
-  resize: none;
-}
-
-.input-text:focus {
   overflow: auto;
   outline: none;
   -webkit-box-shadow: none;
@@ -69,50 +57,65 @@ textarea:focus {
   box-shadow: none;
 }
 
-textarea[class*="by-row"] {
-  width: 100% !important;
+#inputText {
+  border: none;
+  resize: none;
+  padding: 11px 11px 11px 25px;
+  box-sizing: border-box;
+  border-radius: 0;
 }
 
-textarea[class*="by-side"] {
+#inputText:focus {
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.input-text.above.by-side {
   width: 70% !important;
-  //height: 95% !important;
+  border-width: 0 1px 0 0 !important;
+  border-style: solid solid solid solid !important;
+}
+
+.input-text.above {
+  border-width: 0 !important;
+  border-style: solid solid solid solid !important;
+}
+
+.input-text.by-side {
+  width: 70% !important;
   border-width: 1px 1px 0 0 !important;
   border-style: solid solid solid solid !important;
-  box-sizing: border-box;
-  border-radius: 0 0 0 5px;
 }
 
-.logo-chat {
-  width: 100%;
+.input-text.full-side {
+  width: 100% !important;
+  border-width: 1px 0 1px 0 !important;
+  border-style: solid solid solid solid !important;
+}
+
+.input-text.above.full-side {
+  width: 100% !important;
+  border-width: 0 !important;
+  border-style: solid solid solid solid !important;
+}
+
+#logoChat {
   height: 100px;
   background-repeat: no-repeat;
   background-position: center;
   background-color: #FFF;
-  border-bottom: 1px solid;
   position: sticky;
   z-index: 2;
   margin: 0 auto;
   right: 0;
   border-radius: 5px 5px 0 0;
-}
-
-.send-message-button:hover {
-  cursor: pointer;
+  display: block;
 }
 
 .button-group {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-
-}
-
-div[class*="by-row"] {
-  width: 100%;
-  margin: 10px 0;
-}
-
-div[class*="by-side"] {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -120,38 +123,9 @@ div[class*="by-side"] {
   align-items: center;
 }
 
-button {
-  background-color: orangered;
-  color: white;
-  border: none;
-  border-radius: 0;
+.button-group-below {
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  height: 50px
 }
 
-button:hover {
-  cursor: pointer;
-}
-
-
-button[class*="by-side"] {
-  width: 100px;
-  height: 35px;
-}
-
-button[class*="by-row"] {
-  width: 80px;
-  height: 27px;
-}
-
-.in-column {
-  height: 80px;
-  padding-top: 10px;
-}
-
-
-button {
-  height: 35px;
-}
-
-button:disabled {
-  background-color: rgba(255, 153, 36, 0.5);
-}

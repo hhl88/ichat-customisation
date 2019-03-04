@@ -7,7 +7,7 @@
       class="my-2"
       [ngClass]="{'mx-3': displayAsColumn}"
       *ngFor="let option of options; let i = index"
-      [checked]="selectedItemIndex === i"
+      [checked]="selectedItemIndex === option.id"
       [value]="option.id"
     >
       <span class="wrap-mat-radio-label">

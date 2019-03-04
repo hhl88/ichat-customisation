@@ -71,7 +71,10 @@
             >
             </app-radio-selection>
             <div class="input-group mb-3 px-3">
-              <app-image-upload class="col-12" (onImageChanged)="onBackgroundChanged($event)"></app-image-upload>
+              <app-image-upload class="col-12"
+                                [selectedImage]="backgroundImg"
+
+                                (onImageChanged)="onBackgroundChanged($event)"></app-image-upload>
             </div>
           </div>
         </div>

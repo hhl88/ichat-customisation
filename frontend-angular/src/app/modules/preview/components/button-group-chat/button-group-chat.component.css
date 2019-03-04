@@ -1,0 +1,36 @@
+
+button {
+  background-color: orangered;
+  color: white;
+  border: none;
+  border-radius: 0;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button {
+  height: 35px;
+  width: 100px;
+}
+
+button:disabled {
+  background-color: rgba(255, 153, 36, 0.5);
+}
+
+
+.button-group.full-side {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+  width: 100%;
+  height: 100%;
+  align-items: center;
+
+}
+
+button[class*="space-before"] {
+  margin-top: 10px;
+}

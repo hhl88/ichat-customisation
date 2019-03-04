@@ -40,7 +40,6 @@ export class MessageBubbleComponent implements OnInit, AfterViewInit, OnChanges,
   ngOnChanges(): void {
     if (!!this.oldBubbleStyle && !!this.bubbleStyle) {
       const t = Object.keys(this.oldBubbleStyle).filter(key => this.bubbleStyle[key] !== this.oldBubbleStyle[key]);
-      console.log('t', t);
       if (Object.keys(this.oldBubbleStyle).filter(key => this.bubbleStyle[key] !== this.oldBubbleStyle[key]).length > 0) {
         this._setBubbleSample(JSON.parse(JSON.stringify(this.bubbleStyle)));
         this._reloadForm();

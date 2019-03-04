@@ -1,0 +1,23 @@
+<div class="button-group {{!isBySide ?  'full-side' : ''}}"
+     *ngIf="!chatStopped; else stopChat">
+  <button class="send-message-button"
+          (click)="sendMessage()">
+    Send
+  </button>
+  <button class="close-message-button {{isBySide ?'space-before' : ''}}"
+          (click)="closeChat()">
+    Close
+  </button>
+</div>
+<ng-template #stopChat>
+  <div class="button-group {{!isBySide ?  'full-side' : ''}}">
+    <button class="send-message-button"
+            (click)="saveConversation()">
+      Save Message
+    </button>
+    <button class="close-message-button {{isBySide ?'space-before' : ''}}"
+            (click)="closeConversation()">
+      Close Conversation
+    </button>
+  </div>
+</ng-template>

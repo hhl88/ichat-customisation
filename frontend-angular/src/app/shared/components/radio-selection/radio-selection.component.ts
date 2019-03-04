@@ -16,7 +16,6 @@ export class RadioSelectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('new selectedItemIndex', this.selectedItemIndex);
     if (!this.selectedItemIndex && this.options.length > 0) {
       this.selectedItemIndex = 0;
     }
