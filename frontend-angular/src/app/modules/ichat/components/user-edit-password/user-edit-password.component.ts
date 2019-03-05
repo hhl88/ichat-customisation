@@ -52,7 +52,7 @@ export class UserEditPasswordComponent implements OnInit {
         oldPassword: this.form.value.oldPassword,
       };
 
-      this.userService.changePassword(data).subscribe(res => {
+      this.userService.changePassword(this.currentUser.user_id, data).subscribe(res => {
         this.isSubmitting = false;
         this.isSuccessful = true;
         this.cd.detectChanges();

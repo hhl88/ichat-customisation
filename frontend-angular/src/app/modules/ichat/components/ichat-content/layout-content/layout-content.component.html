@@ -74,7 +74,8 @@
               <app-image-upload class="col-12"
                                 [selectedImage]="backgroundImg"
 
-                                (onImageChanged)="onBackgroundChanged($event)"></app-image-upload>
+                                (onImageChanged)="onBackgroundChanged($event)">
+              </app-image-upload>
             </div>
           </div>
         </div>
@@ -150,3 +151,23 @@
 
   </div>
 </div>
+<swal
+  #layoutCreatedSwal
+  title="Erstellung"
+  text="Das Layout ist erzeugt"
+  type="success">
+</swal>
+
+<swal
+  #layoutUpdatedSwal
+  title="Aktualisierung"
+  text="Das Layout ist aktualisiert"
+  type="success">
+</swal>
+
+<swal
+  #layoutFailedSwal
+  title="Erstellung"
+  text="Serverfehler"
+  type="error">
+</swal>

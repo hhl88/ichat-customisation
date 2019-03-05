@@ -6,28 +6,27 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor
 public class IAgentServerUpdateDTO {
    
   @ApiModelProperty(required = true)
   @NotNull
   private String address;
   
-  @ApiModelProperty(required = true)
-  @NotNull
+  @ApiModelProperty
   private String userAPI;
 
-  @ApiModelProperty(required = true)
-  @NotNull
+  @ApiModelProperty
   private String password;
 
-  @ApiModelProperty(required = true)
-  @NotNull
+  @ApiModelProperty
   private String clientId;
 
-  @ApiModelProperty(required = true)
-  @NotNull
+  @ApiModelProperty
   private String secret;
+
+  private IAgentServerUpdateDTO() {
+
+  }
 
 
   public String getAddress() {

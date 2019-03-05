@@ -82,8 +82,18 @@
 .mat-list .mat-list-item {
   font-size: 1em;
   height: 35px !important;
+
 }
 
 mat-list-item[class*="active"] {
   background: #ababab;
 }
+
+.item-name {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+}
+

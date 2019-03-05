@@ -25,5 +25,5 @@ export const SystemBubbleDefault: Bubble = {
   backgroundColor: '#f1f0f0',
   borderColor: 'white',
   borderRadius: '3px',
-  color: 'white'
+  color: 'black'
 };

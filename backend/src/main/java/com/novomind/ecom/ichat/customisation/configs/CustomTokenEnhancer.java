@@ -28,10 +28,10 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
 
         authentication.setDetails(additionalInfo);
+        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 
         accessToken = super.enhance(accessToken, authentication);
 
-        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
 //        }
 
 //        accessToken = super.enhance(accessToken, authentication);
@@ -41,6 +41,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
     @Override
     public OAuth2Authentication extractAuthentication(Map<String, ?> map) {
+        logger.info("extract Authentication");
         final OAuth2Authentication authentication = super.extractAuthentication(map);
         final Map<String, String> details = new HashMap<>();
 

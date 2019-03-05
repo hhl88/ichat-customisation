@@ -1,15 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  Renderer2
-} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {IChatService} from 'preview/services/ichat.service';
@@ -28,6 +17,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() chatId: number;
   @Input() customer: any;
+  @Input() agent: any;
   @Input() server: string;
   @Output() onConversation = new EventEmitter();
   messages: any[] = [];
@@ -35,19 +25,19 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
   sub: Subscription;
   mouseMoveListener: Function;
 
-  agent: any = {};
   chatStopped: boolean;
   isLoading: boolean;
-  isConnecting = false;
   ref: any;
 
+
   constructor(private iChatService: IChatService,
-              private cd: ChangeDetectorRef,
               private renderer: Renderer2) {
+
   }
 
   ngOnInit() {
     this.isLoading = true;
+    this.chatStopped = false;
     if (this.token) {
       this.iChatService.setToken(this.token);
     }
@@ -59,24 +49,36 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
       message: new FormControl('', [Validators.required])
     });
     this.isLoading = false;
-    this.cd.detectChanges();
   }
 
   ngAfterViewInit(): void {
-    this.setLogo('logoChat');
+    this._setLogo('logoChat');
 
-    this.setBackground('conversationBody');
+    this._setBackground('conversationBody');
     // this._setButtonGroupStyle();
     const ele = this._getEle('conversationBody');
 
     this._setFont(ele);
     this._setImageStyle(this.chatLayout.backgroundType, ele);
     this._setHeightMessengerBody(this._getEle('chatWindowWrapper').offsetHeight);
+    this.chatStopped = false;
+
+    if (this.chatLayout.displayType === 2) {
+      this._getEle('chatWindowWrapper').style.resize = 'none';
+
+      window.addEventListener('resize', () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        this._setHeightMessengerBody(ele.offsetHeight);
+        console.log('Size win: ' + width + 'x' + height);
+      });
+    }
 
     this._detectMessengerChanges();
+
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
@@ -97,12 +99,17 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   closeChat() {
+    const message = {
+      message: 'you have closed the conversation',
+      date: this._convertTimeStamp(new Date().valueOf()),
+      isSystem: true
+    };
+    this._closeChat(message);
+  }
+
+  private _closeChat(message) {
     this.iChatService.stopCurrentChat(this.chatId).subscribe(res => {
-      this.messages.push({
-        message: 'you have closed the conversation',
-        date: this._convertTimeStamp(new Date().valueOf()),
-        isSystem: true
-      });
+      this.messages.push(message);
       this.formMessage.get('message').disable();
       this.sub.unsubscribe();
       this.iChatService.setToken('');
@@ -125,7 +132,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  setLogo(id: string) {
+  private _setLogo(id: string) {
     (this._getEle(id) as HTMLImageElement).src = this.chatLayout.logo;
   }
 
@@ -136,7 +143,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
     return document.getElementById(id);
   }
 
-  setBackground(id: string) {
+  private _setBackground(id: string) {
     const ele = this._getEle(id);
     ele.style.backgroundImage = 'url(' + this.chatLayout.backgroundImg + ')';
   }
@@ -153,7 +160,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
                   if (res.changes) {
                     if (res.changes.length > 0) {
                       for (const change of res.changes) {
-                        if (change.chatId && change.chatId > 0) {
+                        if (change.hatId && change.chatId > 0) {
                           this.chatId = change.chatId;
                           this.iChatService.setToken(change.token);
                         }
@@ -176,6 +183,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
   private _handleMessageResponse(res) {
     if (!!res && !!res.type) {
       if (res.type === 'ChatChangeChatstep') {
+        console.log('chatChangeChatStep', res);
         if (!!res.origin) {
           const origin = res.origin.substr(0, res.origin.indexOf('.'));
           if (origin === 'agent') {
@@ -191,14 +199,12 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       } else if (res.type === 'ChatChangeStop') {
-        this.chatStopped = true;
-        this.formMessage.reset();
-        this.formMessage.get('message').disable();
-        this.messages.push({
+        const message = {
           message: this.agent.name + ' has closed the conversation',
           date: this._convertTimeStamp(new Date().valueOf()),
           isSystem: true
-        });
+        };
+        this._closeChat(message);
       }
     }
   }
@@ -261,24 +267,28 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('mousedown', ['$event.target'])
   onMouseDown(chatWindowWrapper) {
-    const ele = this._getEle('chatWindowWrapper');
-    if (!!ele) {
-      const width = ele.offsetWidth;
-      const height = ele.offsetHeight;
+    console.log('onMouseDown');
+    if (this.chatLayout.displayType !== 2) {
 
-      this.mouseMoveListener = this.renderer.listen('document', 'mousemove', () => {
-        if (width !== ele.offsetWidth || height !== ele.offsetHeight) {
-          this._setHeightMessengerBody(ele.offsetHeight);
-        }
-      });
+      const ele = this._getEle('chatWindowWrapper');
+      if (!!ele) {
+        const width = ele.offsetWidth;
+        const height = ele.offsetHeight;
+
+        this.mouseMoveListener = this.renderer.listen('document', 'mousemove', () => {
+          if (width !== ele.offsetWidth || height !== ele.offsetHeight) {
+            this._setHeightMessengerBody(ele.offsetHeight);
+          }
+        });
+      }
     }
-
   }
 
   @HostListener('document:mouseup')
   onMouseUp(el) {
     this.destroy();
   }
+
 
   destroy() {
     if (this.mouseMoveListener) {
@@ -291,7 +301,7 @@ export class MessengerComponent implements OnInit, AfterViewInit, OnDestroy {
     const conversationFooter = this._getEle('conversationFooter').clientHeight;
     let buttonGroupHeight = 0;
     if (this.chatLayout.buttonType === 1) {
-      buttonGroupHeight = this._getEle('chatWindowWrapper').getElementsByClassName('button-group')[0].clientHeight;
+      buttonGroupHeight = this._getEle('buttonGroupBelow').clientHeight;
     }
     this._getEle('conversationBody').style.height = (chatWindowWrapperHeight - logoHeight - conversationFooter - buttonGroupHeight) + 'px';
   }

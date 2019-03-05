@@ -39,7 +39,6 @@ public class IChatUserController {
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public IChatUser getUserInfoById(@PathVariable String id) throws UserNotFoundException {
-        log.info("get user ID");
         return userManagementService.findIChatUserById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
@@ -67,17 +66,25 @@ public class IChatUserController {
     @ApiOperation(value = "Update password", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully updated user"),
+            @ApiResponse(code = 400, message = "Failed to update password"),
             @ApiResponse(code = 401, message = "Wrong authentication"),
             @ApiResponse(code = 404, message = "User is not found")})
-    @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}, consumes = MediaType.ALL_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> updateUserPassword(@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
-            throws UserNotFoundException, NoPermissionException {
-        log.info("principal " + principal + "  " + principal.getName());
+    public ResponseEntity<?> updateUserPassword(@PathVariable String id,@Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO, Principal principal)
+            throws UserNotFoundException, NoPermissionException, IllegalArgumentException {
         IChatUser user = getUserIfAccessAllowed(principal);
+        if (!id.equalsIgnoreCase(user.getId())) {
+            throw new NoPermissionException();
+        }
+        try {
+            userManagementService.updatePassword(user, userPasswordUpdateDTO.getOldPassword(),
+                    userPasswordUpdateDTO.getNewPassword(), userPasswordUpdateDTO.getRetypedPassword());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update password");
 
-        userManagementService.updatePassword(user, userPasswordUpdateDTO.getOldPassword(),
-                userPasswordUpdateDTO.getNewPassword(), userPasswordUpdateDTO.getRetypedPassword());
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body("Successfully updated password");
 
     }

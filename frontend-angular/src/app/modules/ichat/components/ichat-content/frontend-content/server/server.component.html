@@ -12,13 +12,13 @@
                          (sizeFirstCol)="onResizeFirstCol($event)"
                          (onIAgentServerChanged)="serverChanged($event)">
       </app-iagent-server>
-      <div class="row mx-0 pl-0 vertical-middle">
-        <button mat-raised-button [disabled]="!currentIAgentServer" (click)="checkServer()">Testen</button>
-        <div *ngIf="isProcessed">
-          <div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>
-          <div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>
-        </div>
-      </div>
+      <!--<div class="row mx-0 pl-0 vertical-middle">-->
+      <!--<button mat-raised-button [disabled]="!currentIAgentServer" (click)="checkServer()">Testen</button>-->
+      <!--<div *ngIf="isProcessed">-->
+      <!--<div class="server-connected ml-4" *ngIf="connected && isClicked">Successful</div>-->
+      <!--<div class="server-unconnected ml-4" *ngIf="!connected && isClicked">Unsuccessful</div>-->
+      <!--</div>-->
+      <!--</div>-->
 
     </div>
     <div>

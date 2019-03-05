@@ -7,7 +7,7 @@ export interface IAgentServer {
 }
 
 export const DefaultIAgentServer: IAgentServer = {
-  address: '',
+  address: 'https://showroom-bridges.novomind.com/sr04_iagent_chat_p01',
   userAPI: '',
   password: '',
   clientId: '',

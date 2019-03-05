@@ -22,18 +22,18 @@ CREATE TABLE IF NOT EXISTS iagent_server
 (
   id        VARCHAR(10)  NOT NULL,
   address   VARCHAR(128) NOT NULL,
-  user_api  VARCHAR(100) NOT NULL,
-  password  VARCHAR(64)  NOT NULL,
-  client_id VARCHAR(128) NOT NULL,
-  secret    VARCHAR(128) NOT NULL,
+  user_api  VARCHAR(100),
+  password  VARCHAR(64),
+  client_id VARCHAR(128),
+  secret    VARCHAR(128),
   locked    CHAR(1),
   deleted   CHAR(1),
   CONSTRAINT iagent_server_pk_id PRIMARY KEY (id),
   CONSTRAINT iagent_server_nn_id CHECK (id IS NOT NULL),
-  CONSTRAINT iagent_server_nn_url CHECK (address IS NOT NULL),
-  CONSTRAINT iagent_server_nn_user_api CHECK (user_api IS NOT NULL),
+  CONSTRAINT iagent_server_nn_url CHECK (address IS NOT NULL)
+/*  CONSTRAINT iagent_server_nn_user_api CHECK (user_api IS NOT NULL),
   CONSTRAINT iagent_server_nn_clientid CHECK (client_id IS NOT NULL),
-  CONSTRAINT iagent_server_nn_secret CHECK (secret IS NOT NULL)
+  CONSTRAINT iagent_server_nn_secret CHECK (secret IS NOT NULL)*/
 );
 
 CREATE TABLE IF NOT EXISTS demand_info

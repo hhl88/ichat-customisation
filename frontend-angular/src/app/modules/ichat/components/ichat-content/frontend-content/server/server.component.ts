@@ -24,13 +24,10 @@ export class ServerComponent implements OnInit {
 
   servers: any = {};
 
-  isProcessed = false;
-  connected = false;
-  isClicked = false;
 
   currentIAgentServer: IAgentServer = null;
 
-  constructor(private iAgentService: IAgentServerService) {
+  constructor() {
     this.servers[this.iAgentServerType] = {
       title: 'Eigenes iAgent System',
       checked: false
@@ -46,7 +43,6 @@ export class ServerComponent implements OnInit {
       this.connectionType = ConnectionType.IAGENT_SERVER;
     }
     this.servers[this.connectionType].checked = true;
-    // this.sizeFirstCol.emit()
   }
 
   onSelectConnectionType(event) {
@@ -62,30 +58,28 @@ export class ServerComponent implements OnInit {
   }
 
   serverChanged(rawValue) {
-    // if (!this.switchedItem) {
     this.currentIAgentServer = JSON.parse(JSON.stringify(rawValue.data));
     this.onServerChanged.emit(rawValue);
-    // }
   }
 
   onResizeFirstCol(rawValue) {
     this.sizeFirstCol.emit(rawValue);
   }
 
-  checkServer() {
-    this.isClicked = true;
-    this.connected = false;
-    this.isProcessed = false;
-    if (this.currentIAgentServer) {
-      this.iAgentService.fetchServer(this.currentIAgentServer).subscribe(res => {
-        this.isProcessed = true;
-        if (res && res.hasOwnProperty('access_token')) {
-          this.connected = true;
-        }
-      }, error1 => this.isProcessed = true);
-    }
-
-  }
+  // checkServer() {
+  //   this.isClicked = true;
+  //   this.connected = false;
+  //   this.isProcessed = false;
+  //   if (this.currentIAgentServer) {
+  //     this.iAgentService.fetchServer(this.currentIAgentServer).subscribe(res => {
+  //       this.isProcessed = true;
+  //       if (res && res.hasOwnProperty('access_token')) {
+  //         this.connected = true;
+  //       }
+  //     }, error1 => this.isProcessed = true);
+  //   }
+  //
+  // }
 
 
 }

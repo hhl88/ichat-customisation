@@ -2,13 +2,10 @@ import * as ichat from 'store/actions/ichat';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {Layout} from 'core/interfaces/layout.interface';
 import {Item} from 'core/interfaces/item.interface';
-import {st} from '@angular/core/src/render3';
 
 export interface State {
   chatFrontEnds: Frontend[];
   chatLayouts: Layout[];
-  selectedFrontend: Frontend;
-  selectedLayout: Layout;
   selectedItem: Item;
   frontEndsLoading: boolean;
   frontEndsLoaded: boolean;
@@ -19,8 +16,6 @@ export interface State {
 const initialState: State = {
   chatFrontEnds: [],
   chatLayouts: [],
-  selectedFrontend: null,
-  selectedLayout: null,
   selectedItem: null,
   frontEndsLoading: false,
   frontEndsLoaded: false,
@@ -55,17 +50,24 @@ export function reducer(state = initialState, action: ichat.Actions): State {
     }
 
     case ichat.FRONTEND_LIST_ADD: {
-      state.chatFrontEnds[state.chatFrontEnds.length] = action.payload;
-
+      const newItem = JSON.parse(JSON.stringify(action.payload));
       return Object.assign({}, state, {
-        chatFrontEnds: state.chatFrontEnds,
+        chatFrontEnds: [...state.chatFrontEnds, newItem]
 
       });
     }
 
-    case ichat.FRONTEND_LIST_UPDATE: {
+    case ichat.FRONTEND_LIST_REMOVE: {
       return Object.assign({}, state, {
-        chatFrontEnds: action.payload,
+        chatFrontEnds: state.chatFrontEnds.filter(chatLayout => chatLayout['_uid'] !== action.payload._uid),
+      });
+    }
+
+    case ichat.FRONTEND_LIST_UPDATE_ITEM: {
+      return Object.assign({}, state, {
+        chatFrontEnds: state.chatFrontEnds.map(
+          (chatFrontEnd, i) => chatFrontEnd._uid === action.payload._uid ? {...chatFrontEnd, ...action.payload}
+            : chatFrontEnd)
       });
     }
 
@@ -95,45 +97,29 @@ export function reducer(state = initialState, action: ichat.Actions): State {
 
 
     case ichat.LAYOUT_LIST_ADD: {
-      state.chatLayouts[state.chatLayouts.length] = action.payload;
+      const newItem = JSON.parse(JSON.stringify(action.payload));
       return Object.assign({}, state, {
-        chatLayouts: state.chatLayouts,
-
+        chatLayouts: [...state.chatLayouts, newItem],
       });
     }
 
-    case ichat.LAYOUT_LIST_UPDATE: {
+    case ichat.LAYOUT_LIST_REMOVE: {
       return Object.assign({}, state, {
-        chatLayouts: action.payload,
+        chatLayouts: state.chatLayouts.filter(chatLayout => chatLayout['_uid'] !== action.payload._uid),
       });
     }
 
     case ichat.LAYOUT_LIST_UPDATE_ITEM: {
-      const index = action.payload.index;
-      state.chatLayouts[index] = action.payload;
-
       return Object.assign({}, state, {
-        chatLayouts: state.chatLayouts,
+        chatLayouts: state.chatLayouts.map(
+          (chatLayout, i) => chatLayout._uid === action.payload._uid ? {...chatLayout, ...action.payload}
+            : chatLayout)
       });
     }
 
     case ichat.CURRENT_ITEM_SELECTED: {
       return Object.assign({}, state, {
-        selectedItem: action.payload,
-      });
-    }
-
-    case ichat.CURRENT_FRONTEND_SELECTED: {
-      return Object.assign({}, state, {
-        selectedFrontend: action.payload,
-        selectedLayout: null
-      });
-    }
-
-    case ichat.CURRENT_LAYOUT_SELECTED: {
-      return Object.assign({}, state, {
-        selectedLayout: action.payload,
-        selectedFrontend: null
+        selectedItem: JSON.parse(JSON.stringify(action.payload)),
       });
     }
 
@@ -146,14 +132,8 @@ export function reducer(state = initialState, action: ichat.Actions): State {
 
 export const getSelectedItem = (state: State) => JSON.parse(JSON.stringify(state.selectedItem));
 
-export const getSelectedFrontend = (state: State) => JSON.parse(JSON.stringify(state.selectedFrontend));
-export const getSelectedLayout = (state: State) => JSON.parse(JSON.stringify(state.selectedLayout));
-
-
 export const getLoadedChatFrontEnds = (state: State) => JSON.parse(JSON.stringify(state.chatFrontEnds));
 export const getLoadedChatLayouts = (state: State) => JSON.parse(JSON.stringify(state.chatLayouts));
 
-export const getStatusChatFrontEnds = (state: State) => state.frontEndsLoaded;
-export const getStatusChatLayouts = (state: State) => state.layoutsLoaded;
 
 

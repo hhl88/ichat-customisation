@@ -3,20 +3,19 @@ import {Action} from '@ngrx/store';
 export const FRONTEND_LIST_LOADING = 'ichat/FRONTEND_LIST_LOADING';
 export const FRONTEND_LIST_LOAD_SUCCESS = 'ichat/FRONTEND_LIST_LOAD_SUCCESS';
 export const FRONTEND_LIST_LOAD_FAILED = 'ichat/FRONTEND_LIST_LOAD_FAILED';
-export const FRONTEND_LIST_UPDATE = 'ichat/FRONTEND_LIST_UPDATE';
-export const FRONTEND_LIST_UPDATE_ITEM = 'ichat/FRONTEND_LIST_UPDATE_ITEM';
 export const FRONTEND_LIST_ADD = 'ichat/FRONTEND_LIST_ADD';
+export const FRONTEND_LIST_REMOVE = 'ichat/FRONTEND_LIST_REMOVE';
+export const FRONTEND_LIST_UPDATE_ITEM = 'ichat/FRONTEND_LIST_UPDATE_ITEM';
 
 
 export const LAYOUT_LIST_LOADING = 'ichat/LAYOUT_LIST_LOADING';
 export const LAYOUT_LIST_LOAD_SUCCESS = 'ichat/LAYOUT_LIST_LOAD_SUCCESS';
 export const LAYOUT_LIST_LOAD_FAILED = 'ichat/LAYOUT_LIST_LOAD_FAILED';
-export const LAYOUT_LIST_UPDATE = 'ichat/LAYOUT_LIST_UPDATE';
-export const LAYOUT_LIST_UPDATE_ITEM = 'ichat/LAYOUT_LIST_UPDATE_ITEM';
 export const LAYOUT_LIST_ADD = 'ichat/LAYOUT_LIST_ADD';
+export const LAYOUT_LIST_REMOVE = 'ichat/LAYOUT_LIST_REMOVE';
+export const LAYOUT_LIST_UPDATE_ITEM = 'ichat/LAYOUT_LIST_UPDATE_ITEM';
 
-export const CURRENT_FRONTEND_SELECTED = 'ichat/CURRENT_FRONTEND_SELECTED';
-export const CURRENT_LAYOUT_SELECTED = 'ichat/CURRENT_LAYOUT_SELECTED';
+
 export const CURRENT_ITEM_SELECTED = 'ichat/CURRENT_ITEM_SELECTED';
 
 
@@ -50,21 +49,32 @@ export class FrontEndListLoadFailedAction implements Action {
   }
 }
 
-/**
- * Frontend List Update (update/remove) in Action
- */
-export class FrontEndListUpdateAction implements Action {
-  readonly type = FRONTEND_LIST_UPDATE;
-
-  constructor(public payload: any) {
-  }
-}
 
 /**
  * Frontend List Add in Action
  */
 export class FrontEndListAddAction implements Action {
   readonly type = FRONTEND_LIST_ADD;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
+ * Frontend List Remove in Action
+ */
+export class FrontEndListRemoveAction implements Action {
+  readonly type = FRONTEND_LIST_REMOVE;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
+ * Frontend List Update Item in Action
+ */
+export class FrontendListUpdateItemAction implements Action {
+  readonly type = FRONTEND_LIST_UPDATE_ITEM;
 
   constructor(public payload: any) {
   }
@@ -103,30 +113,30 @@ export class LayoutListLoadFailedAction implements Action {
 
 
 /**
- * Layout List Update (update/remove) in Action
- */
-export class LayoutListUpdateAction implements Action {
-  readonly type = LAYOUT_LIST_UPDATE;
-
-  constructor(public payload: any) {
-  }
-}
-
-/**
- * Layout List Update (update/remove) in Action
- */
-export class LayoutListUpdateItemAction implements Action {
-  readonly type = LAYOUT_LIST_UPDATE_ITEM;
-
-  constructor(public payload: any) {
-  }
-}
-
-/**
  * Layout List Add in Action
  */
 export class LayoutListAddAction implements Action {
   readonly type = LAYOUT_LIST_ADD;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
+ * Layout List Remove in Action
+ */
+export class LayoutListRemoveAction implements Action {
+  readonly type = LAYOUT_LIST_REMOVE;
+
+  constructor(public payload: any) {
+  }
+}
+
+/**
+ * Layout List Update Item in Action
+ */
+export class LayoutListUpdateItemAction implements Action {
+  readonly type = LAYOUT_LIST_UPDATE_ITEM;
 
   constructor(public payload: any) {
   }
@@ -144,38 +154,19 @@ export class CurrentItemSelectedAction implements Action {
 }
 
 
-/**
- * Frontend Selection in Action
- */
-export class CurrentFrontEndSelectedAction implements Action {
-  readonly type = CURRENT_FRONTEND_SELECTED;
-
-  constructor(public payload: any) {
-  }
-}
-
-/**
- * Layout Selection in Action
- */
-export class CurrentLayoutSelectedAction implements Action {
-  readonly type = CURRENT_LAYOUT_SELECTED;
-
-  constructor(public payload: any) {
-  }
-}
 
 export type Actions
   = FrontEndListLoadingAction
   | FrontEndListLoadSuccessAction
   | FrontEndListLoadFailedAction
-  | FrontEndListUpdateAction
   | FrontEndListAddAction
+  | FrontEndListRemoveAction
+  | FrontendListUpdateItemAction
+
   | LayoutListLoadingAction
   | LayoutListLoadSuccessAction
   | LayoutListLoadFailedAction
   | LayoutListAddAction
-  | LayoutListUpdateAction
+  | LayoutListRemoveAction
   | LayoutListUpdateItemAction
-  | CurrentItemSelectedAction
-  | CurrentFrontEndSelectedAction
-  | CurrentLayoutSelectedAction;
+  | CurrentItemSelectedAction;

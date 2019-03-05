@@ -4,4 +4,6 @@ import {ItemType} from 'core/enum/item-type.enum';
 
 export interface Item extends Layout, Frontend {
   type: ItemType;
+  _uid: any;
+  editing: boolean;
 }

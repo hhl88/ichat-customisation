@@ -31,11 +31,7 @@ export class IChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.router.snapshot.pathFromRoot[1].url[0].path === PASSWORD_PAGE) {
-      this.isPasswordPage = true;
-    } else {
-      this.isPasswordPage = false;
-    }
+    this.isPasswordPage = this.router.snapshot.pathFromRoot[1].url[0].path === PASSWORD_PAGE;
     this.fetchChatFrontEnd();
     this.fetchChatLayout();
   }
@@ -58,11 +54,10 @@ export class IChatComponent implements OnInit {
   }
 
   private _modifyData(list: any[], type: ItemType) {
-    for (let i = 0; i < list.length; i++) {
-      list[i]['index'] = i;
-      list[i]['type'] = type;
-      list[i]['editing'] = false;
-
+    for (const item of list) {
+      item['_uid'] = new Date().valueOf();
+      item['type'] = type;
+      item['editing'] = false;
     }
   }
 

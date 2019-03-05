@@ -31,7 +31,6 @@ export class IAgentServerComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
     if (!!this.oldIAgentServer && !!this.iAgentServer) {
-      const t = Object.keys(this.oldIAgentServer).filter(key => this.oldIAgentServer[key] !== this.iAgentServer[key]);
       if (Object.keys(this.oldIAgentServer).filter(key => this.iAgentServer[key] !== this.oldIAgentServer[key]).length > 0) {
         this._reloadForm();
       }

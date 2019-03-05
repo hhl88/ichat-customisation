@@ -1,10 +1,12 @@
-import {AfterContentChecked, Component, Input, OnChanges, OnInit} from '@angular/core';
+import {AfterContentChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
 import {Frontend} from 'core/interfaces/frontend.interface';
 import {ConnectionType} from 'core/enum/connection-type.enum';
 import {IChatService} from 'ichat/services/ichat.service';
 import {DefaultDemandInfo} from 'core/interfaces/demand-info.interface';
+import {SwalComponent} from '@toverux/ngx-sweetalert2';
+import {CurrentItemSelectedAction, FrontEndListAddAction, FrontendListUpdateItemAction} from 'store/actions/ichat';
 
 @Component({
   selector: 'app-frontend-content',
@@ -19,6 +21,10 @@ export class FrontendContentComponent implements OnInit, OnChanges, AfterContent
   isValid = false;
   selectedFrontend: Frontend = null;
   switchedItem: boolean;
+  @Output() onUpdateFrontend = new EventEmitter();
+  @ViewChild('frontendCreatedSwal') private frontendCreatedSwal: SwalComponent;
+  @ViewChild('frontendUpdatedSwal') private frontendUpdatedSwal: SwalComponent;
+  @ViewChild('frontendFailedSwal') private frontendFailedSwal: SwalComponent;
 
   constructor(private store: Store<fromRoot.State>,
               private iChatService: IChatService) {
@@ -30,7 +36,7 @@ export class FrontendContentComponent implements OnInit, OnChanges, AfterContent
   }
 
   ngOnChanges() {
-    if (this.selectedFrontend === null || this.frontEnd.index !== this.selectedFrontend.index) {
+    if (this.selectedFrontend === null || this.frontEnd._uid !== this.selectedFrontend._uid) {
       this.step = 0;
       this._setFrontend();
       this.switchedItem = true;
@@ -91,13 +97,24 @@ export class FrontendContentComponent implements OnInit, OnChanges, AfterContent
     if (this.selectedFrontend.id) {
       this.iChatService.updateFrontEnd(this.selectedFrontend.id, this.selectedFrontend).subscribe(res => {
         console.log('update frontend', res);
+        const newFrontend = {...this.selectedFrontend, ...JSON.parse(res.body)};
+        this.store.dispatch(new FrontendListUpdateItemAction(newFrontend));
+        this.store.dispatch(new CurrentItemSelectedAction(newFrontend));
+        this.frontendUpdatedSwal.show().then();
       }, error1 => {
+        this.frontendFailedSwal.show().then();
         console.log('error update', error1);
       });
     } else {
       this.iChatService.createFrontEnd(this.selectedFrontend).subscribe(res => {
         console.log('create Frontend', res);
+        const newFrontend = {...this.selectedFrontend, ...JSON.parse(res.body)};
+        this.store.dispatch(new FrontEndListAddAction(newFrontend));
+        this.store.dispatch(new CurrentItemSelectedAction(newFrontend));
+        this.frontendCreatedSwal.show().then();
+
       }, error1 => {
+        this.frontendFailedSwal.show().then();
         console.log('error', error1);
       });
     }

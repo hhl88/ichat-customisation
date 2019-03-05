@@ -61,9 +61,6 @@ public class IChatController {
     @GetMapping(value = "/{user_id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Settings> getSettingsById(@PathVariable("user_id") String id) {
-
-        log.info("user id " + id);
-
         String chatLayoutId = chooseLayoutService.findChatLayoutIdByUserId(id);
         String chatFrontEndId = chooseChatFrontEndService.findChatFrontEndIdByUserId(id);
         Optional<ChatFrontEnd> optChatFrontEnd = chatFrontEndManagementService.findChatFrontEndById(chatFrontEndId);

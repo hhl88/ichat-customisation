@@ -28,7 +28,7 @@
                          *ngFor="let item of itemList; let i = index"
                          (dblclick)="changeName(item)"
                          (click)="selectItem(i, item, $event)">
-            <span *ngIf="!item.editing">{{item.name}}</span>
+            <span class="item-name" *ngIf="!item.editing">{{item.name}}</span>
             <form class="form w-100" *ngIf="item.editing" [formGroup]="formName" (submit)="submitNewName(item)" novalidate>
               <input class="col-12 " formControlName="itemName">
 

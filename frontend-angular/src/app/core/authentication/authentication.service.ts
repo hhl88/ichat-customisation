@@ -5,11 +5,11 @@ import * as fromRoot from 'store/reducers';
 import {Observable, of} from 'rxjs';
 import {environment} from 'environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {catchError, map, tap, timeout} from 'rxjs/operators';
-import {USER_LOGOUT, UserLoginAction, UserLogoutAction} from 'store/actions/entry';
+import {map} from 'rxjs/operators';
+import {UserLoginAction, UserLogoutAction} from 'store/actions/entry';
 import {LOCAL_STORAGE_AUTH_TOKEN} from 'core/constants/storage.constants';
 import {Router} from '@angular/router';
-import {ICHAT_PAGE, LOGIN_PAGE} from 'core/constants/routing.constants';
+import {LOGIN_PAGE} from 'core/constants/routing.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -75,24 +75,9 @@ export class AuthService {
         this.logout();
         this.router.navigate([LOGIN_PAGE]);
         return of(false);
-        // observer.error(err); // won't work here you need to use next
       });
   }
 
 
-// isSessionAlive(): Observable<any> {
-//   return Observable.create((observer) => {
-//     this._fetchUser()
-//       .subscribe((res) => {
-//         this._isAuthenticated = of(true);
-//         observer.next(true); // your server response
-//       }, (err) => {
-//
-//         this._isAuthenticated = of(false);
-//         observer.next(false);
-//         // observer.error(err); // won't work here you need to use next
-//       });
-//   });
-// }
 
 }

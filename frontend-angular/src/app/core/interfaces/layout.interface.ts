@@ -7,7 +7,7 @@ import {BubbleStyle, BubbleStyleDefault} from 'core/interfaces/bubble-style.inte
 
 export interface Layout {
   id?: string;
-  index?: number;
+  _uid?: any;
   name: string;
   displayType?: DisplayType;
   textInputType?: TextInputType;

@@ -3,7 +3,7 @@ import {MatExpansionPanel} from '@angular/material';
 import {ItemType} from 'core/enum/item-type.enum';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'store/reducers';
-import {FrontEndListAddAction, FrontEndListUpdateAction, LayoutListAddAction, LayoutListUpdateAction} from 'store/actions/ichat';
+import {FrontEndListAddAction, FrontendListUpdateItemAction, LayoutListAddAction, LayoutListUpdateItemAction} from 'store/actions/ichat';
 import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
 import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
 import {FormControl, FormGroup} from '@angular/forms';
@@ -61,10 +61,10 @@ export class ItemListComponent implements OnInit {
     item.editing = false;
     this.formName.reset();
     if (this.isFrontEnd) {
-      this.store.dispatch(new FrontEndListUpdateAction(JSON.parse(JSON.stringify(this.itemList))));
+      this.store.dispatch(new FrontendListUpdateItemAction(item));
 
     } else if (this.isLayout) {
-      this.store.dispatch(new LayoutListUpdateAction(JSON.parse(JSON.stringify(this.itemList))));
+      this.store.dispatch(new LayoutListUpdateItemAction(item));
     }
 
   }
@@ -79,17 +79,16 @@ export class ItemListComponent implements OnInit {
       item.type = ItemType.LAYOUT;
 
     }
-    const length = this.itemList.length;
-    item['index'] = length;
-    item['editing'] = false;
+    item._uid = new Date().valueOf();
+    item.editing = false;
 
-    item['name'] = this.header + ' ' + length;
+    item['name'] = this.header;
 
     this.itemList.push(JSON.parse(JSON.stringify(item)));
     if (this.isFrontEnd) {
-      this.store.dispatch(new FrontEndListAddAction(JSON.parse(JSON.stringify(item))));
+      this.store.dispatch(new FrontEndListAddAction(item));
     } else if (this.isLayout) {
-      this.store.dispatch(new LayoutListAddAction(JSON.parse(JSON.stringify(item))));
+      this.store.dispatch(new LayoutListAddAction(item));
     }
 
   }

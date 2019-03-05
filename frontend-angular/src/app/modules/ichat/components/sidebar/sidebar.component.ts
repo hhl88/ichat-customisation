@@ -9,7 +9,6 @@ import {Subscription} from 'rxjs';
 import {Item} from 'core/interfaces/item.interface';
 import {CurrentItemSelectedAction} from 'store/actions/ichat';
 import {Router} from '@angular/router';
-import {PASSWORD_PAGE} from 'core/constants/routing.constants';
 
 @Component({
   selector: 'app-sidebar',
@@ -44,10 +43,10 @@ export class SidebarComponent implements OnInit {
 
   }
 
-  changeItem(item) {
-    if (this.currentItem === null || this.currentItem.index !== item.index || this.currentItem.type !== item.type) {
+  changeItem(item: Item) {
+    if (this.currentItem === null || this.currentItem._uid !== item._uid || this.currentItem.type !== item.type) {
       this.currentItem = JSON.parse(JSON.stringify(item));
-      this.store.dispatch(new CurrentItemSelectedAction(JSON.parse(JSON.stringify(item))));
+      this.store.dispatch(new CurrentItemSelectedAction(item));
       this.onNavigateToPasswordPage.emit(false);
     }
 

@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewContainerRef} from '@angular/core';
-import {Layout} from 'core/interfaces/layout.interface';
+import {Layout, LayoutDefault} from 'core/interfaces/layout.interface';
 import {IChatSettingsService} from 'preview/services/ichat-settings.service';
 import {environment} from 'environments/environment';
 import {IChatService} from 'preview/services/ichat.service';
-import {Frontend} from 'core/interfaces/frontend.interface';
+import {Frontend, FrontendDefault} from 'core/interfaces/frontend.interface';
 import {Observable, Subscription} from 'rxjs';
 import 'rxjs-compat/add/observable/interval';
 import 'rxjs-compat/add/operator/takeWhile';
@@ -28,7 +28,8 @@ export class ChatComponent implements OnInit {
 
   chatLayout: Layout;
   chatFrontend: Frontend;
-  customer: any;
+  customer: any = {};
+  agent: any = {};
   isLoading = false;
   isLoadingSetting = false;
   isConnected = false;
@@ -53,6 +54,7 @@ export class ChatComponent implements OnInit {
               private cd: ChangeDetectorRef,
               private r: ComponentFactoryResolver,
               private viewContainerRef: ViewContainerRef) {
+
   }
 
   ngOnInit() {
@@ -68,17 +70,25 @@ export class ChatComponent implements OnInit {
   private getSettings() {
     this.isLoadingSetting = true;
     this.iChatSettingsService.getSettings(this.id).subscribe(settings => {
-      console.log('settings', settings);
-      this.chatLayout = settings.layout;
-      this.chatFrontend = settings.frontend;
-      this.chatLayout.logo = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/logoImg';
-      this.chatLayout.backgroundImg = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/backgroundImg';
-      this.isPopUp = this.chatLayout.displayType === 2;
-      this.server = this._findServer(this.chatFrontend.iAgentServer.address);
-      this.iChatService.setServer(this._findServer(this.chatFrontend.iAgentServer.address));
-      this.isLoadingSetting = false;
-      this._saveNewBubbleSettings(this.chatLayout.bubbleStyle);
+      this.chatLayout = !!settings.layout ? settings.layout : LayoutDefault;
+      this.chatFrontend = !!settings.frontend ? settings.frontend : FrontendDefault;
+      if (this.chatLayout) {
+        if (this.chatLayout.id) {
+          this.chatLayout.backgroundImg = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/backgroundImg';
+          this.chatLayout.logo = environment.iChatLayoutApi + '/' + this.chatLayout.id + '/logoImg';
+        } else {
+          this.chatLayout.logo = 'https://www.novomind.com/typo3conf/ext/extension-kwi/Resources/Public/Frontend/Img/novomind/images/Novomind_Logo_RGB/PNG/Novomind_Logo.png';
+          this.chatLayout.backgroundImg = 'https://www.novomind.com/fileadmin/_processed_/7/2/csm_NM_Produktlogo_Symbol_iAGENT_RGB_ad39f4cbc6.png';
+        }
 
+        this.isPopUp = this.chatLayout.displayType === 2;
+      }
+
+      if (this.chatFrontend && this.chatFrontend.iAgentServer) {
+        this.server = this.chatFrontend.iAgentServer.address;
+        this.iChatService.setServer(this.chatFrontend.iAgentServer.address);
+      }
+      this.isLoadingSetting = false;
       this.cd.detectChanges();
     });
   }
@@ -117,8 +127,8 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  initPopupChat() {
-    this.windowReference = window.open('', '_blank', 'toolbar=0,width=800,height=400');
+  initPopupChat(bubbleSettings) {
+    this.windowReference = window.open('', '_blank', 'toolbar=0,width=800,height=450');
     setTimeout(() => {
       const factory = this.r.resolveComponentFactory(MessengerComponent);
       const comp: ComponentRef<MessengerComponent> = this.viewContainerRef.createComponent(factory);
@@ -130,6 +140,7 @@ export class ChatComponent implements OnInit {
       comp.instance.token = this.token;
       comp.instance.server = this.server;
       comp.instance.customer = this.customer;
+      comp.instance.agent = this.agent;
 
       comp.instance.ref = this.windowReference;
 
@@ -142,8 +153,54 @@ export class ChatComponent implements OnInit {
       style.innerHTML = cssMessenger;
       style.innerHTML += cssSingleMessage;
       style.innerHTML += cssButtonGroupChat;
-
+      style.innerHTML += bubbleSettings;
       this.windowReference.document.body.appendChild(style);
+
+      const script = document.createElement('script');
+
+      const code =
+        'if( document.readyState !== "loading" ) {' +
+        '    loadWindow();' +
+        '    resizeWindow();' +
+        '} else {' +
+        '    document.addEventListener("DOMContentLoaded", function () {' +
+        '        loadWindow();' +
+        '        resizeWindow();' +
+        '    });' +
+        '}' +
+        '' +
+        'function resizeWindow() {' +
+        '    window.addEventListener("resize", function() {' +
+        '       setHeight();' +
+        '    });' +
+        '}' +
+        'function loadWindow() {' +
+        '    window.addEventListener("load", function() {' +
+        '       setHeight();' +
+        '    });' +
+        '}' +
+        'function setHeight() {' +
+        '     var wHeight = window.innerHeight;' +
+        '     if(wHeight > 425) {' +
+        '        document.getElementById("chatWindowWrapper").style.height = (wHeight - 20) + "px";' +
+        '     }' +
+        '     var logoHeight = document.getElementById("logoChat").clientHeight;' +
+        '     var conversationFooter = document.getElementById("conversationFooter").clientHeight;' +
+        '     var buttonGroupHeight = 0;' +
+        '     var buttonGroupBelow = document.getElementById("buttonGroupBelow");' +
+        '     if(buttonGroupBelow) {' +
+        '         buttonGroupHeight = buttonGroupBelow.clientHeight;' +
+        '     }' +
+        '     document.getElementById("conversationBody").style.height = (document.getElementById("chatWindowWrapper").clientHeight - logoHeight - conversationFooter - buttonGroupHeight - 10) + "px";' +
+        '}';
+
+      try {
+        script.appendChild(document.createTextNode(code));
+        this.windowReference.document.body.appendChild(script);
+      } catch (e) {
+        script.text = code;
+        this.windowReference.document.body.appendChild(script);
+      }
       this.windowReference.document.body.appendChild(comp.location.nativeElement);
 
     });
@@ -154,6 +211,7 @@ export class ChatComponent implements OnInit {
     if (!!res && !!res.type) {
       if (res.type === 'ChatChangeChatstep') {
         if (!!res.origin && res.origin.substr(0, res.origin.indexOf('.')) === 'agent') {
+          this.agent.name = res.nickname;
           this.iChatService.setConnection(true);
         }
       }
@@ -193,50 +251,31 @@ export class ChatComponent implements OnInit {
         this.subPolling.unsubscribe();
         this.subConnection.unsubscribe();
         this.isConnected = true;
+        const bubbleSettings = this._getNewBubbleSettings(this.chatLayout.bubbleStyle);
         if (this.isPopUp) {
-          this.initPopupChat();
+          this.initPopupChat(bubbleSettings);
+        } else {
+          const style = document.createElement('style');
+          style.innerHTML += bubbleSettings;
+          document.body.appendChild(style);
+
         }
       }
     });
   }
 
-  private _findServer(serverAddress: string) {
-    if (!this._isShowroom(serverAddress)) {
-      return serverAddress;
-    }
-    const addressArr = serverAddress.split(/(https|http):\/\/|:|\//);
-    const address = addressArr[2];
-    return 'https://showroom-bridges.novomind.com/sr' + this._whichServer(address) + '_iagent_chat_p01';
-
+  private _getNewBubbleSettings(bubbleStyle: BubbleStyle) {
+    return Object.keys(bubbleStyle).map(key => this._getBubbleSetting(key, bubbleStyle[key])).join('');
   }
 
-  private _whichServer(address) {
-    if (address.includes('showroom2')) {
-      return '03';
-    } else if (address.includes('showroom3')) {
-      return '04';
-    }
-    return '01';
-  }
-
-  private _isShowroom(address) {
-    return address.includes('showroom');
-  }
-
-
-  private _saveNewBubbleSettings(bubbleStyle: BubbleStyle) {
-    Object.keys(bubbleStyle).forEach(key => this._convertToJson(key, bubbleStyle[key]));
-  }
-
-  private _convertToJson(className: string, bubble: Bubble) {
-    const newSetting = {};
-    newSetting['.' + className] = Object.keys(bubble).forEach(key => {
+  private _getBubbleSetting(className: string, bubble: Bubble) {
+    const aq12 = Object.keys(bubble).map(key => {
       const newKey = key.replace(/([A-Z])/g, (v) => {
         return '-' + v.toLowerCase();
       });
-      return {newKey: bubble[key]};
+      return newKey + ': ' + bubble[key];
     });
-    console.log('newSetting', newSetting);
+    return '.' + className + '{' + aq12.join(' !important;') + '}';
   }
 
 }

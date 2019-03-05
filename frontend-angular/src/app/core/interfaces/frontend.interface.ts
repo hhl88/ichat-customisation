@@ -4,7 +4,7 @@ import {DefaultDemandInfo, DemandInfo} from 'core/interfaces/demand-info.interfa
 
 export interface Frontend {
   id?: string;
-  index?: number;
+  _uid?: any;
   name: string;
   connectionType: ConnectionType;
   urlPath: string;

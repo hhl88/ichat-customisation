@@ -1,9 +1,9 @@
 <div class="content-wrapper" *ngIf="currentItem">
   <div *ngIf="currentItem.type === layoutType">
-    <app-layout-content [layout]="currentItem" (onUpdateLayout)="updateLayout($event)"></app-layout-content>
+    <app-layout-content [layout]="currentItem"></app-layout-content>
   </div>
 
   <div *ngIf="currentItem.type === frontendType">
-    <app-frontend-content [frontEnd]="currentItem" (onUpdateFrontend)="updateFrontend($event)"></app-frontend-content>
+    <app-frontend-content [frontEnd]="currentItem"></app-frontend-content>
   </div>
 </div>

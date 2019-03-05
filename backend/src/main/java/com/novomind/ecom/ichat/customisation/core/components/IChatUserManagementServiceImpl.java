@@ -36,6 +36,7 @@ public class IChatUserManagementServiceImpl implements IChatUserManagementServic
     }
 
     @Override
+    @Transactional(rollbackFor = {IllegalArgumentException.class})
     public void updatePassword(IChatUser user, String oldPassword, String newPassword, String repeatedPassword) {
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new IllegalArgumentException("wrong_password");

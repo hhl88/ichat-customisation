@@ -1,5 +1,5 @@
 export interface Info {
   name: string;
-  example: '';
+  example: string;
   required: boolean;
 }

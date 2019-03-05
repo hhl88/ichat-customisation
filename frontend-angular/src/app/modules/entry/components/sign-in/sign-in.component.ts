@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import * as fromRoot from 'app/store/reducers';
-import {UserLoadingAction, UserLoginAction} from 'store/actions/entry';
+import {UserLoadingAction, UserLoginAction, UserLogoutAction} from 'store/actions/entry';
 import {Router} from '@angular/router';
 import {ICHAT_PAGE, SIGN_UP_PAGE} from 'core/constants/routing.constants';
 import {AuthService} from 'core/authentication/authentication.service';
@@ -33,17 +33,17 @@ export class SignInComponent implements OnInit {
   }
 
   onSubmit() {
+
     if (this.form.invalid) {
       return;
     }
-    console.log('signinnnn', this.form.getRawValue());
+    this.wrongPassword = false;
+
     this.isLoggingIn = true;
     this.store.dispatch(new UserLoadingAction());
     this.authService.login(this.form.value.email, this.form.value.password).subscribe(res => {
       if (res != null) {
         const newRes = JSON.parse(JSON.stringify(res));
-        console.log(newRes);
-        console.log('access_token', newRes.access_token);
 
         this.store.dispatch(new UserLoginAction(newRes));
         localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN, newRes.access_token);
@@ -53,6 +53,12 @@ export class SignInComponent implements OnInit {
         this.wrongPassword = true;
       }
       this.isLoggingIn = false;
+    }, error1 => {
+      this.isLoggingIn = false;
+      this.wrongPassword = true;
+
+      console.log('logout');
+      this.store.dispatch(new UserLogoutAction());
     });
   }
 
