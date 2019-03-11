@@ -3,8 +3,6 @@ package com.novomind.ecom.ichat.customisation.domain.dtos.chat.frontend;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.novomind.ecom.ichat.customisation.core.demandInfo.DemandInfo;
 import com.novomind.ecom.ichat.customisation.core.server.iagent.IAgentServer;
-import com.novomind.ecom.ichat.customisation.domain.datatypes.Connection;
-import lombok.*;
 
 
 public class FrontEndDTO {
@@ -50,5 +48,29 @@ public class FrontEndDTO {
 
     public int getConnectionType() {
         return connectionType;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setiAgentServer(IAgentServer iAgentServer) {
+        this.iAgentServer = iAgentServer;
+    }
+
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
+    }
+
+    public void setDemandInfo(DemandInfo demandInfo) {
+        this.demandInfo = demandInfo;
+    }
+
+    public void setConnectionType(int connectionType) {
+        this.connectionType = connectionType;
     }
 }

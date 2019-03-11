@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 public class ChatLayoutRowMapper implements RowMapper<ChatLayout> {
     Logger log = LoggerFactory.getLogger(getClass());
+
     @Nullable
     @Override
     public ChatLayout mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -29,20 +30,19 @@ public class ChatLayoutRowMapper implements RowMapper<ChatLayout> {
         Gson gson = new GsonBuilder().registerTypeAdapterFactory(typeAdapterFactory).create();
         Map<String, Bubble> decoded = gson.fromJson(json, new TypeToken<Map<String, PersonData>>(){}.getType());*/
 
-        return ChatLayout.builder()
-                .id(rs.getString("id"))
-                .userId(rs.getString("user_id"))
-                .name(rs.getString("name"))
-                .displayType(rs.getInt("display_type"))
-                .textInputType(rs.getInt("text_input_type"))
-                .buttonType(rs.getInt("button_type"))
-                .logo(convertBlobToString(rs.getBlob("logo")))
-                .backgroundImg(convertBlobToString(rs.getBlob("background_img")))
-                .backgroundType(rs.getInt("background_type"))
-                .font(new Font(rs.getString("font_family"), rs.getString("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)))
-                .bubbleStyle(new Gson().fromJson(rs.getString("bubble_style"), new TypeToken<HashMap<String, Bubble>>() {
-                }.getType()))
-                .build();
+        return new ChatLayout(
+                rs.getString("id"),
+                rs.getString("user_id"),
+                rs.getString("name"),
+                rs.getInt("display_type"),
+                rs.getInt("text_input_type"),
+                rs.getInt("button_type"),
+                convertBlobToString(rs.getBlob("logo")),
+                convertBlobToString(rs.getBlob("background_img")),
+                rs.getInt("background_type"),
+                new Font(rs.getString("font_family"), rs.getString("font_size"), FontStyleConverter.bitToFontStyles(fontStyles)),
+                new Gson().fromJson(rs.getString("bubble_style"), new TypeToken<HashMap<String, Bubble>>() {
+                }.getType()));
 
     }
 

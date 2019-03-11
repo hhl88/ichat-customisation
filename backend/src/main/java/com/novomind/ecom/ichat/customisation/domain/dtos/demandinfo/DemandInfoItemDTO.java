@@ -2,13 +2,11 @@ package com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo;
 
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+
 public class DemandInfoItemDTO {
   
   @ApiModelProperty(required = true)
@@ -17,13 +15,18 @@ public class DemandInfoItemDTO {
  
   @ApiModelProperty(required = true)
   @NotNull
-  @JsonProperty
   private boolean required;
-  
   
   @ApiModelProperty(required = true)
   @NotNull
   private String example;
+
+    public DemandInfoItemDTO(@NotNull String name, @NotNull boolean required, @NotNull String example) {
+        this.name = name;
+        this.required = required;
+        this.example = example;
+    }
+
 
   public String getName() {
     return name;

@@ -6,18 +6,11 @@ import com.novomind.ecom.ichat.customisation.domain.dtos.demandinfo.DemandInfoCr
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.cloud.CloudCreateDTO;
 import com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent.IAgentServerCreateDTO;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class FrontEndCreateDTO {
 
+public class FrontEndCreateDTO {
 
     @ApiModelProperty(required = true)
     @NotNull
@@ -29,11 +22,9 @@ public class FrontEndCreateDTO {
 
 
     @ApiModelProperty
-    @JsonProperty(value="iAgentServer")
     private IAgentServerCreateDTO iAgentServer;
 
     @ApiModelProperty
-    @JsonProperty(value="cloud")
     private CloudCreateDTO cloud;
 
     @ApiModelProperty(required = true)
@@ -41,8 +32,59 @@ public class FrontEndCreateDTO {
     private String urlPath;
 
     @ApiModelProperty
-    @JsonProperty(value="demandInfo")
     DemandInfoCreateDTO demandInfo;
 
+    private FrontEndCreateDTO() {
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Connection getConnectionType() {
+        return connectionType;
+    }
+
+    public void setConnectionType(Connection connectionType) {
+        this.connectionType = connectionType;
+    }
+
+    @JsonProperty(value = "iAgentServer")
+    public IAgentServerCreateDTO getIAgentServer() {
+        return iAgentServer;
+    }
+
+    public void setIAgentServer(IAgentServerCreateDTO iAgentServer) {
+        this.iAgentServer = iAgentServer;
+    }
+
+    @JsonProperty(value = "cloud")
+    public CloudCreateDTO getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(CloudCreateDTO cloud) {
+        this.cloud = cloud;
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
+    }
+
+    @JsonProperty(value = "demandInfo")
+    public DemandInfoCreateDTO getDemandInfo() {
+        return demandInfo;
+    }
+
+    public void setDemandInfo(DemandInfoCreateDTO demandInfo) {
+        this.demandInfo = demandInfo;
+    }
 }

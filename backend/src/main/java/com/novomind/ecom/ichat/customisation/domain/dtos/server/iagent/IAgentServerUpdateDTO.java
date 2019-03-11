@@ -1,12 +1,14 @@
 package com.novomind.ecom.ichat.customisation.domain.dtos.server.iagent;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 public class IAgentServerUpdateDTO {
+
+    @ApiModelProperty(required = true)
+    @NotNull
+    private String id;
    
   @ApiModelProperty(required = true)
   @NotNull
@@ -28,6 +30,22 @@ public class IAgentServerUpdateDTO {
 
   }
 
+    public IAgentServerUpdateDTO(@NotNull String id, @NotNull String address, String userAPI, String password, String clientId, String secret) {
+        this.id = id;
+        this.address = address;
+        this.userAPI = userAPI;
+        this.password = password;
+        this.clientId = clientId;
+        this.secret = secret;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
   public String getAddress() {
     return address;

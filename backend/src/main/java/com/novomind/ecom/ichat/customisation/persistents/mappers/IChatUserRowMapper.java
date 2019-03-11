@@ -13,12 +13,10 @@ public class IChatUserRowMapper implements RowMapper<IChatUser> {
   @Nullable
   @Override
   public IChatUser mapRow(ResultSet rs, int rowNum) throws SQLException {
-    return IChatUser
-            .builder()
-            .id(rs.getString("id"))
-            .email(rs.getString("email"))
-            .password(rs.getString("password"))
-            .build();
+      return new IChatUser(
+              rs.getString("id"),
+              rs.getString("email"),
+              rs.getString("password"));
   }
 
 }

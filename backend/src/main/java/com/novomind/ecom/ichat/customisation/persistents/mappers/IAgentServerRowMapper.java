@@ -13,14 +13,13 @@ public class IAgentServerRowMapper implements RowMapper<IAgentServer> {
     @Nullable
     @Override
     public IAgentServer mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return IAgentServer.builder()
-                .id(rs.getString("id"))
-                .address(rs.getString("address"))
-                .userAPI(rs.getString("user_api"))
-                .password(rs.getString("password"))
-                .clientId(rs.getString("client_id"))
-                .secret(rs.getString("secret"))
-                .build();
+        return new IAgentServer(
+                rs.getString("id"),
+                rs.getString("address"),
+                rs.getString("user_api"),
+                rs.getString("password"),
+                rs.getString("client_id"),
+                rs.getString("secret"));
     }
 
 }

@@ -1,18 +1,9 @@
 package com.novomind.ecom.ichat.customisation.domain.datatypes;
 
 import com.novomind.ecom.ichat.customisation.core.common.FontStyleConverter;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.Embeddable;
-import java.util.List;
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@ToString
 public class Font {
 
     private String fontFamily;
@@ -29,4 +20,27 @@ public class Font {
         return new Font(fontFamily, fontSize, FontStyleConverter.frontStylesToInt(fontStyles));
     }
 
+    public String getFontFamily() {
+        return fontFamily;
+    }
+
+    public void setFontFamily(String fontFamily) {
+        this.fontFamily = fontFamily;
+    }
+
+    public String getFontSize() {
+        return fontSize;
+    }
+
+    public void setFontSize(String fontSize) {
+        this.fontSize = fontSize;
+    }
+
+    public Set<Integer> getFontStyles() {
+        return fontStyles;
+    }
+
+    public void setFontStyles(Set<Integer> fontStyles) {
+        this.fontStyles = fontStyles;
+    }
 }

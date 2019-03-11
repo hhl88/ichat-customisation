@@ -3,12 +3,8 @@ package com.novomind.ecom.ichat.customisation.domain.dtos.font;
 import com.novomind.ecom.ichat.customisation.core.common.FontStyleConverter;
 import com.novomind.ecom.ichat.customisation.domain.datatypes.Font;
 import com.novomind.ecom.ichat.customisation.domain.datatypes.FontStyle;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FontDTO {
 
@@ -16,7 +12,8 @@ public class FontDTO {
     private String fontSize;
     private Set<FontStyle> fontStyles;
 
-    private FontDTO() {}
+    private FontDTO() {
+    }
 
     public FontDTO(String fontFamily, String fontSize, Set<FontStyle> fontStyles) {
         this.fontFamily = fontFamily;
